@@ -1,39 +1,39 @@
 {
-	"name": "fashion-house",
-	"version": "1.0.0",
-	"description": "Online Shopping Cart System for a Fashion Store | SE3040 - Application Frameworks Module",
-	"main": "app.js",
-	"scripts": {
-		"start": "nodemon server.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/ThamalDilanka/fashion-house.git"
-	},
-	"author": "Team Alpha",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/ThamalDilanka/fashion-house/issues"
-	},
-	"homepage": "https://github.com/ThamalDilanka/fashion-house#readme",
-	"dependencies": {
-		"bcrypt": "^4.0.1",
-		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
-		"express-validator": "^6.4.0",
-		"gravatar": "^1.8.0",
-		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^5.9.4",
-		"morgan": "^1.9.1",
-		"nodemailer": "^6.4.5",
-		"validator": "^12.2.0"
-	},
-	"devDependencies": {
-		"concurrently": "^5.1.0",
-		"jest": "^25.1.0",
-		"nodemon": "^2.0.2"
-	},
-	"engines": {
-		"node": ">=10.0.0"
-	}
+  "name": "fashion-house",
+  "version": "1.0.0",
+  "description": "Online Shopping Cart System for a Fashion Store | SE3040 - Application Frameworks Module",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThamalDilanka/fashion-house.git"
+  },
+  "author": "Team Alpha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThamalDilanka/fashion-house/issues"
+  },
+  "homepage": "https://github.com/ThamalDilanka/fashion-house#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.4",
+    "morgan": "^1.9.1",
+    "nodemailer": "^6.4.5",
+    "validator": "^12.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
 }
