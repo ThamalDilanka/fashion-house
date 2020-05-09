@@ -1,27 +1,27 @@
-const Product = require('../models/Product');
+const Order = require('../models/Order');
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
 /////////////////////////////////////////////////////////////////////////////
 
-// Creating a new product in the database
-exports.createProduct = async (req, res) => {
+// Creating a new order in the database
+exports.createOrder = async (req, res) => {
 	console.log(req.body);
 	try {
 		/**
-		 * create method accepts a product object of a Product model.
+		 * create method accepts a order object of a Order model.
 		 * req.body is the object sent by client side in the request body
 		 */
-		const newProduct = await Product.create(req.body);
+		const newOrder = await Order.create(req.body);
 
 		/**
-		 * sending enveloped product object that added to the db.
+		 * sending enveloped order object that added to the db.
 		 * status 201 for created.
 		 */
 		res.status(201).json({
 			status: 'success',
 			data: {
-				product: newProduct
+				order: newOrder
 			}
 		});
 	} catch (err) {
@@ -36,8 +36,8 @@ exports.createProduct = async (req, res) => {
 /********************               Read              **********************/
 /////////////////////////////////////////////////////////////////////////////
 
-// Read all the document in product collection
-exports.getAllProducts = async (req, res) => {
+// Read all the document in order collection
+exports.getAllOrders = async (req, res) => {
 	try {
 		// // Creating a object that contain all the key value pairs of query parameters
 		// const queryObject = { ...req.query };
@@ -49,17 +49,17 @@ exports.getAllProducts = async (req, res) => {
 		// excludeFields.forEach(el => delete queryObject[el]);
 
 		// Build the query
-		const query = Product.find(req.query);
+		const query = Order.find(req.query);
 
 		// Execute the query
-		const products = await query;
+		const orders = await query;
 
 		// Send response
 		res.status(200).json({
 			status: 'success',
-			results: products.length,
+			results: orders.length,
 			data: {
-				products
+				orders
 			}
 		});
 	} catch (err) {
@@ -72,16 +72,16 @@ exports.getAllProducts = async (req, res) => {
 
 /**
  * Read a specific document by id that passed as query parameter
- * in product collection
+ * in order collection
  */
-exports.getProduct = async (req, res) => {
+exports.getOrder = async (req, res) => {
 	try {
-		const product = await Product.findById(req.params.id);
+		const order = await Order.findById(req.params.id);
 
 		res.status(200).json({
 			status: 'success',
 			data: {
-				product
+				order
 			}
 		});
 	} catch (err) {
@@ -97,9 +97,9 @@ exports.getProduct = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////
 
 // Update a document by given id. This only for patch method
-exports.updateProduct = async (req, res) => {
+exports.updateOrder = async (req, res) => {
 	try {
-		const product = await Product.findByIdAndUpdate(
+		const order = await Order.findByIdAndUpdate(
 			req.params.id,
 			req.body,
 			{ new: true, runValidators: true }
@@ -108,7 +108,7 @@ exports.updateProduct = async (req, res) => {
 		res.status(200).json({
 			status: 'success',
 			data: {
-				product
+				order
 			}
 		});
 	} catch (err) {
@@ -124,9 +124,9 @@ exports.updateProduct = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////
 
 // Delete a document by id
-exports.deleteProduct = async (req, res) => {
+exports.deleteOrder = async (req, res) => {
 	try {
-		await Product.findByIdAndDelete(req.params.id);
+		await Order.findByIdAndDelete(req.params.id);
 
 		res.status(204).json({
 			status: 'success',

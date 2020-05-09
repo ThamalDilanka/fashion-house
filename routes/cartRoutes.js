@@ -3,6 +3,15 @@ const cartController = require('./../controllers/cartController');
 
 const router = express.Router();
 
-// TODO: call the handler functions according to the route
+router
+	.route('/')
+	.post(cartController.createCart)
+	.get(cartController.getAllCarts);
+
+router
+	.route('/:id')
+	.get(cartController.getCart)
+	.patch(cartController.updateCart)
+	.delete(cartController.deleteCart);
 
 module.exports = router;
