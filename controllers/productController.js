@@ -126,7 +126,7 @@ exports.updateProduct = async (req, res) => {
 // Delete a document by id
 exports.deleteProduct = async (req, res) => {
 	try {
-		await Product.findByIdAndDelete(req.params.id);
+		await Product.findByIdAndDelete(req.params.id); 
 
 		res.status(204).json({
 			status: 'success',
