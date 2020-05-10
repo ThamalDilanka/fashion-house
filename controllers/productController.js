@@ -1,4 +1,33 @@
 const Product = require('../models/Product');
+const multer = require('multer');
+const dest = process.env.DOWNLOAD_DESTINATION
+
+const multerStorage = multer.diskStorage({
+	destination: (req,file,cb) => {
+		cb(null,`${__dirname}`+dest );
+	},
+	filename: (req,file,cb) => {
+		//uesr-id
+		const ext = file.mimetype.split('/')[1];
+		cb(null,file.fieldname + '-' +Date.now() + path.extname(file.originalname)+ext); //asign file name
+
+	}
+});
+
+//multer filter - allow only image files to be uploaded
+const multerFilter = (req,file,cb) => {
+	if(file.mimetype.startsWith('image')){
+		cb(null,true)
+	}else{
+		cb(new AppError('Not an image! please upload only images!',400),false);
+	}
+};
+
+const  upload = multer({
+	storage: multerStorage,
+	fileFilter: multerFilter
+});
+exports.uploadProductPhoto = upload.single('photo');
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
