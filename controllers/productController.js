@@ -1,18 +1,20 @@
 const Product = require('../models/Product');
 const multer = require('multer');
+const sharp = require('sharp');
 const dest = process.env.DOWNLOAD_DESTINATION
 
-const multerStorage = multer.diskStorage({
-	destination: (req,file,cb) => {
-		cb(null,`${__dirname}`+dest );
-	},
-	filename: (req,file,cb) => {
-		//uesr-id
-		const ext = file.mimetype.split('/')[1];
-		cb(null,file.fieldname + '-' +Date.now() + path.extname(file.originalname)+ext); //asign file name
+// const multerStorage = multer.diskStorage({
+// 	destination: (req,file,cb) => {
+// 		cb(null,`${__dirname}`+dest );
+// 	},
+// 	filename: (req,file,cb) => {
+// 		//uesr-id
+// 		const ext = file.mimetype.split('/')[1];
+// 		cb(null,file.fieldname + '-' +Date.now() + path.extname(file.originalname)+ext); //asign file name
 
-	}
-});
+// 	}
+// });
+const multerStorage = multer.memoryStorage();
 
 //multer filter - allow only image files to be uploaded
 const multerFilter = (req,file,cb) => {
@@ -28,6 +30,20 @@ const  upload = multer({
 	fileFilter: multerFilter
 });
 exports.uploadProductPhoto = upload.single('photo');
+
+exports.resizeProductPhoto = (req,res,next) => {
+	if(!req.file) return next();
+
+	req.file.filename = `${file.fieldname + '-' +Date.now() + path.extname(file.originalname)}.jpeg`;
+
+	sharp(req.file.buffer)
+	.resize(200,200)
+	.toFormat('jpeg')
+	.jpeg({quality:90})
+	.toFile(`${__dirname}`+dest+`${req.file.filename}`);
+
+	next();
+}
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/

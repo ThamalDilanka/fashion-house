@@ -42,6 +42,7 @@ const productSchema = new mongoose.Schema({
   },
   images: [
     {
+      default:'default.jpg',
       type: String,
       trim: true,
       required: [true, "Please choose an image."],
