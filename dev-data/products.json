@@ -1,0 +1,25 @@
+[
+    {
+        "name": "",
+        "category": "",
+        "quantity": "",
+        "price": "",
+        "discount": {
+            "percentage": 30
+        },
+        "description": "",
+        "images": [
+            ""
+        ],
+        "sizes": [
+            "XL",
+            "L",
+            "M"
+        ],
+        "colors": [
+            "RED",
+            "BLUE",
+            "BLACK"
+        ]
+    }
+]

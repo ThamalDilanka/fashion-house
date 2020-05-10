@@ -1,23 +1,10 @@
 const Category = require('../models/Category');
 
-/////////////////////////////////////////////////////////////////////////////
-/********************              CREATE             **********************/
-/////////////////////////////////////////////////////////////////////////////
-
 // Creating a new category in the database
 exports.createCategory = async (req, res) => {
-	console.log(req.body);
 	try {
-		/**
-		 * create method accepts a category object of a Category model.
-		 * req.body is the object sent by client side in the request body
-		 */
 		const newCategory = await Category.create(req.body);
 
-		/**
-		 * sending enveloped category object that added to the db.
-		 * status 201 for created.
-		 */
 		res.status(201).json({
 			status: 'success',
 			data: {
@@ -32,22 +19,9 @@ exports.createCategory = async (req, res) => {
 	}
 };
 
-/////////////////////////////////////////////////////////////////////////////
-/********************               Read              **********************/
-/////////////////////////////////////////////////////////////////////////////
-
 // Read all the document in category collection
 exports.getAllCategories = async (req, res) => {
 	try {
-		// // Creating a object that contain all the key value pairs of query parameters
-		// const queryObject = { ...req.query };
-
-		// // Creating a arry of keys should be ignored in the filtering
-		// const excludeFields = ['page', 'sort', 'limit', 'fields'];
-
-		// // Delete the excluded fields from the query object
-		// excludeFields.forEach(el => delete queryObject[el]);
-
 		// Build the query
 		const query = Category.find(req.query);
 
@@ -92,10 +66,6 @@ exports.getCategory = async (req, res) => {
 	}
 };
 
-/////////////////////////////////////////////////////////////////////////////
-/********************              Update             **********************/
-/////////////////////////////////////////////////////////////////////////////
-
 // Update a document by given id. This only for patch method
 exports.updateCategory = async (req, res) => {
 	try {
@@ -118,10 +88,6 @@ exports.updateCategory = async (req, res) => {
 		});
 	}
 };
-
-/////////////////////////////////////////////////////////////////////////////
-/********************              Delete             **********************/
-/////////////////////////////////////////////////////////////////////////////
 
 // Delete a document by id
 exports.deleteCategory = async (req, res) => {
