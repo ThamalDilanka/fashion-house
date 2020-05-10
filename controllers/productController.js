@@ -29,21 +29,30 @@ const  upload = multer({
 	storage: multerStorage,
 	fileFilter: multerFilter
 });
-exports.uploadProductPhoto = upload.single('photo');
-
-exports.resizeProductPhoto = (req,res,next) => {
-	if(!req.file) return next();
-
-	req.file.filename = `${file.fieldname + '-' +Date.now() + path.extname(file.originalname)}.jpeg`;
-
-	sharp(req.file.buffer)
-	.resize(200,200)
-	.toFormat('jpeg')
-	.jpeg({quality:90})
-	.toFile(`${__dirname}`+dest+`${req.file.filename}`);
+exports.uploadProductImages = upload.fields([
+	//{name: 'productImage',maxCount: 1},
+	{nsme:'images' , maxCount: 5}
+]);
+// upload.single('image')
+// upload.array('images',5)
+exports.resizeProductImages = (req,res,next) => {
 
 	next();
 }
+
+// exports.resizeProductPhoto = (req,res,next) => {// to be replaced
+// 	if(!req.file) return next();
+
+// 	req.file.filename = `${file.fieldname + '-' +Date.now() + path.extname(file.originalname)}.jpeg`;
+
+// 	sharp(req.file.buffer)
+// 	.resize(200,200)
+// 	.toFormat('jpeg')
+// 	.jpeg({quality:90})
+// 	.toFile(`${__dirname}`+dest+`${req.file.filename}`);
+
+// 	next();
+// }
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
