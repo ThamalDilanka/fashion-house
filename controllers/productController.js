@@ -27,14 +27,6 @@ exports.resizeProductImages = async (req, res, next) => {
 
 	if (!req.files.images) return next();
 
-	//in case if you want to upload single image
-	// await sharp(req.file.buffer)
-	// .resize(200,200)
-	// .toFormat('jpeg')
-	// .jpeg({quality:90})
-	// .toFile(`${__dirname}`+dest+`${req.file.filename}`);
-	// next();
-
 	//images
 	try {
 		req.body.images = [];

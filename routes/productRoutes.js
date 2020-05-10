@@ -1,8 +1,5 @@
 const express = require('express');
 const productController = require('./../controllers/productController');
-//const multer = require('multer');
-//const dest = process.env.DOWNLOAD_DESTINATION
-//const  upload = multer({dest: `${__dirname}`+dest});
 
 const router = express.Router();
 
