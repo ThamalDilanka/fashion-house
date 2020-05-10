@@ -7,7 +7,7 @@ const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const favouriteRoutes = require('./routes/favouriteRoutes');
 
-// Creating a Express application
+// Creating a Express application 
 const app = express();
 
 // Logging all the requests to the console in development environment

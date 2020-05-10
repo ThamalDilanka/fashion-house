@@ -1,4 +1,58 @@
 const Product = require('../models/Product');
+const multer = require('multer');
+const sharp = require('sharp');
+const dest = process.env.DOWNLOAD_DESTINATION
+
+const multerStorage = multer.memoryStorage();
+
+//multer filter - allow only image files to be uploaded
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.startsWith('image')) {
+		cb(null, true)
+	} else {
+		cb(new AppError('Not an image! please upload only images!', 400), false);
+	}
+};
+
+const upload = multer({
+	storage: multerStorage,
+	fileFilter: multerFilter
+});
+exports.uploadProductImages = upload.fields([
+	//{name: 'productImage',maxCount: 1}, - in case if u wnt to upload single image
+	{ name: 'images', maxCount: 5 }
+]);
+
+exports.resizeProductImages = async (req, res, next) => {
+
+	if (!req.files.images) return next();
+
+	//images
+	try {
+		req.body.images = [];
+		await Promise.all(
+			req.files.images.map(async (file, i) => {
+			const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+			await sharp(file.buffer)
+				.resize(200, 200)
+				.toFormat('jpeg')
+				.jpeg({ quality: 90 })
+				.toFile(`${__dirname}` + dest + `${filename}`);
+
+			req.body.images.push(filename);
+		})
+		);
+	} catch (err) {
+		res.status(400).json({
+			status: 'failed',
+			message: err.message
+		});
+	}
+	console.log(req.body);
+	next();
+};
+
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
