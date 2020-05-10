@@ -3,56 +3,64 @@ const multer = require('multer');
 const sharp = require('sharp');
 const dest = process.env.DOWNLOAD_DESTINATION
 
-// const multerStorage = multer.diskStorage({
-// 	destination: (req,file,cb) => {
-// 		cb(null,`${__dirname}`+dest );
-// 	},
-// 	filename: (req,file,cb) => {
-// 		//uesr-id
-// 		const ext = file.mimetype.split('/')[1];
-// 		cb(null,file.fieldname + '-' +Date.now() + path.extname(file.originalname)+ext); //asign file name
-
-// 	}
-// });
 const multerStorage = multer.memoryStorage();
 
 //multer filter - allow only image files to be uploaded
-const multerFilter = (req,file,cb) => {
-	if(file.mimetype.startsWith('image')){
-		cb(null,true)
-	}else{
-		cb(new AppError('Not an image! please upload only images!',400),false);
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.startsWith('image')) {
+		cb(null, true)
+	} else {
+		cb(new AppError('Not an image! please upload only images!', 400), false);
 	}
 };
 
-const  upload = multer({
+const upload = multer({
 	storage: multerStorage,
 	fileFilter: multerFilter
 });
 exports.uploadProductImages = upload.fields([
-	//{name: 'productImage',maxCount: 1},
-	{name:'images' , maxCount: 5}
+	//{name: 'productImage',maxCount: 1}, - in case if u wnt to upload single image
+	{ name: 'images', maxCount: 5 }
 ]);
-// upload.single('image')
-// upload.array('images',5)
-exports.resizeProductImages = (req,res,next) => {
 
+exports.resizeProductImages = async (req, res, next) => {
+
+	if (!req.files.images) return next();
+
+	//in case if you want to upload single image
+	// await sharp(req.file.buffer)
+	// .resize(200,200)
+	// .toFormat('jpeg')
+	// .jpeg({quality:90})
+	// .toFile(`${__dirname}`+dest+`${req.file.filename}`);
+	// next();
+
+	//images
+	try {
+		req.body.images = [];
+		await Promise.all(
+			req.files.images.map(async (file, i) => {
+			const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+			await sharp(file.buffer)
+				.resize(200, 200)
+				.toFormat('jpeg')
+				.jpeg({ quality: 90 })
+				.toFile(`${__dirname}` + dest + `${filename}`);
+
+			req.body.images.push(filename);
+		})
+		);
+	} catch (err) {
+		res.status(400).json({
+			status: 'failed',
+			message: err.message
+		});
+	}
+	console.log(req.body);
 	next();
-}
+};
 
-// exports.resizeProductPhoto = (req,res,next) => {// to be replaced
-// 	if(!req.file) return next();
-
-// 	req.file.filename = `${file.fieldname + '-' +Date.now() + path.extname(file.originalname)}.jpeg`;
-
-// 	sharp(req.file.buffer)
-// 	.resize(200,200)
-// 	.toFormat('jpeg')
-// 	.jpeg({quality:90})
-// 	.toFile(`${__dirname}`+dest+`${req.file.filename}`);
-
-// 	next();
-// }
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
@@ -180,7 +188,7 @@ exports.updateProduct = async (req, res) => {
 // Delete a document by id
 exports.deleteProduct = async (req, res) => {
 	try {
-		await Product.findByIdAndDelete(req.params.id); 
+		await Product.findByIdAndDelete(req.params.id);
 
 		res.status(204).json({
 			status: 'success',
