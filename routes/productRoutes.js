@@ -8,7 +8,7 @@ const router = express.Router();
 // localhost:8080/api/v1/products/
 router
 	.route('/')
-	.post(upload.single('photo'),productController.createProduct)
+	.post(upload.single('photo'),productController.createProduct) //to upload img
 	.get(productController.getAllProducts);
 
 // localhost:8080/api/v1/products/
