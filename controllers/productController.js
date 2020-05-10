@@ -31,7 +31,7 @@ const  upload = multer({
 });
 exports.uploadProductImages = upload.fields([
 	//{name: 'productImage',maxCount: 1},
-	{nsme:'images' , maxCount: 5}
+	{name:'images' , maxCount: 5}
 ]);
 // upload.single('image')
 // upload.array('images',5)
