@@ -6,7 +6,7 @@ const Product = require('../models/Product');
 
 // Creating a new product in the database
 exports.createProduct = async (req, res) => {
-	console.log(req.body);
+	console.log("create product",req.body);
 	try {
 		/**
 		 * create method accepts a product object of a Product model.
