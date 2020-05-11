@@ -40,13 +40,16 @@ const productSchema = new mongoose.Schema({
 		trim: true,
 		required: [true, 'Please enter a product description'],
 	},
-	images: [
-		{
-			type: String,
-			trim: true,
-			required: [true, 'Please choose an image.'],
-		},
-	],
+	images: {
+		type: [
+			{
+				type: String,
+				trim: true,
+				required: [true, 'Please choose an image.'],
+			},
+		],
+		required: [true, 'Please upload at least one image'],
+	},
 	sizes: [
 		{
 			type: String,
@@ -66,7 +69,7 @@ const productSchema = new mongoose.Schema({
 		min: 0,
 		max: 5,
 		default: 0,
-	}
+	},
 });
 
 const Product = mongoose.model('product', productSchema);
