@@ -66,7 +66,7 @@ const productSchema = new mongoose.Schema({
 		min: 0,
 		max: 5,
 		default: 0,
-	},
+	}
 });
 
 const Product = mongoose.model('product', productSchema);
