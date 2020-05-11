@@ -75,13 +75,13 @@ exports.createProduct = async (req, res) => {
 		res.status(201).json({
 			status: 'success',
 			data: {
-				product: newProduct
-			}
+				product: newProduct,
+			},
 		});
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
 };
@@ -93,17 +93,28 @@ exports.createProduct = async (req, res) => {
 // Read all the document in product collection
 exports.getAllProducts = async (req, res) => {
 	try {
-		// // Creating a object that contain all the key value pairs of query parameters
-		// const queryObject = { ...req.query };
+		// BASIC FILTERING
+		// Create a shallow copy of query object
+		const queryObject = { ...req.query };
 
-		// // Creating a arry of keys should be ignored in the filtering
-		// const excludeFields = ['page', 'sort', 'limit', 'fields'];
+		// The special parameters needs to be excluded from the filter
+		const excludeFields = ['page', 'sort', 'limit', 'fields'];
 
-		// // Delete the excluded fields from the query object
-		// excludeFields.forEach(el => delete queryObject[el]);
+		// Remove excluded query parameters from the query object
+		excludeFields.forEach((el) => delete queryObject[el]);
+
+		// ADVANCED FILTERING
+		// Convert query object in to String
+		let queryString = JSON.stringify(queryObject);
+
+		// Replace the gte, gt, lte, le words with $gte, $gt, $lte, $lt
+		queryString = queryObject.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(match) => `$${match}`
+		);
 
 		// Build the query
-		const query = Product.find(req.query);
+		const query = Product.find(JSON.parse(queryString));
 
 		// Execute the query
 		const products = await query;
@@ -113,13 +124,13 @@ exports.getAllProducts = async (req, res) => {
 			status: 'success',
 			results: products.length,
 			data: {
-				products
-			}
+				products,
+			},
 		});
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
 };
@@ -135,13 +146,13 @@ exports.getProduct = async (req, res) => {
 		res.status(200).json({
 			status: 'success',
 			data: {
-				product
-			}
+				product,
+			},
 		});
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
 };
@@ -162,13 +173,13 @@ exports.updateProduct = async (req, res) => {
 		res.status(200).json({
 			status: 'success',
 			data: {
-				product
-			}
+				product,
+			},
 		});
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
 };
@@ -184,12 +195,12 @@ exports.deleteProduct = async (req, res) => {
 
 		res.status(204).json({
 			status: 'success',
-			data: null
+			data: null,
 		});
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
 };
