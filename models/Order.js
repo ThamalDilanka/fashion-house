@@ -7,28 +7,31 @@ const orderSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "A favourite item must belongs to a User."],
   },
-  products: [
-    {
-      productId: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Product",
-        required: [true, "Please enter Product ID."],
+  products: {
+    type: [
+      {
+        productId: {
+          type: mongoose.Schema.ObjectId,
+          ref: "Product",
+          required: [true, "Please enter Product ID."],
+        },
+        color: {
+          type: String,
+          trim: true,
+          required: [true, "Please enter color."],
+        },
+        size: {
+          type: String,
+          required: [true, "Please enter size."],
+        },
+        quantity: {
+          type: Number,
+          required: [true, "Please enter quantity."],
+        },
       },
-      color: {
-        type: String,
-        trim: true,
-        required: [true, "Please enter color."],
-      },
-      size: {
-        type: Number,
-        required: [true, "Please enter size."],
-      },
-      quantity: {
-        type: Number,
-        required: [true, "Please enter quantity."],
-      },
-    },
-  ],
+    ],
+    required: [true, "Please enter atleast one product."],
+  },
   totalAmount: {
     type: Number,
     required: [true, "Please enter the total amount."],
