@@ -1,58 +1,57 @@
 const Product = require('../models/Product');
 const multer = require('multer');
 const sharp = require('sharp');
-const dest = process.env.DOWNLOAD_DESTINATION
+const uuid = require('uuid');
 
 const multerStorage = multer.memoryStorage();
 
 //multer filter - allow only image files to be uploaded
 const multerFilter = (req, file, cb) => {
 	if (file.mimetype.startsWith('image')) {
-		cb(null, true)
+		cb(null, true);
 	} else {
-		cb(new AppError('Not an image! please upload only images!', 400), false);
+		cb(
+			new AppError('Not an image! please upload only images!', 400),
+			false
+		);
 	}
 };
 
 const upload = multer({
 	storage: multerStorage,
-	fileFilter: multerFilter
+	fileFilter: multerFilter,
 });
-exports.uploadProductImages = upload.fields([
-	//{name: 'productImage',maxCount: 1}, - in case if u wnt to upload single image
-	{ name: 'images', maxCount: 5 }
-]);
+
+exports.uploadProductImages = upload.fields([{ name: 'images', maxCount: 5 }]);
 
 exports.resizeProductImages = async (req, res, next) => {
-
 	if (!req.files.images) return next();
 
-	//images
 	try {
 		req.body.images = [];
 		await Promise.all(
 			req.files.images.map(async (file, i) => {
-			const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+				const filename = `${uuid.v4()}-${Date.now()}.jpeg`;
 
-			await sharp(file.buffer)
-				.resize(200, 200)
-				.toFormat('jpeg')
-				.jpeg({ quality: 90 })
-				.toFile(`${__dirname}` + dest + `${filename}`);
+				await sharp(file.buffer)
+					.resize(500, 500)
+					.toFormat('jpeg')
+					.jpeg({ quality: 100 })
+					.toFile(
+						`${__dirname}${process.env.IMAGE_DESTINATION}products/${filename}`
+					);
 
-			req.body.images.push(filename);
-		})
+				req.body.images.push(filename);
+			})
 		);
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
-			message: err.message
+			message: err.message,
 		});
 	}
-	console.log(req.body);
 	next();
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
@@ -60,18 +59,10 @@ exports.resizeProductImages = async (req, res, next) => {
 
 // Creating a new product in the database
 exports.createProduct = async (req, res) => {
-	console.log("create product",req.body);
+	console.log('create product', req.body);
 	try {
-		/**
-		 * create method accepts a product object of a Product model.
-		 * req.body is the object sent by client side in the request body
-		 */
 		const newProduct = await Product.create(req.body);
 
-		/**
-		 * sending enveloped product object that added to the db.
-		 * status 201 for created.
-		 */
 		res.status(201).json({
 			status: 'success',
 			data: {
@@ -85,10 +76,6 @@ exports.createProduct = async (req, res) => {
 		});
 	}
 };
-
-/////////////////////////////////////////////////////////////////////////////
-/********************               Read              **********************/
-/////////////////////////////////////////////////////////////////////////////
 
 // Read all the document in product collection
 exports.getAllProducts = async (req, res) => {
@@ -108,7 +95,7 @@ exports.getAllProducts = async (req, res) => {
 		let queryString = JSON.stringify(queryObject);
 
 		// Replace the gte, gt, lte, le words with $gte, $gt, $lte, $lt
-		queryString = queryObject.replace(
+		queryString = queryString.replace(
 			/\b(gte|gt|lte|lt)\b/g,
 			(match) => `$${match}`
 		);
@@ -157,10 +144,6 @@ exports.getProduct = async (req, res) => {
 	}
 };
 
-/////////////////////////////////////////////////////////////////////////////
-/********************              Update             **********************/
-/////////////////////////////////////////////////////////////////////////////
-
 // Update a document by given id. This only for patch method
 exports.updateProduct = async (req, res) => {
 	try {
@@ -183,10 +166,6 @@ exports.updateProduct = async (req, res) => {
 		});
 	}
 };
-
-/////////////////////////////////////////////////////////////////////////////
-/********************              Delete             **********************/
-/////////////////////////////////////////////////////////////////////////////
 
 // Delete a document by id
 exports.deleteProduct = async (req, res) => {
