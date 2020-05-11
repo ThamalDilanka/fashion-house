@@ -8,6 +8,8 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const favouriteRoutes = require('./routes/favouriteRoutes');
+const orderRoutes = require(('./routes/orderRoutes'));
+const reviewRoutes = require(('./routes/reviewRoutes'));
 
 // Creating a Express application 
 const app = express();
@@ -26,5 +28,7 @@ app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/carts', cartRoutes);
 app.use('/api/v1/favourites', favouriteRoutes);
+app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/reviews', reviewRoutes);
 
 module.exports = app;
