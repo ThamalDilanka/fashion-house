@@ -1,57 +1,4 @@
 const Product = require('../models/Product');
-const multer = require('multer');
-const sharp = require('sharp');
-const uuid = require('uuid');
-
-const multerStorage = multer.memoryStorage();
-
-//multer filter - allow only image files to be uploaded
-const multerFilter = (req, file, cb) => {
-	if (file.mimetype.startsWith('image')) {
-		cb(null, true);
-	} else {
-		cb(
-			new AppError('Not an image! please upload only images!', 400),
-			false
-		);
-	}
-};
-
-const upload = multer({
-	storage: multerStorage,
-	fileFilter: multerFilter,
-});
-
-exports.uploadProductImages = upload.fields([{ name: 'images', maxCount: 5 }]);
-
-exports.resizeProductImages = async (req, res, next) => {
-	if (!req.files.images) return next();
-
-	try {
-		req.body.images = [];
-		await Promise.all(
-			req.files.images.map(async (file, i) => {
-				const filename = `${uuid.v4()}-${Date.now()}.jpeg`;
-
-				await sharp(file.buffer)
-					.resize(500, 500)
-					.toFormat('jpeg')
-					.jpeg({ quality: 100 })
-					.toFile(
-						`${__dirname}${process.env.IMAGE_DESTINATION}products/${filename}`
-					);
-
-				req.body.images.push(filename);
-			})
-		);
-	} catch (err) {
-		res.status(400).json({
-			status: 'failed',
-			message: err.message,
-		});
-	}
-	next();
-};
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
@@ -59,7 +6,6 @@ exports.resizeProductImages = async (req, res, next) => {
 
 // Creating a new product in the database
 exports.createProduct = async (req, res) => {
-	console.log('create product', req.body);
 	try {
 		const newProduct = await Product.create(req.body);
 

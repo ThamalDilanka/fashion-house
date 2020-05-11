@@ -1,12 +1,13 @@
 const express = require('express');
 const productController = require('./../controllers/productController');
+const fileHandler = require('../util/fileHandler');
 
 const router = express.Router();
 
 // localhost:8080/api/v1/products/
 router
 	.route('/')
-	.post(productController.uploadProductImages,productController.resizeProductImages,productController.createProduct)
+	.post(fileHandler.uploadImages, fileHandler.resizeImages, productController.createProduct)
 	.get(productController.getAllProducts);
 
 // localhost:8080/api/v1/products/
