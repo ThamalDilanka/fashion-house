@@ -32,9 +32,5 @@ const cartSchema = new mongoose.Schema({
   },
 });
 
-/**
- * Creating mongoose model and export. First argument, 'cart' is the
- * collection name in the database.
- */
 const Cart = mongoose.model("cart", cartSchema);
 module.exports = Cart;
