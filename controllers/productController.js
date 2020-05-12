@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const APIFeatures = require('../util/apiFeatures');
 
 /////////////////////////////////////////////////////////////////////////////
 /********************              CREATE             **********************/
@@ -26,31 +27,13 @@ exports.createProduct = async (req, res) => {
 // Read all the document in product collection
 exports.getAllProducts = async (req, res) => {
 	try {
-		// BASIC FILTERING
-		// Create a shallow copy of query object
-		const queryObject = { ...req.query };
-
-		// The special parameters needs to be excluded from the filter
-		const excludeFields = ['page', 'sort', 'limit', 'fields'];
-
-		// Remove excluded query parameters from the query object
-		excludeFields.forEach((el) => delete queryObject[el]);
-
-		// ADVANCED FILTERING
-		// Convert query object in to String
-		let queryString = JSON.stringify(queryObject);
-
-		// Replace the gte, gt, lte, le words with $gte, $gt, $lte, $lt
-		queryString = queryString.replace(
-			/\b(gte|gt|lte|lt)\b/g,
-			(match) => `$${match}`
-		);
-
-		// Build the query
-		const query = Product.find(JSON.parse(queryString));
-
 		// Execute the query
-		const products = await query;
+		const features = new APIFeatures(Product.find(), req.query)
+			.filter()
+			.sort()
+			.limitFields()
+			.paginate();
+		const products = await features.query;
 
 		// Send response
 		res.status(200).json({
