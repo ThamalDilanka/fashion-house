@@ -1,38 +1,99 @@
-/* Product Item */
-.product-item-image-container {
-	width: 60%;
-	min-width: 160px;
+.no-padding {
+	padding: 0 !important;
+}
+
+.no-padding-left {
+	padding-left: 0 !important;
+}
+
+.no-margin {
+	margin: 0 !important;
 }
 
 .product-card {
-	min-width: 350px;
-	overflow: hidden;
-}
-
-.product-item img {
 	width: 100%;
-	object-fit: fill;
 }
 
-.title-container {
-	height: 2em;
+.product-card-image-container {
+	width: 30%;
 }
 
-.product-title {
-	font-weight: 600;
+.product-card-detail-container {
+	padding: 0.3em;
+	width: 70%;
+}
+
+.product-card img {
+	width: 100%;
+	max-width: 150px;
+	padding: 0.3em;
+}
+
+.product-card-title {
+	font-size: medium;
+	font-weight: 700;
+	line-height: 1.2em;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.product-card-description {
+	font-size: small;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.product-card-price {
+	margin-top: 0.4em !important;
+	font-size: large;
+}
+
+.product-card-rating-container {
+	margin-left: 0.3em !important;
+	
+}
+
+.card-footer {
+	background-color: #f7f7f7;
+}
+
+.product-view-btn {
+	position: absolute;
+	right: 0.3em;
+	bottom: 0.4em;
+	width: 100px;
+	padding: 0.5em;
 	font-size: 1em;
-	line-height: 1em;
-	width: 100%;
-	height: 2em;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	border: none;
+	border: 1px rgb(255, 255, 255) solid;
+	color: rgb(255, 255, 255);
+	background-color: rgb(245, 189, 20);
+	border-radius: 2em;
 }
 
-.product-description {
-	font-size: 0.8em;
-	line-height: 1em;
-	width: 100%;
-	height: 2em;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.product-view-btn:hover {
+	border: 1px #FFC107 solid;
+	color: #ffffff;
+	background-color: #FFC107;
+}
+
+.product-discount-tag {
+	position: absolute;
+	left: -1em;
+	top: -1em;
+}
+
+.product-discount-value {
+	position: absolute;
+	top: 1.3em;
+	left: -1em;
+	font-weight: 600;
+	font-size: large;
+	color: #ffffff;
+	-ms-transform: rotate(315deg); /* IE 9 */
+  	transform: rotate(315deg);
 }
