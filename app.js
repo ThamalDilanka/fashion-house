@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 var bodyParser = require('body-parser');
 
 // Importing routes from the routes folder
@@ -13,6 +14,8 @@ const reviewRoutes = require(('./routes/reviewRoutes'));
 
 // Creating a Express application 
 const app = express();
+
+app.use(cors());
 
 // Setting body parser to get access of request.body
 app.use(bodyParser.json());
