@@ -10,6 +10,7 @@ import Home from './containers/Home';
 import Cart from './containers/Cart';
 import WishList from './containers/WishList';
 import ProductView from './containers/ProductView';
+import ShowCase from './containers/ShowCase';
 
 function App() {
 	return (
@@ -25,6 +26,9 @@ function App() {
 				<Route path='/wish-list' component={WishList} />
 
 				<Route path='/product-view' component={ProductView} />
+
+				<Route path='/show-case' component={ShowCase} />
+
 			</BrowserRouter>
 		</div>
 	);
