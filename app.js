@@ -39,6 +39,4 @@ app.all('*', (req, res, next) => {
 	})
 });
 
-app.use( )
-
 module.exports = app;
