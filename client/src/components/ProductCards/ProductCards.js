@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard/ProductCard'
 
-const NavBar = (props) => {
+const ProductCards = (props) => {
 	return (
         <div class="row row-cols-1 row-cols-xl-2 row-cols-md-2 row-cols-sm-1">
             <ProductCard/>
@@ -15,4 +15,4 @@ const NavBar = (props) => {
 	);
 };
 
-export default NavBar;
+export default ProductCards;
