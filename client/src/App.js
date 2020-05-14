@@ -19,10 +19,10 @@ function App() {
 		
 		<BrowserRouter>
       	<NavBar />
-        
-		        <Route path='/manager' exact component={StoreManager} />
 
 				<Route path='/' exact component={Home} />
+
+				<Route path='/store-manager' component={StoreManager} />
 
 				<Route path='/cart' component={Cart} />
 

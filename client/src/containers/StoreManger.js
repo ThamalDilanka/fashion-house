@@ -1,9 +1,22 @@
-import React from 'react';
+import React ,{useEffect,useState}from 'react';
+import DiscountCards from '../components/DiscountCards/DiscountCards';
+import axios from 'axios';
 
-const StoreManager = (props) => {
+const StoreManager = () => {
+	const[discounts,setDiscounts] = useState([]);
+
+	useEffect(() => {
+		const fetchData = async() => {
+			const resp = await axios.get('http://localhost:8000/api/v1/products');
+			console.log("resp of prodct: ",resp.data.data.products);
+			setDiscounts([...resp.data.data.products]);
+		}
+		fetchData();
+	}, []);
+
 	return (
 		<div>
-			<h3>StoreManager Page</h3>
+			<DiscountCards data={discounts} />
 		</div>
 	);
 };
