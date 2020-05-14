@@ -12,10 +12,14 @@ const categorySchema = new mongoose.Schema({
     trim: true,
     required: [true, "Please enter a description."],
   },
-  image: {
-    type: String,
-    trim: true,
-    required: [true, "Please choose an image."],
+  images: {
+    type: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    required: [true, "Please upload a image"],
   }
 });
 
