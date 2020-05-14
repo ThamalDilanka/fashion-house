@@ -1,19 +1,18 @@
 const express = require('express');
 const favouriteController = require('./../controllers/favouriteController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-// localhost:8080/api/v1/favourites/
 router
 	.route('/')
-	.post(favouriteController.createFavourite)
-	.get(favouriteController.getAllFavourites);
+	.post(authController.protect, favouriteController.createFavourite)
+	.get(authController.protect, favouriteController.getAllFavourites);
 
-// localhost:8080/api/v1/favourites/
 router
 	.route('/:id')
-	.get(favouriteController.getFavourite)
-	.patch(favouriteController.updateFavourite)
-	.delete(favouriteController.deleteFavourite);
+	.get(authController.protect, favouriteController.getFavourite)
+	.patch(authController.protect, favouriteController.updateFavourite)
+	.delete(authController.protect, favouriteController.deleteFavourite);
 
 module.exports = router;
