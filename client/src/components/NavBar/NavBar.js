@@ -17,6 +17,7 @@ const NavBar = (props) => {
 
                 </div>
                 <div className="navbar-nav ml-auto">
+                    <Link to="/manager" className="nav-item nav-link">Manage</Link>
                     <Link to="/wish-list" className="nav-item nav-link">Wish List <span className="badge badge-secondary">1</span></Link>
                     <Link to="/cart" className="nav-item nav-link">Cart <span className="badge badge-secondary">1</span></Link>
                     <Link to="/login" className="nav-item nav-link">Login</Link>
