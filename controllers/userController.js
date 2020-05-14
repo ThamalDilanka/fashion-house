@@ -1,35 +1,8 @@
 const User = require('../models/User');
 const email = require('../util/email');
 
-// Creating a new user in the database
-exports.createUser = async (req, res) => {
-	console.log(req.body);
-	try {
-		const newUser = await User.create(req.body);
-
-		// Sending an email
-		email.sendEmail(
-			'thamaldilanke@gmail.com',
-			'login created',
-			'<p>New login created</p>'
-		);
-
-		res.status(201).json({
-			status: 'success',
-			data: {
-				user: newUser,
-			},
-		});
-	} catch (err) {
-		res.status(400).json({
-			status: 'failed',
-			message: err.message,
-		});
-	}
-};
-
 // Read all the document in user collection
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res, next) => {
 	try {
 		const query = User.find(req.query);
 
