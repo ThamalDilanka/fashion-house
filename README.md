@@ -1,3 +1,4 @@
+
 # Fashion House - API Documentation
 
 #### Application Frameworks | SE3040 | Group Project 
@@ -179,7 +180,9 @@ To access this end points you **should pass valid token** in the request header 
 
 ```json
 {
-
+  "user": "5eb8ddb0c4e06e21b8b9f305",
+  "product": "5eb8f9262705843e28b29e61",
+  "date": ""
 }
 ```
 
@@ -259,3 +262,4 @@ To access this end points you **should pass valid token** in the request header 
 
 }
 ```
+
