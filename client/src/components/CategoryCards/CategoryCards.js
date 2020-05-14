@@ -4,9 +4,9 @@ import CategoryCard from './CategoryCard/CategoryCard'
 
 const CategoryCards = (props) => {
 	return (
-        <div className="row row-cols-1 row-cols-xl-2 row-cols-md-2 row-cols-sm-1">
+        <div>
             {
-                props.categories.map(category => (<CategoryCard category={category}/>))
+                props.categories.map(category => (<CategoryCard category={category} key={category._id}/>))
             }
         </div>
 	);
