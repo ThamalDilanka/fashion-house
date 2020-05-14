@@ -3,7 +3,8 @@ import React from 'react'
 const SideBarManager = () => {
     return (
         <div>
-            tets
+             tets
+             <div>123</div>
         </div>
     )
 }
