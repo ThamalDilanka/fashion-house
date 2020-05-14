@@ -4,71 +4,38 @@ const DiscountCard = (data) => {
     console.log("data card: ", data)
     return (
         <div className="container">
-            {data.data.map(data => (
-                <div className="mt-5">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <table class="table">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            ))}
+            <div className="mt-5">
+                <table className="table table-striped">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Discount</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                             data.data && data.data.map(data =>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>{data.name}</td>
+                                    <td>{data.price}</td>
+                                    <td>{data.description}</td>
+                                    <td>{data.discount.percentage+'%'}</td>
+                                    <td>{<button>click</button>}</td>
+                                </tr>
+                            )}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
         </div>
     )
 }
