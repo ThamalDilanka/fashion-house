@@ -8,21 +8,19 @@ const RatingModule = (props) => {
 	const [fifthColor, setFifthColor] = useState('gray');
 
 	useEffect(() => {
-		const rating = props.rating;
-
-		if (rating > 0.5) {
+		if (props.rating > 0.5) {
 			setFirstColor('orange');
 		}
-		if (rating > 1.5) {
+		if (props.rating > 1.5) {
 			setSecondColor('orange');
 		}
-		if (rating > 2.5) {
+		if (props.rating > 2.5) {
 			setThirdColor('orange');
 		}
-		if (rating > 3.5) {
+		if (props.rating > 3.5) {
 			setForthColor('orange');
 		}
-		if (rating > 4.5) {
+		if (props.rating > 4.5) {
 			setFifthColor('orange');
 		}
 	}, []);
