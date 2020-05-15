@@ -1,20 +1,35 @@
 import React, { useState, useCallback ,useMemo} from 'react'
+import axios from 'axios';
 
 const DiscountCard = (data) => {
 
     console.log("data card: ", data.data)
     const [title, setTitle] = useState('');
+    const [id,setId] = useState('');
     const [addDiscount,setAddDiscount] = useState('');
     const [fromDate,setFromDate] = useState('');
     const [toDate,setToDate] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
+        setId(id);
     }, []);
 
     const submitDiscountFormData = (e) => {
         e.preventDefault();
         console.log("passed values are: ",addDiscount,fromDate,toDate);
+        axios({
+            method: 'patch',
+            url: 'http://localhost:8000/api/v1/products/',
+            data: {
+                discount: {
+                    from: fromDate,
+                    percentage: addDiscount,
+                    until: toDate
+                }
+            }
+          });
+
         setAddDiscount(" ");
         setFromDate(" ");
         setToDate(" ");
