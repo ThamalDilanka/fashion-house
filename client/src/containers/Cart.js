@@ -44,7 +44,7 @@ const Cart = (props) => {
   return (
     <div className="container-fuild p-5">
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-9">
           {/* Table Starts */}
           <div className="row">
             <div className="col-sm-12 p-5 bg-white rounded shadow-sm mb-5">
@@ -77,7 +77,7 @@ const Cart = (props) => {
         </div>
 
         {/* cart summary starts */}
-        <div className="col-md-4">
+        <div className="col-md-3">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your Bill</span>
             <span className="badge badge-secondary badge-pill">

@@ -3,6 +3,9 @@ import React, { createContext, useState } from "react";
 export const CartContext = createContext();
 
 export function CartProvider(props) {
+
+  let item = {}; 
+
   const [cartItems, setcartItems] = useState([
     {
       productId: 101,

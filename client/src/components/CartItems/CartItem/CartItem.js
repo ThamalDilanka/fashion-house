@@ -7,32 +7,26 @@ function CartItem(props) {
 
   const [cartItems, setCartItems] = useContext(CartContext);
 
-  let [quantity, setQuantity] = useState(props.productQuantity);
-
-  const increseQuantity = (itemId) => {
-    //setQuantity(++quantity);
-
-    axios
-      .patch(`http://localhost:8000/api/v1/carts/${itemId}`, {
-
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    // axios
-    //   .post("/user", {
-    //     firstName: "Fred",
-    //     lastName: "Flintstone",
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+  const decreaseQuantity = (itemId, currentQty) => {
+    setCartItems((currentCartItems) =>
+      currentCartItems.map((item) =>
+        itemId === item.productId
+          ? { ...item, productQuantity: currentQty - 1 }
+          : item
+      )
+    );
   };
-  const decreaseQuantity = (itemId) => {
-    //setQuantity(--quantity);
+  
+  const increseQuantity = (itemId, currentQty) => {
+    setCartItems((currentCartItems) =>
+      currentCartItems.map((item) =>
+        itemId === item.productId ? { ...item, productQuantity: currentQty + 1 } : item
+      )
+    );
+  };
+
+  const removeCartItem = (itemId) => {
+    setCartItems(cartItems.filter(item => {return itemId !== item.productId}));
   };
 
   return (
@@ -62,27 +56,25 @@ function CartItem(props) {
       </th>
 
       <td className="align-middle">
-        <strong>{`Rs. ${props.productPrice * quantity}`}</strong>
+        <strong>{`Rs. ${props.productPrice * props.productQuantity}`}</strong>
       </td>
       <td className="align-middle">
         <button
-          onClick={() => decreaseQuantity(itemId)}
+          onClick={() => decreaseQuantity(itemId, props.productQuantity)}
           className="badge badge-secondary"
         >
           -
         </button>
-        <strong onChange={(e) => setQuantity(e.target.value)}>
-          {quantity}
-        </strong>
+        <strong>{props.productQuantity}</strong>
         <button
-          onClick={() => increseQuantity(itemId)}
+          onClick={() => increseQuantity(itemId, props.productQuantity)}
           className="badge badge-secondary"
         >
           +
         </button>
       </td>
       <td className="align-middle">
-        <a href="#" className="text-dark">
+        <a onClick={() => removeCartItem(itemId)} className="text-dark">
           <i className="fa fa-2x fa-trash"></i>
         </a>
       </td>
