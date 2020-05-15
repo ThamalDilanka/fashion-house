@@ -12,6 +12,7 @@ const NavBar = (props) => {
 
 	const onLogoutClick = () => {
 		setIsLoggedIn(false);
+		localStorage.removeItem('token');
 	};
 
 	return (
