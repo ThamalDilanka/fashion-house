@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './CategoryCard.css'
 
 const CategoryCard = (props) => {
+
 	return (
 		 <div className="category-card card shadow">
 		 	<div className="row">

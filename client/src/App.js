@@ -25,7 +25,7 @@ function App() {
 				<div className='App'>
 					<BrowserRouter>
 						<NavBar />
-						<Route path='/manager' exact component={StoreManager} />
+						<Route path='/store-manager' exact component={StoreManager} />
 						<Route path='/' exact component={Home} />
 						<Route
 							path='/authenticator'
