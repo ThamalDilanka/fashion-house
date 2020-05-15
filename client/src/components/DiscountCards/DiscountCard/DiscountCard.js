@@ -1,8 +1,15 @@
-import React from 'react'
-
+import React, { useState, useCallback } from 'react'
 
 const DiscountCard = (data) => {
+
     console.log("data card: ", data.data)
+    const [title, setTitle] = useState('');
+
+    const storeInformation = useCallback((name, id) => {
+        console.log("fn called with: ", name, id);
+        setTitle(name);
+    }, []);
+
     return (
         <div className="container">
 
@@ -11,17 +18,35 @@ const DiscountCard = (data) => {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">model discount</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">{title}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            Test
+
+                            <form>
+                                <div class="form-group">
+                                    <label for="inputDiscount">Discount</label>
+                                    <input type="text" class="form-control" id="inputDiscount" placeholder="From" aria-describedby="discountHelp"/>
+                                    <small id="discountHelp" class="form-text text-muted">Enter discount value for the product.</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" class="form-control"  aria-describedby="fromHelp"/>
+                                        <small id="fromHelp" class="form-text text-muted">Discount valid from</small>
+                                    </div>
+                                    <div class="col">
+                                        <input type="date" class="form-control"  aria-describedby="untilHelp"/>
+                                        <small id="untilHelp" class="form-text text-muted">Until</small>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -43,14 +68,14 @@ const DiscountCard = (data) => {
                     <tbody>
                         {
                             data.data && data.data.map(data =>
+
                                 <tr>
-                                    {/* <th scope="row">1</th> */}
-                                    <td><img src={`./../../../../public/images/products/${data.images[0]}`} alt="category" /></td>
+                                    <td><img src={`./../../../../public/images/products/${data.images[0]}`} width="60" height="60" alt="products" /></td>
                                     <td>{data.name}</td>
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
                                     <td>{data.discount.percentage + '%'}</td>
-                                    <td>{<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add Discount</button>}</td>
+                                    <td>{<button type="button" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add Discount</button>}</td>
                                 </tr>
                             )}
 
