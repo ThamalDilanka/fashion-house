@@ -1,0 +1,19 @@
+.signup-container {
+	margin-top: 2em;
+}
+
+.signup-form-body {
+    padding: 1em 4em !important;
+}
+
+.signup-image-container {
+	background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0 !important;
+}
+
+.authImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

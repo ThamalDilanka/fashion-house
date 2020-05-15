@@ -11,6 +11,7 @@ const signToken = (user) => {
 			name: user.name,
 			email: user.email,
 			role: user.role,
+			image: user.image
 		},
 		process.env.JWT_SECRET,
 		{
@@ -81,7 +82,7 @@ exports.login = async (req, res, next) => {
 
 		const token = signToken(user);
 
-		res.status(201).json({
+		res.status(200).json({
 			status: 'success',
 			data: {
 				token,
