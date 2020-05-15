@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const randomColor = require('randomcolor');
+const email = require('../util/email');
 
 const signToken = (user) => {
 	return jwt.sign(
@@ -37,7 +38,14 @@ exports.signup = async (req, res, next) => {
 		const token = signToken(newUser);
 
 		// Remove password from the response
-		newUser.password = undefined;
+        newUser.password = undefined;
+        
+        // Sending email to the store manger
+        await email.sendEmail(
+			'thamaldilanke@gmail.com',
+			'Password Reset',
+			`<h3>Forgot password?</h3><p>Submit a PATCH request with your new password and passwordConfirm to<a>${resetURL}</a>.<p>`
+		);
 
 		res.status(201).json({
 			status: 'success',
@@ -124,6 +132,9 @@ exports.protect = async (req, res, next) => {
 				);
 			}
 
+			// Adding the verified user to the request
+			req.user = currentUser;
+
 			// Grant access to next middleware
 			next();
 		} catch (err) {
@@ -157,3 +168,69 @@ exports.protect = async (req, res, next) => {
 		});
 	}
 };
+
+exports.restrictTo = (...roles) => {
+	return (req, res, next) => {
+		if (!roles.includes(req.user.role)) {
+			res.status(403).json({
+				status: 'failed',
+				message: "You don't have permission to perform this action",
+			});
+		}
+
+		next();
+	};
+};
+
+exports.forgotPassword = async (req, res, next) => {
+	let user;
+	try {
+		// Getting user based on the email
+		user = await User.findOne({ email: req.body.email });
+		if (!user) {
+			throw new Error('There is no user with this email address');
+		}
+	} catch (err) {
+		res.status(404).json({
+			status: 'failed',
+			message: 'err.message',
+		});
+	}
+
+	// Generate a random token
+	const resetToken = user.createPasswordResetToken();
+	await user.save({ validateBeforeSave: false });
+
+	// Send it to user's email
+	const resetURL = `${req.protocol}://${req.get(
+		'host'
+	)}/api/v1/users/resetPassword/${resetToken}`;
+
+	const message = `Forgot password? Submit a PATCH request with your new password and passwordConfirm to ${resetURL}.\n`;
+
+	try {
+		await email.sendEmail(
+			'thamaldilanke@gmail.com',
+			'Password Reset',
+			`<h3>Forgot password?</h3><p>Submit a PATCH request with your new password and passwordConfirm to<a>${resetURL}</a>.<p>`
+		);
+	} catch (err) {
+		user.passwordResetToken = undefined;
+		user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+        
+        res.status(500).json({
+			status: 'failed',
+			message: 'There was an error sending the email. Try again later!',
+		});
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'Token sent to the email',
+		},
+	});
+};
+
+exports.resetPassword = async (req, res, next) => {};
