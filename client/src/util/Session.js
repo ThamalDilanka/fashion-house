@@ -39,3 +39,11 @@ exports.getEmail = () => {
 		return jwtDecode(localStorage.getItem('token')).email;
 	}
 };
+
+exports.getImage = () => {
+	if (localStorage.getItem('token') === null) {
+		return null;
+	} else {
+		return jwtDecode(localStorage.getItem('token')).image;
+	}
+};
