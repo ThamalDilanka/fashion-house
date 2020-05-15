@@ -1,3 +1,4 @@
+
 # Fashion House - API Documentation
 
 #### Application Frameworks | SE3040 | Group Project 
@@ -81,8 +82,8 @@ To access this end points you **should pass valid token** in the request header 
   "passwordConfirm": "userpassword",
   "address": "User Address",
   "role": "customer",
-  "image": "https://cdn.clipart.email/be0c9ce2c8758e4287cfc6f3a410ded1_computer-icons-user-clip-art-transpare-1340608-png-images-pngio_920-641.png"
-  "reqtype" : "user"
+  "image": "https://cdn.clipart.email/be0c9ce2c8758e4287cfc6f3a410ded1_computer-icons-user-clip-art-transpare-1340608-png-images-pngio_920-641.png",
+  "reqtype": "user"
 }
 ```
 
@@ -121,7 +122,8 @@ To access this end points you **should pass valid token** in the request header 
   "colors": [
     "red" , "blue" , "green"
   ],
-  "avgRating": ""
+  "avgRating": "",
+  "reqtype": "product"
 }
 ```
 
@@ -140,7 +142,8 @@ To access this end points you **should pass valid token** in the request header 
 {
   "title": "Perfumes",
   "description": "All the perfumes and scents",
-  "image": "URL of the image as string"
+  "image": "URL of the image as string",
+  "reqtype": "category"
 }
 ```
 
@@ -179,7 +182,9 @@ To access this end points you **should pass valid token** in the request header 
 
 ```json
 {
-
+  "user": "5eb8ddb0c4e06e21b8b9f305",
+  "product": "5eb8f9262705843e28b29e61",
+  "date": ""
 }
 ```
 
@@ -259,3 +264,4 @@ To access this end points you **should pass valid token** in the request header 
 
 }
 ```
+
