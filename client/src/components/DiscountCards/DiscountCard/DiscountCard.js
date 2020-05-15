@@ -4,11 +4,17 @@ const DiscountCard = (data) => {
 
     console.log("data card: ", data.data)
     const [title, setTitle] = useState('');
+    const [addDiscount,setAddDiscount] = useState('');
+    const [fromDate,setFromDate] = useState('');
+    const [toDate,setToDate] = useState('');
 
     const storeInformation = useCallback((name, id) => {
-        console.log("fn called with: ", name, id);
         setTitle(name);
     }, []);
+
+    const submitDiscountFormData = () => {
+
+    }
 
     return (
         <div className="container">
@@ -28,17 +34,23 @@ const DiscountCard = (data) => {
                             <form>
                                 <div class="form-group">
                                     <label for="inputDiscount">Discount</label>
-                                    <input type="text" class="form-control" id="inputDiscount" placeholder="From" aria-describedby="discountHelp"/>
+                                    <input type="text" class="form-control" id="inputDiscount" placeholder="From"
+                                     aria-describedby="discountHelp"
+                                     onChange={e => setAddDiscount(e.target.value)}/>
                                     <small id="discountHelp" class="form-text text-muted">Enter discount value for the product.</small>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="date" class="form-control"  aria-describedby="fromHelp"/>
+                                        <input type="date" class="form-control"  
+                                        aria-describedby="fromHelp"
+                                        onChange={e => setFromDate(e.target.value)}/>
                                         <small id="fromHelp" class="form-text text-muted">Discount valid from</small>
                                     </div>
                                     <div class="col">
-                                        <input type="date" class="form-control"  aria-describedby="untilHelp"/>
-                                        <small id="untilHelp" class="form-text text-muted">Until</small>
+                                        <input type="date" class="form-control"  
+                                        aria-describedby="untilHelp"
+                                        onChange={e => setToDate(e.target.value)}/>
+                                        <small id="untilHelp" class="form-text text-muted">To</small>
                                     </div>
                                 </div>
                             </form>
@@ -46,7 +58,7 @@ const DiscountCard = (data) => {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Submit</button>
+                            <button type="button" onClick={submitDiscountFormData()} class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
