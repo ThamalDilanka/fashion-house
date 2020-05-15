@@ -1,7 +1,8 @@
 import React from 'react'
 
+
 const DiscountCard = (data) => {
-    console.log("data card: ", data)
+    console.log("data card: ", data.data)
     return (
         <div className="container">
 
@@ -21,7 +22,8 @@ const DiscountCard = (data) => {
                         {
                              data.data && data.data.map(data =>
                                 <tr>
-                                    <th scope="row">1</th>
+                                    {/* <th scope="row">1</th> */}
+                                    <td><img src={`./../../../../public/images/products/${data.images[0]}`} alt="category"/></td>
                                     <td>{data.name}</td>
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
