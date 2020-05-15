@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import './ProductCard.css'
 import discountPic from './discount.png'
+import RatingModule from '../../RatingModule/RatingModule';
 
 const ProductCard = (props) => {
 
@@ -24,11 +25,7 @@ const ProductCard = (props) => {
            
                 <div className="product-card-rating-container d-flex bd-highlight mb-3 no-margin">
                     <div className="p-2 bd-highlight no-padding-left no-margin">
-                        <span className="fa fa-star checked" style={{color: 'orange'}}></span>
-                        <span className="fa fa-star checked" style={{color: 'orange'}}></span>
-                        <span className="fa fa-star checked" style={{color: 'orange'}}></span>
-                        <span className="fa fa-star" style={{color: 'orange'}}></span>
-                        <span className="fa fa-star"></span>
+                        <RatingModule rating={props.avgRating}/>
                     </div>
                     <div className="p-2 bd-highlight">{props.avgRating}</div>
                 </div>

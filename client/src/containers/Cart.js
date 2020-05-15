@@ -12,35 +12,6 @@ const Cart = (props) => {
     });
   }
 
-  // const [cartItems, setcartItems] = useState([
-
-  //   {
-  //     productId : 101,
-  //     productName : "Product 1",
-  //     productPrice : 300,
-  //     productQuantity : 3,
-  //     productSize : "L",
-  //     productColor : "Blue",
-  //   },
-  //   {
-  //     productId : 102,
-  //     productName : "Product 2",
-  //     productPrice : 400,
-  //     productQuantity : 4,
-  //     productSize : "M",
-  //     productColor : "Green",
-  //   },
-  //   {
-  //     productId : 103,
-  //     productName : "Product 3",
-  //     productPrice : 500,
-  //     productQuantity : 5,
-  //     productSize : "M",
-  //     productColor : "Red",
-  //   },
-
-  // ]);
-
   return (
     <div className="container-fuild p-5">
       <div className="row">
@@ -91,7 +62,9 @@ const Cart = (props) => {
               <span>
                 <h4>Total Amount</h4>
               </span>
-              <h2><strong>Rs.{total}</strong></h2>
+              <h2>
+                <strong>Rs.{total}</strong>
+              </h2>
             </li>
             <li className="list-group-item d-flex justify-content-between">
               <hr className="mb-4" />

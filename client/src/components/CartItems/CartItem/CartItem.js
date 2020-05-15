@@ -16,17 +16,23 @@ function CartItem(props) {
       )
     );
   };
-  
+
   const increseQuantity = (itemId, currentQty) => {
     setCartItems((currentCartItems) =>
       currentCartItems.map((item) =>
-        itemId === item.productId ? { ...item, productQuantity: currentQty + 1 } : item
+        itemId === item.productId
+          ? { ...item, productQuantity: currentQty + 1 }
+          : item
       )
     );
   };
 
   const removeCartItem = (itemId) => {
-    setCartItems(cartItems.filter(item => {return itemId !== item.productId}));
+    setCartItems(
+      cartItems.filter((item) => {
+        return itemId !== item.productId;
+      })
+    );
   };
 
   return (

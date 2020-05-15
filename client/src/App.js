@@ -11,6 +11,8 @@ import Cart from "./containers/Cart";
 import WishList from "./containers/WishList";
 import ProductView from "./containers/ProductView";
 import ShowCase from "./containers/ShowCase";
+
+// Contexts
 import { CartProvider } from "./contexts/CartContext";
 
 function App() {
@@ -19,6 +21,10 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <NavBar />
+
+          <Route path="/manager" exact component={StoreManager} />
+
+          <Route path="/" exact component={Home} />
 
           <Route path="/" exact component={Home} />
 

@@ -68,14 +68,12 @@ exports.resizeImages = async (req, res, next) => {
 
 		req.body.images = [];
 		await Promise.all(
-
-			
-
 			req.files.images.map(async (file, i) => {
-
 				const filename = `${uuid.v4()}-${Date.now()}.jpeg`;
 
-				console.log(`${__dirname}${process.env.IMAGE_DESTINATION}${directory}/${filename}`);
+				console.log(
+					`${__dirname}${process.env.IMAGE_DESTINATION}${directory}/${filename}`
+				);
 
 				await sharp(file.buffer)
 					.resize(width, height)

@@ -1,19 +1,20 @@
 const express = require('express');
 const reviewController = require('./../controllers/reviewController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
 // localhost:8080/api/v1/reviews/
 router
 	.route('/')
-	.post(reviewController.createReview)
+	.post(authController.protect, reviewController.createReview)
 	.get(reviewController.getAllReviews);
 
 // localhost:8080/api/v1/reviews/
 router
 	.route('/:id')
 	.get(reviewController.getReview)
-	.patch(reviewController.updateReview)
-	.delete(reviewController.deleteReview);
+	.patch(authController.protect, reviewController.updateReview)
+	.delete(authController.protect, reviewController.deleteReview);
 
 module.exports = router;
