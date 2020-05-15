@@ -81,7 +81,7 @@ exports.login = async (req, res, next) => {
 
 		const token = signToken(user);
 
-		res.status(201).json({
+		res.status(200).json({
 			status: 'success',
 			data: {
 				token,

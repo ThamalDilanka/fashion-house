@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import CategoryCards from '../components/CategoryCards/CategoryCards';
 import axios from 'axios';
+
+// Components
+import CategoryCards from '../components/CategoryCards/CategoryCards';
 
 const Home = (props) => {
 	const [categories, setCategories] = useState([]);

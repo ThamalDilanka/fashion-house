@@ -1,16 +1,63 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 import './LoginModule.css';
-import loginImage from '../../images/login-side.jpg'
+import loginImage from '../../images/login-side.jpg';
+
+import { AuthContext } from '../../contexts/AuthContext';
 
 const LoginModule = (props) => {
+	const [email, setEmail] = useState('thamaldilanke@email.com');
+	const [password, setPassword] = useState('pass@123');
+	const [error, setError] = useState(undefined);
+
+	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
+
+	const updateEmail = (e) => {
+		setEmail(e.target.value);
+		setError(undefined);
+	};
+
+	const updatePassword = (e) => {
+		setPassword(e.target.value);
+		setError(undefined);
+	};
+
+	const login = (e) => {
+		e.preventDefault();
+		axios
+			.post('http://localhost:8000/api/v1/users/login', {
+				email,
+				password,
+			})
+			.then((res) => {
+				// Save the token in the local storage
+				localStorage.setItem('token', res.data.data.token);
+
+				// Set the auth status global context
+				setIsLoggedIn(true);
+
+				// Redirecting to the home
+				props.history.push('/');
+			})
+			.catch((err) => {
+				// Remove the token from the local storage
+				localStorage.removeItem('token');
+				setIsLoggedIn(false);
+				setError(err.response.data.message);
+				setEmail('');
+				setPassword('');
+			});
+	};
+
 	return (
 		<div className='container signup-container card'>
 			<div className='row'>
 				<div className='signup-image-container col-md d-none d-sm-none d-md-block'>
 					<img
-            className='authImage'
-            src={loginImage}
+						className='authImage'
+						src={loginImage}
 						alt='login-image'
 					/>
 				</div>
@@ -18,14 +65,18 @@ const LoginModule = (props) => {
 					<br />
 					<br />
 					<h2>Login</h2>
-					<hr />
-					<form>
+					<p className='login-error-message'>{error}</p>
+					<hr className='no-margin-top' />
+					<form onSubmit={login}>
 						<div className='form-group'>
 							<label>Email</label>
 							<input
 								type='email'
 								className='form-control'
 								placeholder='Email Address'
+								value={email}
+								onChange={updateEmail}
+								required
 							/>
 						</div>
 						<div className='form-group'>
@@ -34,10 +85,15 @@ const LoginModule = (props) => {
 								type='password'
 								className='form-control'
 								placeholder='Password'
+								value={password}
+								onChange={updatePassword}
+								required
 							/>
 						</div>
 						<div className='form-group'>
-              <Link to="/authenticator/signup">I don't have an account</Link>
+							<Link to='/authenticator/signup'>
+								I don't have an account
+							</Link>
 						</div>
 						<button
 							type='submit'

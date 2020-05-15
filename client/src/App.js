@@ -14,34 +14,31 @@ import ShowCase from './containers/ShowCase';
 import StoreManager from './containers/StoreManger';
 import Authenticator from './containers/Authenticator';
 
-import loginImage from './images/login-side.jpg';
-
 // Contexts
 import { CartProvider } from './contexts/CartContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
 	return (
-		<CartProvider>
-			<div className='App'>
-				<BrowserRouter>
-					<NavBar />
-
-					<Route path='/manager' exact component={StoreManager} />
-
-					<Route path='/' exact component={Home} />
-
-					<Route path='/authenticator' component={Authenticator} />
-
-					<Route path='/cart' component={Cart} />
-
-					<Route path='/wish-list' component={WishList} />
-
-					<Route path='/product-view' component={ProductView} />
-
-					<Route path='/show-case' component={ShowCase} />
-				</BrowserRouter>
-			</div>
-		</CartProvider>
+		<AuthProvider>
+			<CartProvider>
+				<div className='App'>
+					<BrowserRouter>
+						<NavBar />
+						<Route path='/manager' exact component={StoreManager} />
+						<Route path='/' exact component={Home} />
+						<Route
+							path='/authenticator'
+							component={Authenticator}
+						/>
+						<Route path='/cart' component={Cart} />
+						<Route path='/wish-list' component={WishList} />
+						<Route path='/product-view' component={ProductView} />
+						<Route path='/show-case' component={ShowCase} />
+					</BrowserRouter>
+				</div>
+			</CartProvider>
+		</AuthProvider>
 	);
 }
 
