@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback ,useMemo} from 'react'
 
 const DiscountCard = (data) => {
 
@@ -12,8 +12,12 @@ const DiscountCard = (data) => {
         setTitle(name);
     }, []);
 
-    const submitDiscountFormData = () => {
-
+    const submitDiscountFormData = (e) => {
+        e.preventDefault();
+        console.log("passed values are: ",addDiscount,fromDate,toDate);
+        setAddDiscount(" ");
+        setFromDate(" ");
+        setToDate(" ");
     }
 
     return (
@@ -36,6 +40,8 @@ const DiscountCard = (data) => {
                                     <label for="inputDiscount">Discount</label>
                                     <input type="text" class="form-control" id="inputDiscount" placeholder="From"
                                      aria-describedby="discountHelp"
+                                     autocomplete="off"
+                                     value={addDiscount}
                                      onChange={e => setAddDiscount(e.target.value)}/>
                                     <small id="discountHelp" class="form-text text-muted">Enter discount value for the product.</small>
                                 </div>
@@ -43,12 +49,14 @@ const DiscountCard = (data) => {
                                     <div class="col">
                                         <input type="date" class="form-control"  
                                         aria-describedby="fromHelp"
+                                        value={fromDate}
                                         onChange={e => setFromDate(e.target.value)}/>
                                         <small id="fromHelp" class="form-text text-muted">Discount valid from</small>
                                     </div>
                                     <div class="col">
                                         <input type="date" class="form-control"  
                                         aria-describedby="untilHelp"
+                                        value={toDate}
                                         onChange={e => setToDate(e.target.value)}/>
                                         <small id="untilHelp" class="form-text text-muted">To</small>
                                     </div>
@@ -58,7 +66,7 @@ const DiscountCard = (data) => {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onClick={submitDiscountFormData()} class="btn btn-primary">Submit</button>
+                            <button type="button" onClick={(e) => submitDiscountFormData(e) } class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
