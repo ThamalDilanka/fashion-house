@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Session from '../../util/Session'
 import './NavBar.css';
 
 // Components
@@ -15,6 +16,7 @@ const NavBar = (props) => {
 		localStorage.removeItem('token');
 	};
 
+	console.log(Session.getImage());
 	return (
 		<nav className='navbar navbar-expand-md navbar-dark bg-dark'>
 			<Link className='navbar-brand' to='/'>
@@ -58,7 +60,7 @@ const NavBar = (props) => {
 							>
 								<img
 									className='nav-bar-profile-image rounded-circle'
-									src='https://ui-avatars.com/api/?name=User+NameL&background=8c03ba&color=fff'
+									src={Session.getImage()}
 								/>
 							</Link>
 						</React.Fragment>
