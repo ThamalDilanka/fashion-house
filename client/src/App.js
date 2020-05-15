@@ -11,30 +11,23 @@ import Cart from './containers/Cart';
 import WishList from './containers/WishList';
 import ProductView from './containers/ProductView';
 import ShowCase from './containers/ShowCase';
-import StoreManager from './containers/StoreManger'
+import StoreManager from './containers/StoreManger';
 import Authenticator from './containers/Authenticator';
+
+import loginImage from './images/login-side.jpg'
 
 function App() {
 	return (
 		<div className='App'>
-		
-		<BrowserRouter>
-      	<NavBar />
-        
-		        <Route path='/manager' exact component={StoreManager} />
-
+			<BrowserRouter>
+				<NavBar />
+				<Route path='/manager' exact component={StoreManager} />
 				<Route path='/' exact component={Home} />
-
-				<Route path='/authenticator' component={Authenticator}/>
-
+				<Route path='/authenticator' component={Authenticator} />
 				<Route path='/cart' component={Cart} />
-
 				<Route path='/wish-list' component={WishList} />
-
 				<Route path='/product-view' component={ProductView} />
-
 				<Route path='/show-case' component={ShowCase} />
-
 			</BrowserRouter>
 		</div>
 	);

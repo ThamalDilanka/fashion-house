@@ -1,13 +1,21 @@
 import React from 'react';
+import { useLocation, Route } from 'react-router-dom';
+
 import LoginModule from '../components/LoginModule/LoginModule';
 import SignupModule from '../components/SignupModule/SignupModule';
 
+
 const Authenticator = (props) => {
+
+	console.log(useLocation().pathname.startsWith('/authenticator/login'));
 	return (
-		<div className="container">
-			<LoginModule></LoginModule>
-			<SignupModule></SignupModule>
-		</div>
+		<React.Fragment>
+			{
+				useLocation().pathname.startsWith('/authenticator/login') ? (<LoginModule/>) : (<SignupModule/>)
+			}
+		</React.Fragment>
+		
+		
 	);
 };
 
