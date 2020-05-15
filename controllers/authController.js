@@ -11,6 +11,7 @@ const signToken = (user) => {
 			name: user.name,
 			email: user.email,
 			role: user.role,
+			image: user.image
 		},
 		process.env.JWT_SECRET,
 		{
