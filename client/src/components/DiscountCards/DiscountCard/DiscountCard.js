@@ -28,7 +28,7 @@ const DiscountCard = (data) => {
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
                                     <td>{data.discount.percentage+'%'}</td>
-                                    <td>{<button>click</button>}</td>
+                                    <td>{<button type="button" class="btn btn-outline-secondary">Add Discount</button>}</td>
                                 </tr>
                             )}
 
