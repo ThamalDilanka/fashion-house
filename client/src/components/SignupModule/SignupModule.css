@@ -1,0 +1,12 @@
+.signup-container {
+	margin-top: 2em;
+}
+
+.signup-form-body {
+	padding: 1em;
+}
+
+.signup-image-container {
+	background-repeat: no-repeat;
+	background-size: cover;
+}
