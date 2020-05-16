@@ -20,6 +20,7 @@ const DiscountCard = (data) => {
     const [deleteId,setDeleteId] = useState(null);
     const [deleteFromDate,setDeleteFromDate] = useState('');
     const [delteToDate,setDeleteToDate] = useState('');
+    const [deleteName,setDeleteName] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
@@ -35,11 +36,12 @@ const DiscountCard = (data) => {
         setUpdateInfoTitle(title);
     },[]);
 
-    const deleteInformation = useCallback((id,discount,from,until) => {
+    const deleteInformation = useCallback((id,discount,from,until,name) => {
         setDeleteDiscount(discount);
         setDeleteId(id);
         setDeleteFromDate(from);
-        setDeleteToDate(until)
+        setDeleteToDate(until);
+        setDeleteName(name);
     },[]);
 
     const submitDiscountFormData = (e) => {
@@ -89,6 +91,26 @@ const DiscountCard = (data) => {
         setAddDiscount(" ");
         setFromDate(" ");
         setToDate(" ");
+    }
+
+    const deleteItemDiscount = (e) =>{
+        e.preventDefault();
+        const token = localStorage.getItem('token')
+        axios({
+            method: 'patch',
+            url: `http://localhost:8000/api/v1/products/${deleteId}`,
+            data: {
+                discount: {
+                    from:  undefined,
+                    percentage:  undefined,
+                    until: undefined
+                }
+            },
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        });
+        window.location.reload();
     }
 
 
@@ -217,7 +239,7 @@ const DiscountCard = (data) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title text-center text-warning" id="exampleModalLabel">Confirm Delete Discount</h5>
+                            <h5 className="modal-title text-center text-danger" id="exampleModalLabel">Confirm Delete Request</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -230,7 +252,34 @@ const DiscountCard = (data) => {
                                         <label>Discount:</label>
                                     </div>
                                     <div className="col">
-                                        
+                                        {deleteDiscount}
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col">
+                                        <label>Valid From:</label>
+                                    </div>
+                                    <div className="col">
+                                        {deleteFromDate}
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col">
+                                        <label>Valid Until:</label>
+                                    </div>
+                                    <div className="col">
+                                        {delteToDate}
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col">
+                                        <label>Item:</label>
+                                    </div>
+                                    <div className="col">
+                                        {deleteName}
                                     </div>
                                 </div>
                             </form>
@@ -238,7 +287,7 @@ const DiscountCard = (data) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onClick={(e) => submitDiscountFormData(e)} className="btn btn-primary">Submit</button>
+                            <button type="button" onClick={(e) => deleteItemDiscount(e)} className="btn btn-danger">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -274,7 +323,7 @@ const DiscountCard = (data) => {
 
                                             <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until,data.name)}} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1">Update</button>
 
-                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until)}} data-toggle="modal" data-target="#deleteModal"  className="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until,data.name)}} data-toggle="modal" data-target="#deleteModal"  className="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
 
                                         </div>
                                     }</td>
