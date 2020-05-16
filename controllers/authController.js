@@ -40,13 +40,6 @@ exports.signup = async (req, res, next) => {
 
 		// Remove password from the response
         newUser.password = undefined;
-        
-        // Sending email to the store manger
-        await email.sendEmail(
-			'thamaldilanke@gmail.com',
-			'Password Reset',
-			`<h3>Forgot password?</h3><p>Submit a PATCH request with your new password and passwordConfirm to<a>${resetURL}</a>.<p>`
-		);
 
 		res.status(201).json({
 			status: 'success',
