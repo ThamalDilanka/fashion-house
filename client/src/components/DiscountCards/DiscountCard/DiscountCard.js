@@ -17,18 +17,23 @@ const DiscountCard = (data) => {
 
     const submitDiscountFormData = (e) => {
         e.preventDefault();
-        console.log("passed values are: ",addDiscount,fromDate,toDate);
+        console.log("passed values are: ",addDiscount,fromDate,toDate,`id:${id}`);
+        const token = localStorage.getItem('token')
         axios({
             method: 'patch',
-            url: 'http://localhost:8000/api/v1/products/',
+            url: `http://localhost:8000/api/v1/products/${id}`,
             data: {
                 discount: {
                     from: fromDate,
                     percentage: addDiscount,
                     until: toDate
                 }
+            },
+            headers: {
+              Authorization: 'Bearer ' + token
             }
           });
+          window.location.reload()
 
         setAddDiscount(" ");
         setFromDate(" ");

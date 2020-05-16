@@ -16,7 +16,7 @@ const StoreManager = () => {
 
 	return (
 		<div>
-			<DiscountCards data={discounts} />
+			<DiscountCards data={discounts}/>
 		</div>
 	);
 };
