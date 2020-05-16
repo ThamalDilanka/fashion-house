@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Session from '../../util/Session'
+import { store } from 'react-notifications-component';
 import './NavBar.css';
 
 // Components
@@ -14,6 +15,21 @@ const NavBar = (props) => {
 	const onLogoutClick = () => {
 		setIsLoggedIn(false);
 		localStorage.removeItem('token');
+
+		// Show a notification
+		store.addNotification({
+			title: "Good Bye!",
+			message: "You have logged out successfully. See you soon.",
+			type: "success",
+			insert: "top-right",
+			container: "top-right",
+			animationIn: ["animated", "fadeIn"],
+			animationOut: ["animated", "fadeOut"],
+			dismiss: {
+			  duration: 2000,
+			  showIcon: true
+			}
+		  });
 	};
 
 	console.log(Session.getImage());

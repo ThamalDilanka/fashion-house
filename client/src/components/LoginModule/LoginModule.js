@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import timeGreeting from 'time-greeting';
+import Session from '../../util/Session'
+import { store } from 'react-notifications-component';
 
 import './LoginModule.css';
 import loginImage from '../../images/login-side.jpg';
+
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -37,6 +41,21 @@ const LoginModule = (props) => {
 
 				// Set the auth status global context
 				setIsLoggedIn(true);
+
+				// Show a notification
+				store.addNotification({
+					title: `${timeGreeting()} ${Session.getName().split(' ')[0]}!`,
+					message: 'You have successfully logged in',
+					type: 'success',
+					insert: 'top-right',
+					container: 'top-right',
+					animationIn: ['animated', 'fadeIn'],
+					animationOut: ['animated', 'fadeOut'],
+					dismiss: {
+						duration: 3000,
+						showIcon: true,
+					},
+				});
 
 				// Redirecting to the home
 				props.history.push('/');

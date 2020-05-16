@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 
 // Components
+import ReactNotification from 'react-notifications-component'
 import NavBar from './components/NavBar/NavBar';
 
 // Containers
@@ -23,6 +24,7 @@ function App() {
 		<AuthProvider>
 			<CartProvider>
 				<div className='App'>
+					<ReactNotification></ReactNotification>
 					<BrowserRouter>
 						<NavBar />
 						<Route path='/store-manager' exact component={StoreManager} />
