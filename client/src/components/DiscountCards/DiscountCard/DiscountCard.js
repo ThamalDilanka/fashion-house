@@ -4,24 +4,31 @@ import axios from 'axios';
 const DiscountCard = (data) => {
 
     console.log("data table: ", data.data);
-    console.log("data update: ", data.data.data);
+    
     const [title, setTitle] = useState('');
-    const [id, setId] = useState('');
+    const [id, setId] = useState(null);
     const [addDiscount, setAddDiscount] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [updateInfoDiscount,setUpdateInfoDiscount] = useState('');
     const [updateInfoFromDate,setUpdateInfoFromDate] = useState('');
     const [updateInfoToDay,setUpdateInfoToDay] = useState('');
+    const [updateInfoId,setUpdateInfoId] = useState(null);
+    const [updateInfoTitle,setUpdateInfoTitle] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
         setId(id);
     }, []);
     
-    const updateInformation = () => {
-
-    }
+    const updateInformation =  useCallback((id,discount,from,until,title) => {
+        console.log("update data info: ",id,discount,title,from);
+        setUpdateInfoDiscount(discount);
+        setUpdateInfoFromDate(from);
+        setUpdateInfoToDay(until);
+        setUpdateInfoId(id);
+        setUpdateInfoTitle(title);
+    },[]);
 
     const deleteInformation = () => {
 
@@ -50,6 +57,33 @@ const DiscountCard = (data) => {
         setFromDate(" ");
         setToDate(" ");
     }
+
+    const submitDiscountModalData = (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token')
+        axios({
+            method: 'patch',
+            url: `http://localhost:8000/api/v1/products/${id}`,
+            data: {
+                discount: {
+                    from: fromDate,
+                    percentage: addDiscount,
+                    until: toDate
+                }
+            },
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        });
+        window.location.reload();
+
+        
+        setAddDiscount(" ");
+        setFromDate(" ");
+        setToDate(" ");
+    }
+
+
 
     return (
         <div className="container">
@@ -109,7 +143,7 @@ const DiscountCard = (data) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">{title}</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">{updateInfoTitle}</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -122,7 +156,7 @@ const DiscountCard = (data) => {
                                     <input type="text" className="form-control" id="inputDiscount" placeholder="From"
                                         aria-describedby="discountHelp"
                                         autoComplete="off"
-                                        value={addDiscount}
+                                        value={updateInfoDiscount}
                                         onChange={e => setAddDiscount(e.target.value)} />
                                     <small id="discountHelp" className="form-text text-muted">Enter discount value for the product.</small>
                                 </div>
@@ -130,14 +164,14 @@ const DiscountCard = (data) => {
                                     <div className="col">
                                         <input type="date" className="form-control"
                                             aria-describedby="fromHelp"
-                                            value={fromDate}
+                                            value={updateInfoFromDate}
                                             onChange={e => setFromDate(e.target.value)} />
                                         <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
                                     </div>
                                     <div className="col">
                                         <input type="date" className="form-control"
                                             aria-describedby="untilHelp"
-                                            value={toDate}
+                                            value={updateInfoToDay}
                                             onChange={e => setToDate(e.target.value)} />
                                         <small id="untilHelp" className="form-text text-muted">To</small>
                                     </div>
@@ -147,7 +181,7 @@ const DiscountCard = (data) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onClick={(e) => submitDiscountFormData(e)} className="btn btn-primary">Submit</button>
+                            <button type="button" onClick={(e) =>  submitDiscountModalData(e)} className="btn btn-warning">Update</button>
                         </div>
                     </div>
                 </div>
@@ -168,7 +202,7 @@ const DiscountCard = (data) => {
                     </thead>
                     <tbody>
                         {
-                            data.data && data.data.map(data =>
+                            data.data && data.data.map((data,index) =>
 
                                 <tr key={data._id}>
                                     <td><img src={`./../../../../public/images/products/${data.images[0]}`} width="60" height="60" alt="products" /></td>
@@ -181,7 +215,7 @@ const DiscountCard = (data) => {
 
                                             <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" className="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 
-                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until)}} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1">Update</button>
+                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until,data.name)}} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1">Update</button>
 
                                             <button type="button" size="sm"  onClick={() => { deleteInformation(data._id)}} data-toggle="modal" data-target=""  className="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
 
