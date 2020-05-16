@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import moment from 'moment'
 import './ProductCard.css'
 import discountPic from './discount.png'
 import RatingModule from '../../RatingModule/RatingModule';
@@ -10,8 +10,8 @@ const ProductCard = (props) => {
         <div className="product-card col mb-4">
         <div className="card shadow no-padding">
             <div className="d-flex bd-highlight">
-                <img className="product-discount-tag" src={props.discount.percentage ? discountPic : null} alt=""/>
-                <p className="product-discount-value">{props.discount.percentage ? `Discount ${props.discount.percentage}` : null }</p>
+                <img className="product-discount-tag" src={moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? discountPic : null} alt=""/>
+                <p className="product-discount-value">{moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? `Discount ${props.discount.percentage}%` : null }</p>
                 <div className="product-card-image-container">
                     <img src={`./images/products/${props.image}`}/>
                 </div>

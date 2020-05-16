@@ -38,7 +38,6 @@ const Cart = (props) => {
                     </tr>
                   </thead>
                   {/* Table body starts*/}
-                  {/* <CartItems cartItemList={cartItems}/> */}
                   <CartItems />
                   {/* Table body ends*/}
                 </table>
@@ -56,15 +55,14 @@ const Cart = (props) => {
             </span>
           </h4>
           <ul className="list-group mb-3">
-            {/* <CartBillItems  cartBillItemList={cartItems}/> */}
             <CartBillItems />
             <li className="list-group-item d-flex justify-content-between bg-light">
               <span>
-                <h4>Total Amount</h4>
+                <h5>Total Amount</h5>
               </span>
-              <h2>
+              <h4>
                 <strong>Rs.{total}</strong>
-              </h2>
+              </h4>
             </li>
             <li className="list-group-item d-flex justify-content-between">
               <hr className="mb-4" />
