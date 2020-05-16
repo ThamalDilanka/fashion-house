@@ -177,13 +177,13 @@ const DiscountCard = (data) => {
                                     <td>{data.description}</td>
                                     <td>{data.discount.percentage + '%'}</td>
                                     <td>{
-                                        <div class="form-row">
+                                        <div className="form-row">
 
-                                            <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" className="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 
-                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until)}} data-toggle="modal" data-target="#updateDiscountModal" class="btn btn-outline-warning mt-1">Update</button>
+                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until)}} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1">Update</button>
 
-                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id)}} data-toggle="modal" data-target=""  class="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id)}} data-toggle="modal" data-target=""  className="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
 
                                         </div>
                                     }</td>
