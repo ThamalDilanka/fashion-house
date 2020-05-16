@@ -3,21 +3,32 @@ import axios from 'axios';
 
 const DiscountCard = (data) => {
 
-    console.log("data card: ", data.data)
+    console.log("data table: ", data.data);
+    console.log("data update: ", data.data.data);
     const [title, setTitle] = useState('');
     const [id, setId] = useState('');
     const [addDiscount, setAddDiscount] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [updateInfoDiscount,setUpdateInfoDiscount] = useState('');
+    const [updateInfoFromDate,setUpdateInfoFromDate] = useState('');
+    const [updateInfoToDay,setUpdateInfoToDay] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
         setId(id);
     }, []);
+    
+    const updateInformation = () => {
+
+    }
+
+    const deleteInformation = () => {
+
+    }
 
     const submitDiscountFormData = (e) => {
         e.preventDefault();
-        console.log("passed values are: ", addDiscount, fromDate, toDate, `id:${id}`);
         const token = localStorage.getItem('token') //temp - change to store manger token
         axios({
             method: 'patch',
@@ -43,55 +54,105 @@ const DiscountCard = (data) => {
     return (
         <div className="container">
 
-            {/* Modal */}
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">{title}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            {/* Modal-discount insert */}
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">{title}</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div className="modal-body">
 
                             <form>
-                                <div class="form-group">
-                                    <label for="inputDiscount">Discount</label>
-                                    <input type="text" class="form-control" id="inputDiscount" placeholder="From"
+                                <div className="form-group">
+                                    <label>Discount</label>
+                                    <input type="text" className="form-control" id="inputDiscount" placeholder="Discount"
                                         aria-describedby="discountHelp"
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         value={addDiscount}
                                         onChange={e => setAddDiscount(e.target.value)} />
-                                    <small id="discountHelp" class="form-text text-muted">Enter discount value for the product.</small>
+                                    <small id="discountHelp" className="form-text text-muted">Enter discount value for the product.</small>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="date" class="form-control"
+                                <div className="row">
+                                    <div className="col">
+                                        <input type="date" className="form-control"
                                             aria-describedby="fromHelp"
                                             value={fromDate}
                                             onChange={e => setFromDate(e.target.value)} />
-                                        <small id="fromHelp" class="form-text text-muted">Discount valid from</small>
+                                        <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
                                     </div>
-                                    <div class="col">
-                                        <input type="date" class="form-control"
+                                    <div className="col">
+                                        <input type="date" className="form-control"
                                             aria-describedby="untilHelp"
                                             value={toDate}
                                             onChange={e => setToDate(e.target.value)} />
-                                        <small id="untilHelp" class="form-text text-muted">To</small>
+                                        <small id="untilHelp" className="form-text text-muted">To</small>
                                     </div>
                                 </div>
                             </form>
 
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onClick={(e) => submitDiscountFormData(e)} class="btn btn-primary">Submit</button>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onClick={(e) => submitDiscountFormData(e)} className="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
             </div>
             {/* Modal ends*/}
+
+            {/* update modal */}
+            <div className="modal fade" id="updateDiscountModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">{title}</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+
+                            <form>
+                                <div className="form-group">
+                                    <label>Discount</label>
+                                    <input type="text" className="form-control" id="inputDiscount" placeholder="From"
+                                        aria-describedby="discountHelp"
+                                        autoComplete="off"
+                                        value={addDiscount}
+                                        onChange={e => setAddDiscount(e.target.value)} />
+                                    <small id="discountHelp" className="form-text text-muted">Enter discount value for the product.</small>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <input type="date" className="form-control"
+                                            aria-describedby="fromHelp"
+                                            value={fromDate}
+                                            onChange={e => setFromDate(e.target.value)} />
+                                        <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
+                                    </div>
+                                    <div className="col">
+                                        <input type="date" className="form-control"
+                                            aria-describedby="untilHelp"
+                                            value={toDate}
+                                            onChange={e => setToDate(e.target.value)} />
+                                        <small id="untilHelp" className="form-text text-muted">To</small>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onClick={(e) => submitDiscountFormData(e)} className="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* update modal ends */}
 
             <div className="mt-5">
                 <table className="table table-striped">
@@ -109,7 +170,7 @@ const DiscountCard = (data) => {
                         {
                             data.data && data.data.map(data =>
 
-                                <tr>
+                                <tr key={data._id}>
                                     <td><img src={`./../../../../public/images/products/${data.images[0]}`} width="60" height="60" alt="products" /></td>
                                     <td>{data.name}</td>
                                     <td>{data.price}</td>
@@ -120,9 +181,9 @@ const DiscountCard = (data) => {
 
                                             <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 
-                                            <button type="button" size="sm" class="btn btn-outline-warning">Update</button>
+                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until)}} data-toggle="modal" data-target="#updateDiscountModal" class="btn btn-outline-warning mt-1">Update</button>
 
-                                            <button type="button" size="sm" class="btn btn-outline-danger">Delete&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id)}} data-toggle="modal" data-target=""  class="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
 
                                         </div>
                                     }</td>
