@@ -1,14 +1,17 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import timeGreeting from 'time-greeting';
-import Session from '../../util/Session'
-import { store } from 'react-notifications-component';
 
+import { store } from 'react-notifications-component';
+import timeGreeting from 'time-greeting';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
+
+import Session from '../../util/Session';
+
+// Assets
 import './LoginModule.css';
 import loginImage from '../../images/login-side.jpg';
 
-
+// Contexts
 import { AuthContext } from '../../contexts/AuthContext';
 
 const LoginModule = (props) => {
@@ -18,12 +21,12 @@ const LoginModule = (props) => {
 
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
 
-	const updateEmail = (e) => {
+	const onEmailChange = (e) => {
 		setEmail(e.target.value);
 		setError(undefined);
 	};
 
-	const updatePassword = (e) => {
+	const onPasswordChange = (e) => {
 		setPassword(e.target.value);
 		setError(undefined);
 	};
@@ -44,7 +47,9 @@ const LoginModule = (props) => {
 
 				// Show a notification
 				store.addNotification({
-					title: `${timeGreeting()} ${Session.getName().split(' ')[0]}!`,
+					title: `${timeGreeting()} ${
+						Session.getName().split(' ')[0]
+					}!`,
 					message: 'You have successfully logged in',
 					type: 'success',
 					insert: 'top-right',
@@ -71,62 +76,66 @@ const LoginModule = (props) => {
 	};
 
 	return (
-		<div className='container signup-container card'>
-			<div className='row'>
-				<div className='signup-image-container col-md d-none d-sm-none d-md-block'>
-					<img
-						className='authImage'
-						src={loginImage}
-						alt='login-image'
-					/>
-				</div>
-				<div className='signup-form-body col-md'>
-					<br />
-					<br />
-					<h2>Login</h2>
-					<p className='login-error-message'>{error}</p>
-					<hr className='no-margin-top' />
-					<form onSubmit={login}>
-						<div className='form-group'>
-							<label>Email</label>
-							<input
-								type='email'
-								className='form-control'
-								placeholder='Email Address'
-								value={email}
-								onChange={updateEmail}
-								required
-							/>
-						</div>
-						<div className='form-group'>
-							<label>Password</label>
-							<input
-								type='password'
-								className='form-control'
-								placeholder='Password'
-								value={password}
-								onChange={updatePassword}
-								required
-							/>
-						</div>
-						<div className='form-group'>
-							<Link to='/authenticator/signup'>
-								I don't have an account
-							</Link>
-						</div>
-						<button
-							type='submit'
-							className='btn btn-primary float-right'
-						>
-							Login
-						</button>
+		<React.Fragment>
+			{Session.isLoggedIn() ? <Redirect to='/' /> : null}
+
+			<div className='container signup-container card'>
+				<div className='row'>
+					<div className='signup-image-container col-md d-none d-sm-none d-md-block'>
+						<img
+							className='authImage'
+							src={loginImage}
+							alt='login-image'
+						/>
+					</div>
+					<div className='signup-form-body col-md'>
 						<br />
 						<br />
-						<br />
-					</form>
+						<h2>Login</h2>
+						<p className='login-error-message'>{error}</p>
+						<hr className='no-margin-top' />
+						<form onSubmit={login}>
+							<div className='form-group'>
+								<label>Email</label>
+								<input
+									type='email'
+									className='form-control'
+									placeholder='Email Address'
+									value={email}
+									onChange={onEmailChange}
+									required
+								/>
+							</div>
+							<div className='form-group'>
+								<label>Password</label>
+								<input
+									type='password'
+									className='form-control'
+									placeholder='Password'
+									value={password}
+									onChange={onPasswordChange}
+									required
+								/>
+							</div>
+							<div className='form-group'>
+								<Link to='/authenticator/signup'>
+									I don't have an account
+								</Link>
+							</div>
+							<button
+								type='submit'
+								className='btn btn-primary float-right'
+							>
+								Login
+							</button>
+							<br />
+							<br />
+							<br />
+						</form>
+					</div>
 				</div>
 			</div>
-		</div>
+		</React.Fragment>
 	);
 };
 
