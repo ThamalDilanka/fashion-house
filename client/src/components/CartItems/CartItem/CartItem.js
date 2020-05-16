@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../../../contexts/CartContext";
-import axios from "axios";
 
 function CartItem(props) {
   const itemId = props.productId;

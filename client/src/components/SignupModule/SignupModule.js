@@ -20,7 +20,7 @@ const SignupModule = (props) => {
 
 	const [error, setError] = useState(undefined);
 
-	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
+	const [setIsLoggedIn] = useContext(AuthContext);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
@@ -98,7 +98,7 @@ const SignupModule = (props) => {
 		<div className='container signup-container card'>
 			<div className='row'>
 				<div className='signup-image-container no-padding col-md d-none d-sm-none d-md-block'>
-					<img className='authImage' src={loginImage} alt='image' />
+					<img className='authImage' src={loginImage} alt="signup" />
 				</div>
 				<div className='signup-form-body col-md'>
 					<h2>Signup</h2>

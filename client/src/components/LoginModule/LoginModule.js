@@ -19,7 +19,7 @@ const LoginModule = (props) => {
 	const [password, setPassword] = useState('pass@123');
 	const [error, setError] = useState(undefined);
 
-	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
+	const [setIsLoggedIn] = useContext(AuthContext);
 
 	const onEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -85,7 +85,7 @@ const LoginModule = (props) => {
 						<img
 							className='authImage'
 							src={loginImage}
-							alt='login-image'
+							alt='login-pic'
 						/>
 					</div>
 					<div className='signup-form-body col-md'>

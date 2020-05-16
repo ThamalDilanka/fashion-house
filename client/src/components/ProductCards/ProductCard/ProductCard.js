@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import './ProductCard.css'
 import discountPic from './discount.png'
 import RatingModule from '../../RatingModule/RatingModule';
@@ -10,10 +9,10 @@ const ProductCard = (props) => {
         <div className="product-card col mb-4">
         <div className="card shadow no-padding">
             <div className="d-flex bd-highlight">
-                <img className="product-discount-tag" src={props.discount.percentage ? discountPic : null} alt=""/>
+                <img className="product-discount-tag" src={props.discount.percentage ? discountPic : null} alt="product-discount"/>
                 <p className="product-discount-value">{props.discount.percentage ? `Discount ${props.discount.percentage}` : null }</p>
                 <div className="product-card-image-container">
-                    <img src={`./images/products/${props.image}`}/>
+                    <img src={`./images/products/${props.image}`} alt={props.name}/>
                 </div>
                 <div className="product-card-detail-container">
                     <p className="product-card-title no-padding no-margin">{props.name}</p>

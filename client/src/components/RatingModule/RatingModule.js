@@ -23,7 +23,7 @@ const RatingModule = (props) => {
 		if (props.rating > 4.5) {
 			setFifthColor('orange');
 		}
-	}, []);
+	}, [props.rating]);
 
 	return (
 		<div>

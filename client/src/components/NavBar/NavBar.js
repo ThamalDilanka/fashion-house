@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Session from '../../util/Session'
 import { store } from 'react-notifications-component';
@@ -77,6 +77,7 @@ const NavBar = (props) => {
 								<img
 									className='nav-bar-profile-image rounded-circle'
 									src={Session.getImage()}
+									alt="profile"
 								/>
 							</Link>
 						</React.Fragment>
