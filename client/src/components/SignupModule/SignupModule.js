@@ -12,11 +12,11 @@ import loginImage from '../../images/signup-side.jpg';
 import { AuthContext } from '../../contexts/AuthContext';
 
 const SignupModule = (props) => {
-	const [firstName, setFirstName] = useState('f');
-	const [lastName, setLastName] = useState('f');
-	const [email, setEmail] = useState('fds@email.com');
-	const [password, setPassword] = useState('admin123');
-	const [passwordConfirm, setPasswordConfirm] = useState('admin123');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [passwordConfirm, setPasswordConfirm] = useState('');
 
 	const [error, setError] = useState(undefined);
 
