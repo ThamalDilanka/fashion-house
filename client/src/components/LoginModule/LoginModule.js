@@ -19,7 +19,7 @@ const LoginModule = (props) => {
 	const [password, setPassword] = useState('pass@123');
 	const [error, setError] = useState(undefined);
 
-	const [setIsLoggedIn] = useContext(AuthContext);
+	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
 
 	const onEmailChange = (e) => {
 		setEmail(e.target.value);
