@@ -1,14 +1,14 @@
-import React, { useState, useCallback ,useMemo} from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import axios from 'axios';
 
 const DiscountCard = (data) => {
 
     console.log("data card: ", data.data)
     const [title, setTitle] = useState('');
-    const [id,setId] = useState('');
-    const [addDiscount,setAddDiscount] = useState('');
-    const [fromDate,setFromDate] = useState('');
-    const [toDate,setToDate] = useState('');
+    const [id, setId] = useState('');
+    const [addDiscount, setAddDiscount] = useState('');
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
@@ -17,8 +17,8 @@ const DiscountCard = (data) => {
 
     const submitDiscountFormData = (e) => {
         e.preventDefault();
-        console.log("passed values are: ",addDiscount,fromDate,toDate,`id:${id}`);
-        const token = localStorage.getItem('token')
+        console.log("passed values are: ", addDiscount, fromDate, toDate, `id:${id}`);
+        const token = localStorage.getItem('token') //temp - change to store manger token
         axios({
             method: 'patch',
             url: `http://localhost:8000/api/v1/products/${id}`,
@@ -30,10 +30,10 @@ const DiscountCard = (data) => {
                 }
             },
             headers: {
-              Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + token
             }
-          });
-          window.location.reload()
+        });
+        window.location.reload()
 
         setAddDiscount(" ");
         setFromDate(" ");
@@ -59,25 +59,25 @@ const DiscountCard = (data) => {
                                 <div class="form-group">
                                     <label for="inputDiscount">Discount</label>
                                     <input type="text" class="form-control" id="inputDiscount" placeholder="From"
-                                     aria-describedby="discountHelp"
-                                     autocomplete="off"
-                                     value={addDiscount}
-                                     onChange={e => setAddDiscount(e.target.value)}/>
+                                        aria-describedby="discountHelp"
+                                        autocomplete="off"
+                                        value={addDiscount}
+                                        onChange={e => setAddDiscount(e.target.value)} />
                                     <small id="discountHelp" class="form-text text-muted">Enter discount value for the product.</small>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="date" class="form-control"  
-                                        aria-describedby="fromHelp"
-                                        value={fromDate}
-                                        onChange={e => setFromDate(e.target.value)}/>
+                                        <input type="date" class="form-control"
+                                            aria-describedby="fromHelp"
+                                            value={fromDate}
+                                            onChange={e => setFromDate(e.target.value)} />
                                         <small id="fromHelp" class="form-text text-muted">Discount valid from</small>
                                     </div>
                                     <div class="col">
-                                        <input type="date" class="form-control"  
-                                        aria-describedby="untilHelp"
-                                        value={toDate}
-                                        onChange={e => setToDate(e.target.value)}/>
+                                        <input type="date" class="form-control"
+                                            aria-describedby="untilHelp"
+                                            value={toDate}
+                                            onChange={e => setToDate(e.target.value)} />
                                         <small id="untilHelp" class="form-text text-muted">To</small>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@ const DiscountCard = (data) => {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onClick={(e) => submitDiscountFormData(e) } class="btn btn-primary">Submit</button>
+                            <button type="button" onClick={(e) => submitDiscountFormData(e)} class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,17 @@ const DiscountCard = (data) => {
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
                                     <td>{data.discount.percentage + '%'}</td>
-                                    <td>{<button type="button" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add Discount</button>}</td>
+                                    <td>{
+                                        <div class="form-row">
+
+                                            <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+                                            <button type="button" size="sm" class="btn btn-outline-warning">Update</button>
+
+                                            <button type="button" size="sm" class="btn btn-outline-danger">Delete&nbsp;&nbsp;</button>
+
+                                        </div>
+                                    }</td>
                                 </tr>
                             )}
 
