@@ -13,12 +13,14 @@ const DiscountCard = (data) => {
     const [updateInfoToDay,setUpdateInfoToDay] = useState('');
     const [updateInfoId,setUpdateInfoId] = useState(null);
     const [updateInfoTitle,setUpdateInfoTitle] = useState('');
-    const [updateDiscount,setUpdateDiscount] = useState('');
     const [deleteDiscount,setDeleteDiscount] = useState('');
     const [deleteId,setDeleteId] = useState(null);
     const [deleteFromDate,setDeleteFromDate] = useState('');
     const [delteToDate,setDeleteToDate] = useState('');
     const [deleteName,setDeleteName] = useState('');
+    const [updateNewDiscount,setUpdateNewDiscount] = useState('');
+    const [updateFromDate,setUpdateFronmDate] = useState('');
+    const [updateUntil,setUpdateUntil] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
@@ -68,15 +70,15 @@ const DiscountCard = (data) => {
 
     const updateDiscountModalData = (e) => {
         e.preventDefault();
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         axios({
             method: 'patch',
             url: `http://localhost:8000/api/v1/products/${updateInfoId}`,
             data: {
                 discount: {
-                    from: fromDate,
-                    percentage: updateDiscount,
-                    until: toDate
+                    from: updateFromDate,
+                    percentage:updateNewDiscount,
+                    until: updateUntil
                 }
             },
             headers: {
@@ -178,55 +180,64 @@ const DiscountCard = (data) => {
                         </div>
                         <div className="modal-body">
 
-                            <form>
+                            <form className="was-validated">
                                 <div className="form-group">
                                     <label>Discount</label>
-                                    <input type="text" className="form-control" id="inputDiscount"
+                                    <input type="text" className="form-control" id="inputDiscountUpdate"
                                         aria-describedby="discountHelp"
                                         autoComplete="off"
                                        placeholder={updateInfoDiscount}  
-                                        //value={updateDiscount}   
+                                        //value={updateInfoDiscount}  
                                         required                                 
-                                        onChange={e => setUpdateDiscount(e.target.value)} />
+                                        onChange={e => setUpdateNewDiscount(e.target.value)} />
                                     <small id="discountHelp" className="form-text text-muted">Enter discount value for the product.</small>
-                                    <div class="invalid-feedback">
-                                     Please provide a valid city.
+                                    <div className="invalid-feedback">
+                                     Please provide a value for discount.
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col">
                                         <input type="text" className="form-control"
+                                            id="updateDiscountFromD"
                                             aria-describedby="fromHelp"
-                                           // value={updateInfoFromDate}
+                                            //value={updateInfoFromDate}
                                             placeholder={updateInfoFromDate}
                                             onFocus={(e) => e.target.type = 'date'}
                                             onBlur={(e) => e.target.type = 'text'}
-                                            onChange={e => setFromDate(e.target.value)}
+                                            onChange={e => setUpdateFronmDate(e.target.value)}
                                             required />
-                                            <div class="invalid-feedback">
+                                        <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
+                                        <div className="invalid-feedback">
                                                  Please select a starting date.
                                              </div>
-                                        <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
                                     </div>
                                     <div className="col">
                                         <input type="text" className="form-control"
                                             aria-describedby="untilHelp"
-                                            //value={updateInfoToDay}
+                                            id="updateUntilD"
                                             placeholder={updateInfoToDay}
                                             onFocus={(e) => e.target.type = 'date'}
                                             onBlur={(e) => e.target.type = 'text'}
-                                            onChange={e => setToDate(e.target.value)} />
+                                            onChange={e => setUpdateUntil(e.target.value)} 
+                                            required/>
                                         <small id="untilHelp" className="form-text text-muted">To</small>
+                                        <div className="invalid-feedback">
+                                                 Please select a end date.
+                                             </div>
                                     </div>
                                 </div>
                                 <br/>
-                            </form>
-
-                        </div>
-                        <div className="modal-footer">
+                                <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" onClick={(e) =>  updateDiscountModalData(e)} className="btn btn-warning">Update</button>
                         </div>
+                            </form>
+
+                        </div>
+                        {/* <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" onClick={(e) =>  updateDiscountModalData(e)} className="btn btn-warning">Update</button>
+                        </div> */}
                     </div>
                 </div>
             </div>
