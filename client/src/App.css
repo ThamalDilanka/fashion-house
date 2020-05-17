@@ -14,3 +14,14 @@
 .no-margin-top {
 	margin-top: 0 !important;
 }
+
+.favourite-btn {
+	border-radius: 50% !important;
+	background: #d62828 !important;
+
+}
+
+.favourite-btn:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
