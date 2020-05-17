@@ -51,6 +51,10 @@
     outline: none;
 }
 
+.product-view-color-selector:hover {
+    transform: scale(1.1);
+}
+
 .product-view-size-selector {
 	width: 30px;
 	height: 20px;
@@ -61,6 +65,10 @@
     font-size: x-small;
     background: #f77f00;
     color: #fff;
+}
+
+.product-view-size-selector:hover {
+    transform: scale(1.1);
 }
 
 .product-view-color-selector:focus {
