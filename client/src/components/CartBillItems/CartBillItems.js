@@ -4,18 +4,18 @@ import { CartContext } from "../../contexts/CartContext";
 
 function CartBillItems() {
 
-  const [cartItems] = useContext(CartContext)
+  const [cartItems, setcartItems] = useContext(CartContext)
 
   return (
     <Fragment>
       {cartItems.map((cartItem) => (
         <CartBillItem
-          key={cartItem.productId}
+          key={cartItem._id}
           productName={cartItem.productName}
           productPrice={cartItem.productPrice}
-          productQuantity={cartItem.productQuantity}
-          productSize={cartItem.productSize}
-          productColor={cartItem.productColor}
+          productQuantity={cartItem.quantity}
+          productSize={cartItem.size}
+          productColor={cartItem.color}
         />
       ))}
     </Fragment>

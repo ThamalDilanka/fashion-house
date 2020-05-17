@@ -9,8 +9,8 @@ function CartItem(props) {
   const decreaseQuantity = (itemId, currentQty) => {
     setCartItems((currentCartItems) =>
       currentCartItems.map((item) =>
-        itemId === item.productId
-          ? { ...item, productQuantity: currentQty - 1 }
+        itemId === item._id
+          ? { ...item, quantity: currentQty - 1 }
           : item
       )
     );
@@ -19,8 +19,8 @@ function CartItem(props) {
   const increseQuantity = (itemId, currentQty) => {
     setCartItems((currentCartItems) =>
       currentCartItems.map((item) =>
-        itemId === item.productId
-          ? { ...item, productQuantity: currentQty + 1 }
+        itemId === item._id
+          ? { ...item, quantity: currentQty + 1 }
           : item
       )
     );
@@ -29,7 +29,7 @@ function CartItem(props) {
   const removeCartItem = (itemId) => {
     setCartItems(
       cartItems.filter((item) => {
-        return itemId !== item.productId;
+        return itemId !== item._id;
       })
     );
   };
@@ -75,6 +75,7 @@ function CartItem(props) {
         <button
           onClick={() => increseQuantity(itemId, props.productQuantity)}
           className="badge badge-secondary"
+          disabled={props.productQuantity === props.productAvailableQuantity}
         >
           +
         </button>
