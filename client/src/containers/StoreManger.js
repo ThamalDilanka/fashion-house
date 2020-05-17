@@ -8,7 +8,6 @@ const StoreManager = () => {
 	useEffect(() => {
 		const fetchData = async() => {
 			const resp = await axios.get('http://localhost:8000/api/v1/products');
-			console.log("resp of prodct: ",resp.data.data.products);
 			setDiscounts([...resp.data.data.products]);
 		}
 		fetchData();
@@ -16,7 +15,7 @@ const StoreManager = () => {
 
 	return (
 		<div>
-			<DiscountCards data={discounts} />
+			<DiscountCards data={discounts}/>
 		</div>
 	);
 };
