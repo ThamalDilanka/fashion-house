@@ -32,7 +32,6 @@ const NavBar = (props) => {
 		  });
 	};
 
-	console.log(Session.getImage());
 	return (
 		<nav className='navbar navbar-expand-md navbar-dark bg-dark'>
 			<Link className='navbar-brand' to='/'>

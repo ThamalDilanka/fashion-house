@@ -67,6 +67,7 @@ function CartItem(props) {
         <button
           onClick={() => decreaseQuantity(itemId, props.productQuantity)}
           className="badge badge-secondary"
+          disabled={props.productQuantity === 1}
         >
           -
         </button>

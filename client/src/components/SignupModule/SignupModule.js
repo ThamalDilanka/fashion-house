@@ -20,7 +20,7 @@ const SignupModule = (props) => {
 
 	const [error, setError] = useState(undefined);
 
-	const [setIsLoggedIn] = useContext(AuthContext);
+	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
