@@ -61,8 +61,14 @@ const productSchema = new mongoose.Schema({
   colors: {
     type: [
       {
-        type: String,
-        trim: true,
+        name: {
+          type: String,
+          trim: true
+        },
+        code: {
+          type: String,
+          trim: true
+        }
       },
     ],
     required: [true, "Please enter atleast one color."],
