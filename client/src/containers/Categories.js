@@ -6,6 +6,7 @@ const Categories = () => {
     const [getCategories, setGetCategories] = useState([]);
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');
+    const [image,setImage] = useState(null);
 
     useEffect(() => { //retrieve categories on pg load
         const fetchData = async () => {
@@ -14,24 +15,24 @@ const Categories = () => {
         }
         fetchData();
     }, []);
-    { console.log("test: ", getCategories) }
 
     const addNewCategory = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token') //temp - change  token
         axios({
-            method: 'patch',
+            method: 'post',
             url: `http://localhost:8000/api/v1/products`,
             data: {
                 title: title ,
                 description: description,
-                image:''
+                image:image
             },
             headers: {
                 Authorization: 'Bearer ' + token
             }
         });
         window.location.reload()
+        console.log("image: ",image);
     }
 
     return (
@@ -68,7 +69,8 @@ const Categories = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Add image</label>
-                                        <input type="file" className="form-control" id="exampleInputPic" />
+                                        <input type="file" className="form-control" id="exampleInputPic"
+                                        onChange={e => setImage( e.target.files)} />
                                     </div>
                                 </form>
                             </div>
