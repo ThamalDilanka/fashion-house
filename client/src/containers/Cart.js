@@ -1,16 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import CartItems from "../components/CartItems/CartItems";
 import CartBillItems from "../components/CartBillItems/CartBillItems";
 import { CartContext } from "../contexts/CartContext";
 
 const Cart = (props) => {
-  const [cartItems, setcartItems] = useContext(CartContext);
+  const [cartItems] = useContext(CartContext);
   let total = 0;
-  {
-    cartItems.forEach((item) => {
-      total += item.productPrice * item.productQuantity;
-    });
-  }
+
+  useMemo(
+    () => cartItems.forEach((item) => {
+            total += item.productPrice * item.productQuantity;
+          }), [cartItems]
+  );
 
   return (
     <div className="container-fuild p-5">
@@ -51,7 +52,7 @@ const Cart = (props) => {
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your Bill</span>
             <span className="badge badge-secondary badge-pill">
-              {cartItems.length} Items
+              {cartItems.length} Products
             </span>
           </h4>
           <ul className="list-group mb-3">

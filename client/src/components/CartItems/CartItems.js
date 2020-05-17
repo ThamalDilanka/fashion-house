@@ -4,7 +4,7 @@ import { CartContext } from "../../contexts/CartContext";
 
 function CartItems() {
 
-  const [cartItems, setcartItems] = useContext(CartContext)
+  const [cartItems] = useContext(CartContext)
 
   return (
     <tbody>

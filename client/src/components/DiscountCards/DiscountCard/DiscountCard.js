@@ -1,11 +1,11 @@
-import React, { useState, useCallback ,useMemo} from 'react'
+import React, { useState, useCallback} from 'react'
 import axios from 'axios';
 
 const DiscountCard = (data) => {
 
     console.log("data card: ", data.data)
     const [title, setTitle] = useState('');
-    const [id,setId] = useState('');
+    const [setId] = useState('');
     const [addDiscount,setAddDiscount] = useState('');
     const [fromDate,setFromDate] = useState('');
     const [toDate,setToDate] = useState('');

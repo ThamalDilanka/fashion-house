@@ -13,7 +13,7 @@ const ProductCard = (props) => {
                 <img className="product-discount-tag" src={moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? discountPic : null} alt=""/>
                 <p className="product-discount-value">{moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? `Discount ${props.discount.percentage}%` : null }</p>
                 <div className="product-card-image-container">
-                    <img src={`./images/products/${props.image}`}/>
+                    <img src={`./images/products/${props.image}`} alt='productImage'/>
                 </div>
                 <div className="product-card-detail-container">
                     <p className="product-card-title no-padding no-margin">{props.name}</p>
