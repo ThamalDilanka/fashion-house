@@ -1,17 +1,68 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect, useState } from "react";
 import CartItems from "../components/CartItems/CartItems";
 import CartBillItems from "../components/CartBillItems/CartBillItems";
 import { CartContext } from "../contexts/CartContext";
+import Session from "../util/Session";
+import axios from "axios";
 
 const Cart = (props) => {
-  const [cartItems] = useContext(CartContext);
+  let arrtemp = [];
+
+  
   let total = 0;
+  const customerId = Session.getId();
+  const customerToken = localStorage.getItem("token");
+
+  const [cartItems, setCartItems] = useContext(CartContext);
+
+  
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + customerToken,
+    },
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/v1/carts?user=${customerId}`, config)
+      .then((res) => {
+        arrtemp = res.data.data.carts;
+
+        arrtemp.forEach((item) => {
+          axios
+            .get(`http://localhost:8000/api/v1/products/${item.product}`)
+            .then((res) => {
+              arrtemp = arrtemp.map((arrItem) => {
+                return arrItem.product === item.product
+                  ? {
+                      ...arrItem,
+                      productName: res.data.data.product.name,
+                      productPrice: res.data.data.product.price,
+                      productAvailableQuantity: res.data.data.product.quantity,
+                    }
+                  : arrItem;
+              });
+
+              return arrtemp;
+            })
+            .then((res) => setCartItems(res))
+            .catch((err) => console.log(err));
+        });
+
+      })
+      .catch((err) => console.log(err));
+
+  }, [total]);
 
   useMemo(
-    () => cartItems.forEach((item) => {
-      total += item.productPrice * item.productQuantity;
-    }), [cartItems]
+    () =>
+    cartItems.forEach((item) => {
+      total += item.productPrice * item.quantity;
+    }),
+    [cartItems]
   );
+
 
   return (
     <div className="container-fuild p-5">
@@ -79,5 +130,5 @@ const Cart = (props) => {
       </div>
     </div>
   );
-}
+};
 export default Cart;

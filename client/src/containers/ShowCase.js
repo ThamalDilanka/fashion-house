@@ -8,8 +8,8 @@ const ShowCase = (props) => {
 	console.log(props.location.hash);
 
 	const [products, setProducts] = useState([]);
-	const categoryIdHash = props.location.hash; //gents fashion
-	const categoryId = categoryIdHash.substring(1); //gents fashion
+	const categoryIdHash = props.location.hash; 
+	const categoryId = categoryIdHash.substring(1); 
 
 
 

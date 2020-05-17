@@ -3,6 +3,7 @@ import moment from 'moment'
 import './ProductCard.css'
 import discountPic from './discount.png'
 import RatingModule from '../../RatingModule/RatingModule';
+import { Link } from 'react-router-dom';
 
 const ProductCard = (props) => {
 
@@ -11,11 +12,11 @@ const ProductCard = (props) => {
             <div className="card shadow no-padding">
                 <div className="d-flex bd-highlight">
 
-                {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt=""/> : null}
+                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt="product-discount" /> : null}
 
-                {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
+                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
 
-                    
+
                     <div className="product-card-image-container">
                         <img src={`./images/products/${props.image}`} alt={props.name} />
 
@@ -34,7 +35,12 @@ const ProductCard = (props) => {
                         </div>
                         <div className="p-2 bd-highlight">{props.avgRating}</div>
                     </div>
-                    <button className="product-view-btn">View</button>
+                    <Link to={{
+                        pathname: '/product-view',
+                        hash: props.id,
+                    }}>
+                        <button className="product-view-btn">View</button>
+                    </Link>
                 </div>
             </div>
         </div>
