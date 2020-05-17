@@ -14,6 +14,7 @@ import ProductView from './containers/ProductView';
 import ShowCase from './containers/ShowCase';
 import StoreManager from './containers/StoreManger';
 import Authenticator from './containers/Authenticator';
+import Categories from './containers/Categories';
 
 // Contexts
 import { CartProvider } from './contexts/CartContext';
@@ -27,7 +28,8 @@ function App() {
 					<ReactNotification></ReactNotification>
 					<BrowserRouter>
 						<NavBar />
-						<Route path='/store-manager' exact component={StoreManager} />
+						<Route path='/store-manager'component={StoreManager} />
+						<Route path='/add-categories'component={Categories} />
 						<Route path='/' exact component={Home} />
 						<Route
 							path='/authenticator'
