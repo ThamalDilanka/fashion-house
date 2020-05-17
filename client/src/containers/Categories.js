@@ -31,8 +31,8 @@ const Categories = () => {
                 Authorization: 'Bearer ' + token
             }
         });
-        window.location.reload()
-        console.log("image: ",image);
+    //    // window.location.reload()
+    //     console.log("image: ",image);
     }
 
     return (
