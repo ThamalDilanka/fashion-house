@@ -3,7 +3,7 @@ import React from 'react'
 const Categories = () => {
     return (
         <div>
-            <p>add categories</p>
+            <p>add categories component initialized</p>
         </div>
     )
 }

@@ -349,4 +349,4 @@ const DiscountCard = (data) => {
     )
 }
 
-export default DiscountCard
+export default DiscountCard;

@@ -1,16 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import CartItems from "../components/CartItems/CartItems";
 import CartBillItems from "../components/CartBillItems/CartBillItems";
 import { CartContext } from "../contexts/CartContext";
 
 const Cart = (props) => {
-  const [cartItems, setcartItems] = useContext(CartContext);
+  const [cartItems] = useContext(CartContext);
   let total = 0;
-  {
-    cartItems.forEach((item) => {
+
+  useMemo(
+    () => cartItems.forEach((item) => {
       total += item.productPrice * item.productQuantity;
-    });
-  }
+    }), [cartItems]
+  );
 
   return (
     <div className="container-fuild p-5">
@@ -38,7 +39,6 @@ const Cart = (props) => {
                     </tr>
                   </thead>
                   {/* Table body starts*/}
-                  {/* <CartItems cartItemList={cartItems}/> */}
                   <CartItems />
                   {/* Table body ends*/}
                 </table>
@@ -52,19 +52,18 @@ const Cart = (props) => {
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your Bill</span>
             <span className="badge badge-secondary badge-pill">
-              {cartItems.length} Items
+              {cartItems.length} Products
             </span>
           </h4>
           <ul className="list-group mb-3">
-            {/* <CartBillItems  cartBillItemList={cartItems}/> */}
             <CartBillItems />
             <li className="list-group-item d-flex justify-content-between bg-light">
               <span>
-                <h4>Total Amount</h4>
+                <h5>Total Amount</h5>
               </span>
-              <h2>
+              <h4>
                 <strong>Rs.{total}</strong>
-              </h2>
+              </h4>
             </li>
             <li className="list-group-item d-flex justify-content-between">
               <hr className="mb-4" />
@@ -80,6 +79,5 @@ const Cart = (props) => {
       </div>
     </div>
   );
-};
-
+}
 export default Cart;
