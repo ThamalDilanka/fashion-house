@@ -5,8 +5,13 @@ import ProductCards from '../components/ProductCards/ProductCards'
 
 const ShowCase = (props) => {
 	
+	console.log(props.location.hash);
+
 	const [products, setProducts] = useState([]);
-	const categoryId = '5eb84eb4d6bba51028d646e9' //gents fashion
+	const categoryIdHash = props.location.hash; //gents fashion
+	const categoryId = categoryIdHash.substring(1); //gents fashion
+
+
 
 	useEffect(() => {
 		axios.get(`http://localhost:8000/api/v1/products?category=${categoryId}`)

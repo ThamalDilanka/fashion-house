@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../../../contexts/CartContext";
-import axios from "axios";
 
 function CartItem(props) {
   const itemId = props.productId;
@@ -68,6 +67,7 @@ function CartItem(props) {
         <button
           onClick={() => decreaseQuantity(itemId, props.productQuantity)}
           className="badge badge-secondary"
+          disabled={props.productQuantity === 1}
         >
           -
         </button>
