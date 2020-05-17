@@ -9,8 +9,8 @@ const Cart = (props) => {
 
   useMemo(
     () => cartItems.forEach((item) => {
-            total += item.productPrice * item.productQuantity;
-          }), [cartItems]
+      total += item.productPrice * item.productQuantity;
+    }), [cartItems]
   );
 
   return (
@@ -79,6 +79,5 @@ const Cart = (props) => {
       </div>
     </div>
   );
-};
-
+}
 export default Cart;

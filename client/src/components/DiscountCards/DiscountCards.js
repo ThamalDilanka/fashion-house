@@ -1,9 +1,7 @@
-import React,{useState}from 'react'
+import React from 'react'
 import DiscountCard from './DiscountCard/DiscountCard';
 
 const DiscountCards = (data) => {
-    console.log("data: ",data.data)
-    
     return (
         <div>
             {
