@@ -53,7 +53,7 @@ const NavBar = (props) => {
 						Wish List{' '}
 						<span className='badge badge-secondary'>1</span>
 					</Link>
-					<Link to='/cart' className='nav-item nav-link'>
+					<Link to={Session.isLoggedIn() ? '/cart' : '/authenticator/login'} className='nav-item nav-link'>
 						Cart{' '}
 						<span className='badge badge-secondary'>
 							{cartItems.length}

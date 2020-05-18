@@ -8,31 +8,29 @@ const ColorSelector = (props) => {
 	const [selectedColorCode, setSelectedColorCode] = useState('ccc');
 	const [selectedSize, setSelectedSize] = useState('select the size');
 
+	const discount = props.discount;
+
 	return (
-		<div className='container'>
+		<div className='container mt-4'>
 			<div className='row'>
 				<div className='col-md-4'>
 					<img
 						className='product-view-image'
-						src='./images/products/2514a0e8-cfd3-4b23-a28d-6f0960e41211-1589382331460.jpeg'
+						src={`./images/products/${props.image}`}
 						alt='product'
 					/>
 				</div>
 				<div className='product-view-description-container col-md-8'>
 					<p className='product-view-title'>
-						Women High Neck Puff Long Sleeve T Shirt Ladies Casual
-						Plain Slim Blouse Tops UK
+						{props.name}
 					</p>
 					<div className='single-product-view-rating d-flex'>
-						<RatingModule rating='4.3' />
+						<RatingModule rating={props.avgRating} />
 
-						<p className='single-product-view-rating-value'>4.3</p>
+						<p className='single-product-view-rating-value'>{props.avgRating}</p>
 					</div>
 					<p className='product-view-description'>
-						Women High Neck Puff Long Sleeve T Shirt Ladies Casual
-						Plain Slim Blouse Tops UK. Worshipping 13 Colors
-						PoloGiraffe T Shirt Men Deer Embroidery Short Sleeve
-						T-Shirts Casual Turn Down Collar Tops Tees For Men
+						{props.description}
 					</p>
 
 					<div className='d-flex bd-highlight'>

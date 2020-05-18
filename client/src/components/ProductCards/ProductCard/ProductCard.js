@@ -38,6 +38,19 @@ const ProductCard = (props) => {
                     <Link to={{
                         pathname: '/product-view',
                         hash: props.id,
+
+                        state: {
+                            discount: props.discount,
+                            image: props.image,
+                            sizes: props.sizes,
+                            colors: props.colors,
+                            avgRating: props.avgRating,
+                            name: props.name,
+                            categoryId: props.categoryId,
+                            availableQuantity: props.availableQuantity,
+                            price: props.price,
+                            description: props.description
+                        }
                     }}>
                         <button className="product-view-btn">View</button>
                     </Link>
