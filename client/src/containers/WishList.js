@@ -1,5 +1,4 @@
 import React from 'react';
-import ColorSelector from '../components/ColorSelector/ColorSelector'
 import SingleProductView from '../components/SingleProductView/SingleProductView'
 
 const WishList = (props) => {

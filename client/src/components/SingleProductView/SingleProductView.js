@@ -28,9 +28,24 @@ const ColorSelector = (props) => {
 						<RatingModule rating={props.avgRating} />
 
 						<p className='single-product-view-rating-value'>{props.avgRating}</p>
+
+						<p className='single-product-view-availability'>
+							Available
+						</p>
 					</div>
 					<p className='product-view-description'>
 						{props.description}
+					</p>
+
+					<div className='d-flex'>
+						<p className='single-product-view-price'>Rs 4200</p>
+						<p className='single-product-view-discount'>
+							<span className='badge badge-success'>-30%</span>{' '}
+							Discount
+						</p>
+					</div>
+					<p className='single-product-view-discount-period'>
+						Discount valid until 30 March 2020
 					</p>
 
 					<div className='d-flex bd-highlight'>

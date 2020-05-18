@@ -20,7 +20,6 @@
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
-	margin-bottom: 1.5em;
 }
 
 .single-product-view-rating {
@@ -32,7 +31,7 @@
 }
 
 .product-view-btn-container {
-	padding-top: 1em;
+	padding-top: 2em;
 }
 
 .product-view-color-selector-container {
@@ -94,3 +93,29 @@
 	margin-left: 20px;
 }
 
+.single-product-view-availability {
+	font-size: small;
+	color: green;
+	margin: 2px 0px;
+	font-weight: 600;
+}
+
+.single-product-view-price {
+	font-size: large;
+	margin: 0.5em 1em 0.1em 0;
+	font-weight: 700;
+}
+
+.single-product-view-discount {
+	font-size: large;
+	margin: 0.5em 0.1em 0.1em 0;
+	font-weight: 600;
+	color: rgb(61, 61, 61);
+}
+
+.single-product-view-discount-period {
+	font-size: small;
+	margin: 0em 1em 2em 0em;
+	font-weight: 500;
+	color: rgb(255, 0, 0);
+}
