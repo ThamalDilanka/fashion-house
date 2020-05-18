@@ -6,7 +6,8 @@
 	text-decoration: none;
 }
 
-html, body {
+html,
+body {
 	height: 100% !important;
 }
 
@@ -127,4 +128,3 @@ ul li:hover a {
 	width: 100%;
 	padding: 10px !important;
 }
-
