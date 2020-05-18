@@ -25,14 +25,27 @@ const ColorSelector = (props) => {
 					</p>
 					<div className='single-product-view-rating d-flex'>
 						<RatingModule rating='4.3' />
-
 						<p className='single-product-view-rating-value'>4.3</p>
+						<p className='single-product-view-availability'>
+							Available
+						</p>
 					</div>
 					<p className='product-view-description'>
 						Women High Neck Puff Long Sleeve T Shirt Ladies Casual
 						Plain Slim Blouse Tops UK. Worshipping 13 Colors
 						PoloGiraffe T Shirt Men Deer Embroidery Short Sleeve
 						T-Shirts Casual Turn Down Collar Tops Tees For Men
+					</p>
+
+					<div className='d-flex'>
+						<p className='single-product-view-price'>Rs 4200</p>
+						<p className='single-product-view-discount'>
+							<span className='badge badge-success'>-30%</span>{' '}
+							Discount
+						</p>
+					</div>
+					<p className='single-product-view-discount-period'>
+						Discount valid until 30 March 2020
 					</p>
 
 					<div className='d-flex bd-highlight'>
