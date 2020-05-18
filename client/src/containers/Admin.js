@@ -3,6 +3,7 @@ import Session from '../util/Session';
 import { AuthContext } from '../contexts/AuthContext';
 import { store } from 'react-notifications-component';
 import { Link, Redirect } from 'react-router-dom';
+import AddProduct from '../components/AddProduct/AddProduct';
 
 const Admin = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
@@ -30,7 +31,7 @@ const Admin = (props) => {
 	return (
 		<React.Fragment>
 			{Session.isLoggedIn() ? null : <Redirect to='/' />}
-			<div className='admin-panel-main-container'>
+			<div className='admin-panel-main-container d-flex bd-highlight'>
 				<div className='sidebar'>
 					<header>
 						<img
@@ -59,7 +60,7 @@ const Admin = (props) => {
 						</li>
 						<li>
 							<a href='#'>
-								<i className='fa fa-link'></i>Store Managers
+								<i className='fa fa-link'></i>Staff
 							</a>
 						</li>
 						<li>
@@ -70,7 +71,9 @@ const Admin = (props) => {
 					</ul>
 				</div>
 
-				<section className='admin-panel-content-container'></section>
+				<section className='admin-panel-content-container'>
+					<AddProduct></AddProduct>
+				</section>
 			</div>
 		</React.Fragment>
 	);
