@@ -14,6 +14,7 @@ import ProductView from './containers/ProductView';
 import ShowCase from './containers/ShowCase';
 import StoreManager from './containers/StoreManger';
 import Authenticator from './containers/Authenticator';
+import Admin from './containers/Admin'
 
 // Contexts
 import { CartProvider } from './contexts/CartContext';
@@ -41,6 +42,7 @@ function App() {
 						<Route path='/wish-list' component={WishList} />
 						<Route path='/product-view' component={ProductView} />
 						<Route path='/show-case' component={ShowCase} />
+						<Route path='/admin' exact component={Admin} />
 					</BrowserRouter>
 				</div>
 			</CartProvider>

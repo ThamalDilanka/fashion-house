@@ -1,4 +1,11 @@
 /* Global */
+* {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	text-decoration: none;
+}
+
 .no-padding {
 	padding: 0 !important;
 }
@@ -18,10 +25,107 @@
 .favourite-btn {
 	border-radius: 50% !important;
 	background: #d62828 !important;
-
 }
 
 .favourite-btn:focus {
 	outline: none !important;
 	box-shadow: none !important;
 }
+
+/************** side bar *************/
+.admin-panel-main-container {
+	overflow: auto;
+}
+
+#side-bar-toggle {
+	position: absolute;
+	left: 300px;
+	top: 100px;
+}
+
+.sidebar {
+	position: absolute;
+	left: 0px;
+	width: 250px;
+	height: 100%;
+	background: #042331;
+	transition: all 0.5s ease;
+}
+
+.sidebar header {
+	height: 190px;
+	font-size: 1em;
+	color: white;
+	line-height: 1em;
+	background: #063146;
+	text-align: center;
+}
+
+.side-bar-profile-image {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.sidebar-user-name {
+	text-align: center;
+	font-size: normal;
+}
+
+.sidebar-user-email {
+	text-align: center;
+	font-size: small;
+	font-weight: 100;
+	color: #c0c0c0;
+}
+
+.side-nav-logout-btn {
+	border: none;
+	border: #065e86 solid 1px;
+	background: #08435f;
+	color: #fff;
+	padding: 0.4em 0.6em;
+	border-radius: 5px;
+	margin-top: 15px;
+	font-size: small;
+}
+
+.side-nav-logout-btn:hover {
+	background: #053247;
+}
+
+.side-nav-logout-btn:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+.sidebar ul a {
+	display: block;
+	height: 100%;
+	width: 100%;
+	line-height: 3em;
+	font-size: 1em;
+	color: white;
+	padding-left: 1em;
+	box-sizing: border-box;
+	border-bottom: 1px solid black;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	transition: 0.4s;
+	text-decoration: none;
+}
+
+ul li:hover a {
+	padding-left: 1.5em;
+}
+
+.sidebar ul a i {
+	margin-right: 16px;
+}
+
+.admin-panel-content-container {
+	background: rgb(255, 255, 255);
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
+	transition: all 0.5s;
+}
+
