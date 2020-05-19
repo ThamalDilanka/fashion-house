@@ -8,6 +8,10 @@ exports.isLoggedIn = () => {
 	}
 };
 
+exports.getToken = () => {
+	return localStorage.getItem('token');
+};
+
 exports.getId = () => {
 	if (localStorage.getItem('token') === null) {
 		return null;
