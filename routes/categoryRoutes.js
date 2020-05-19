@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
 	.route('/')
-	.post(authController.protect, fileHandler.uploadImages, fileHandler.resizeImages, categoryController.createCategory)
+	.post(authController.protect, categoryController.createCategory)
 	.get(categoryController.getAllCategories);
 
 router
