@@ -43,7 +43,6 @@ const Cart = (props) => {
                     }
                   : arrItem;
               });
-
               return arrtemp;
             })
             .then((res) => setCartItems(res))

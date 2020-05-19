@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: [true, "Please enter the quantity."],
+    min : 0
   },
   price: {
     type: Number,

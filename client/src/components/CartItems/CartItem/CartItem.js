@@ -1,37 +1,78 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../../contexts/CartContext";
+import axios from "axios";
 
 function CartItem(props) {
-  const itemId = props.productId;
+  const itemId = props.cartItemId;
+
+  const customerToken = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + customerToken,
+    },
+  };
 
   const [cartItems, setCartItems] = useContext(CartContext);
 
   const decreaseQuantity = (itemId, currentQty) => {
-    setCartItems((currentCartItems) =>
-      currentCartItems.map((item) =>
-        itemId === item._id
-          ? { ...item, quantity: currentQty - 1 }
-          : item
+    axios
+      .patch(
+        `http://localhost:8000/api/v1/carts/${itemId}`,
+        {
+          quantity: currentQty - 1,
+        },
+        config
       )
-    );
+      .then(() => {
+        setCartItems((currentCartItems) =>
+          currentCartItems.map((item) =>
+            itemId === item._id ? { ...item, quantity: currentQty - 1 } : item
+          )
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   const increseQuantity = (itemId, currentQty) => {
-    setCartItems((currentCartItems) =>
-      currentCartItems.map((item) =>
-        itemId === item._id
-          ? { ...item, quantity: currentQty + 1 }
-          : item
-      )
-    );
+    axios
+    .patch(
+      `http://localhost:8000/api/v1/carts/${itemId}`,
+      {
+        quantity: currentQty + 1,
+      },
+      config
+    )
+    .then(() => {
+      setCartItems((currentCartItems) =>
+        currentCartItems.map((item) =>
+          itemId === item._id ? { ...item, quantity: currentQty + 1 } : item
+        )
+      );
+    })
+    .catch((err) => console.log(err));
   };
 
   const removeCartItem = (itemId) => {
-    setCartItems(
-      cartItems.filter((item) => {
-        return itemId !== item._id;
+
+    if (window.confirm("Are you sure?")) {
+      
+      axios
+      .delete(
+        `http://localhost:8000/api/v1/carts/${itemId}`,
+        config
+      )
+      .then(() => {
+        setCartItems(
+          cartItems.filter((item) => {
+            return itemId !== item._id;
+          })
+        );
       })
-    );
+      .catch((err) => console.log(err));
+      
+    }
   };
 
   return (

@@ -13,7 +13,7 @@ function CartItems() {
         return(
         <CartItem
           key={cartItem._id}
-          productId={cartItem._id}
+          cartItemId={cartItem._id}
           productName={cartItem.productName}
           productPrice={cartItem.productPrice}
           productQuantity={cartItem.quantity}

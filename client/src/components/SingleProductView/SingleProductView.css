@@ -93,9 +93,16 @@
 	margin-left: 20px;
 }
 
-.single-product-view-availability {
+.single-product-view-available {
 	font-size: small;
 	color: green;
+	margin: 2px 0px;
+	font-weight: 600;
+}
+
+.single-product-view-not-available {
+	font-size: small;
+	color: red;
 	margin: 2px 0px;
 	font-weight: 600;
 }
