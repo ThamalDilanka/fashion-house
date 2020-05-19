@@ -20,6 +20,8 @@ function CartItems() {
           productSize={cartItem.size}
           productColor={cartItem.color}
           productAvailableQuantity={cartItem.productAvailableQuantity}
+          isSelected={cartItem.isSelected}
+          productImage={cartItem.productImage}
         />
         )
       })}

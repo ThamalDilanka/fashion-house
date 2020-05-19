@@ -8,14 +8,12 @@ import axios from "axios";
 const Cart = (props) => {
   let arrtemp = [];
 
-  
   let total = 0;
   const customerId = Session.getId();
   const customerToken = localStorage.getItem("token");
 
   const [cartItems, setCartItems] = useContext(CartContext);
 
-  
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -38,8 +36,10 @@ const Cart = (props) => {
                   ? {
                       ...arrItem,
                       productName: res.data.data.product.name,
+                      productImage: res.data.data.product.images[0],
                       productPrice: res.data.data.product.price,
                       productAvailableQuantity: res.data.data.product.quantity,
+                      isSelected: false,
                     }
                   : arrItem;
               });
@@ -48,20 +48,19 @@ const Cart = (props) => {
             .then((res) => setCartItems(res))
             .catch((err) => console.log(err));
         });
-
       })
       .catch((err) => console.log(err));
-
   }, [total]);
 
   useMemo(
     () =>
-    cartItems.forEach((item) => {
-      total += item.productPrice * item.quantity;
-    }),
+      cartItems.forEach((item) => {
+        if (item.isSelected === true) {
+          total += item.productPrice * item.quantity;
+        }
+      }),
     [cartItems]
   );
-
 
   return (
     <div className="container-fuild p-5">
@@ -96,36 +95,37 @@ const Cart = (props) => {
             </div>
           </div>
         </div>
-
-        {/* cart summary starts */}
-        <div className="col-md-3">
-          <h4 className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-muted">Your Bill</span>
-            <span className="badge badge-secondary badge-pill">
-              {cartItems.length} Products
-            </span>
-          </h4>
-          <ul className="list-group mb-3">
-            <CartBillItems />
-            <li className="list-group-item d-flex justify-content-between bg-light">
-              <span>
-                <h5>Total Amount</h5>
+        {/* cart bill starts */}
+        {cartItems.filter((item) => item.isSelected).length > 0 ? (
+          <div className="col-md-3">
+            <h4 className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-muted">Your Bill</span>
+              <span className="badge badge-secondary badge-pill">
+                {cartItems.filter((item) => item.isSelected).length} Products
               </span>
-              <h4>
-                <strong>Rs.{total}</strong>
-              </h4>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-              <hr className="mb-4" />
-              <button
-                className="btn btn-secondary btn-lg btn-block"
-                type="submit"
-              >
-                Continue to checkout
-              </button>
-            </li>
-          </ul>
-        </div>
+            </h4>
+            <ul className="list-group mb-3">
+              <CartBillItems />
+              <li className="list-group-item d-flex justify-content-between bg-light">
+                <span>
+                  <h5>Total Amount</h5>
+                </span>
+                <h4>
+                  <strong>Rs.{total}</strong>
+                </h4>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <hr className="mb-4" />
+                <button
+                  className="btn btn-secondary btn-lg btn-block"
+                  type="submit"
+                >
+                  Continue to checkout
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : null}
       </div>
     </div>
   );

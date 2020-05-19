@@ -14,6 +14,7 @@ export function CartProvider(props) {
   // productAvailableQuantity: 20
   // productName: "sample product"
   // productPrice: 3200
+  // isSelected : false
   // quantity: 1
   // size: "L"
   // user: "5ec0c6e219ef340928857ffe"

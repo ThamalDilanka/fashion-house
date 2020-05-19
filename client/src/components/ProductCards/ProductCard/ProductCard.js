@@ -12,9 +12,9 @@ const ProductCard = (props) => {
             <div className="card shadow no-padding">
                 <div className="d-flex bd-highlight">
 
-                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt="product-discount" /> : null}
+                    {moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt="product-discount" /> : null}
 
-                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
+                    {moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
 
 
                     <div className="product-card-image-container">
