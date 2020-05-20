@@ -2,68 +2,80 @@ import React, { useState, useContext } from 'react';
 import { store } from 'react-notifications-component';
 import { Link, Redirect } from 'react-router-dom';
 import Session from '../../util/Session';
+import { storage } from '../../firebase/config';
+import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 // Assets
 import './AddProduct.css';
 
 const AddProduct = (props) => {
-	const [file, setFile] = useState('');
-	const [fileName, setFileName] = useState(
-		'Upload an eye catching image of your product'
-	);
-	const [filePath, setFilePath] = useState('');
-	const [uploadedFile, setUploadedFile] = useState({});
+	const [image, setImage] = useState(null);
+	const [imageName, setImageName] = useState('select an image');
+	const [imageURL, setImageURL] = useState(null);
+	const [error, setError] = useState('');
+	const [progress, setProgress] = useState(0);
 
 	const onImageChange = (e) => {
-		setFile(e.target.files[0]);
-		setFileName(e.target.files[0].name);
-	};
-
-	const onImageUpload = async (e) => {
-		e.preventDefault();
-		const formData = new FormData();
-		formData.append('images', file);
-		formData.append('reqtype', 'product');
-
-		try {
-			const res = await axios.post(
-				'http://localhost:8000/api/v1/products/images',
-				formData,
-				{
-					headers: {
-						'Content-Type': 'multipart/form-data',
-						Authorization: `Bearer ${Session.getToken()}`,
-					},
-				}
-			);
-
-			const { fileName, filePath } = res.data.data;
-			setUploadedFile({ fileName, filePath });
-		} catch (err) {
-			console.log(err.response);
+		// Check for only image files
+		if (e.target.files[0].type.startsWith('image/')) {
+			setImage(e.target.files[0]);
+			setImageName(e.target.files[0].name);
+		} else {
+			setError('Please upload a image file');
+			setImage(null);
 		}
 	};
 
-	const onProductFormSubmit = (e) => {
-		e.preventDefault();
+	const onImageUpload = () => {
+		const uploadTask = storage.ref(`images/${image.name}`).put(image);
+
+		uploadTask.on(
+			'state_changed',
+			(snapshot) => {
+				setProgress(
+					Math.round(
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+					)
+				);
+			},
+			(err) => {
+				console.log(err);
+			},
+			() => {
+				storage
+					.ref('images')
+					.child(image.name)
+					.getDownloadURL()
+					.then((url) => setImageURL(url));
+			}
+		);
 	};
+
+	const onProductFormSubmit = (e) => {};
 
 	return (
 		<React.Fragment>
 			<div className='container'>
 				<h3>Add New Product</h3>
 				<hr />
-				<div
-					className='product-add-image-container'
-					onChange={onImageUpload}
-				>
+				<div className='product-add-image-container'>
 					<img
-						className='product-add-uploaded-image hide-element'
-						src=''
-						alt=''
+						className={
+							imageURL
+								? 'product-add-uploaded-image'
+								: 'product-add-uploaded-image hide-element'
+						}
+						src={imageURL}
+						alt='product'
 					/>
-					<form className='product-add-image-upload-form'>
+					<div
+						className={
+							imageURL
+								? 'product-add-image-upload-form hide-element'
+								: 'product-add-image-upload-form'
+						}
+					>
 						<i
 							className='product-image-icon fa fa-file-image-o'
 							aria-hidden='true'
@@ -82,13 +94,26 @@ const AddProduct = (props) => {
 								className='custom-file-label'
 								htmlFor='customFile'
 							>
-								{fileName}
+								{imageName}
 							</label>
 						</div>
-						<button className='product-image-uploading-button'>
+						<button
+							disabled={!image}
+							className='product-image-uploading-button'
+							onClick={onImageUpload}
+						>
 							Upload
 						</button>
-					</form>
+						<br />
+
+						{progress === 0 ? null : (
+							<progress
+								style={{ width: '100%' }}
+								value={progress}
+								max='100'
+							></progress>
+						)}
+					</div>
 				</div>
 				<br />
 				<form onSubmit={onProductFormSubmit}>
