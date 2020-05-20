@@ -1,45 +1,103 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../../contexts/CartContext";
+import axios from "axios";
+import "./CartItem.css";
 
 function CartItem(props) {
-  const itemId = props.productId;
+  const itemId = props.cartItemId;
+
+  const customerToken = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + customerToken,
+    },
+  };
 
   const [cartItems, setCartItems] = useContext(CartContext);
 
+  const removeCartItem = (itemId) => {
+    if (window.confirm("Are you sure?")) {
+      axios
+        .delete(`http://localhost:8000/api/v1/carts/${itemId}`, config)
+        .then(() => {
+          setCartItems(
+            cartItems.filter((item) => {
+              return itemId !== item._id;
+            })
+          );
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const decreaseQuantity = (itemId, currentQty) => {
-    setCartItems((currentCartItems) =>
-      currentCartItems.map((item) =>
-        itemId === item._id
-          ? { ...item, quantity: currentQty - 1 }
-          : item
+    axios
+      .patch(
+        `http://localhost:8000/api/v1/carts/${itemId}`,
+        {
+          quantity: currentQty - 1,
+        },
+        config
       )
-    );
+      .then(() => {
+        setCartItems((currentCartItems) =>
+          currentCartItems.map((item) =>
+            itemId === item._id ? { ...item, quantity: currentQty - 1 } : item
+          )
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   const increseQuantity = (itemId, currentQty) => {
-    setCartItems((currentCartItems) =>
-      currentCartItems.map((item) =>
-        itemId === item._id
-          ? { ...item, quantity: currentQty + 1 }
-          : item
+    axios
+      .patch(
+        `http://localhost:8000/api/v1/carts/${itemId}`,
+        {
+          quantity: currentQty + 1,
+        },
+        config
       )
-    );
+      .then(() => {
+        setCartItems((currentCartItems) =>
+          currentCartItems.map((item) =>
+            itemId === item._id ? { ...item, quantity: currentQty + 1 } : item
+          )
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
-  const removeCartItem = (itemId) => {
-    setCartItems(
-      cartItems.filter((item) => {
-        return itemId !== item._id;
-      })
+  const handleOnChange = (e, itemId) => {
+    // console.log(e.target.checked + '  ' + itemId)
+
+    const isChecked = e.target.checked;
+
+    setCartItems((currentCartItems) =>
+      currentCartItems.map((item) =>
+        itemId === item._id ? { ...item, isSelected: isChecked } : item
+      )
     );
+
+    console.log(cartItems);
   };
 
   return (
     <tr>
       <th scope="row">
         <div className="p-2">
+          <label>
+            <input
+              onChange={(e) => handleOnChange(e, itemId)}
+              type="checkbox"
+              name="check"
+            />{" "}
+            <span className="label-text"></span>
+          </label>
           <img
-            src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-2_qxjis2.jpg"
+            src={`./images/products/${props.productImage}`}
             alt=""
             width="70"
             className="img-fluid rounded shadow-sm"
@@ -63,22 +121,29 @@ function CartItem(props) {
       <td className="align-middle">
         <strong>{`Rs. ${props.productPrice * props.productQuantity}`}</strong>
       </td>
+
       <td className="align-middle">
-        <button
-          onClick={() => decreaseQuantity(itemId, props.productQuantity)}
-          className="badge badge-secondary"
-          disabled={props.productQuantity === 1}
-        >
-          -
-        </button>
-        <strong>{props.productQuantity}</strong>
-        <button
-          onClick={() => increseQuantity(itemId, props.productQuantity)}
-          className="badge badge-secondary"
-          disabled={props.productQuantity === props.productAvailableQuantity}
-        >
-          +
-        </button>
+        <div className="btn-group" role="group" aria-label="Basic example">
+          <button
+            type="button"
+            onClick={() => decreaseQuantity(itemId, props.productQuantity)}
+            disabled={props.productQuantity === 1}
+            className="btn btn-secondary"
+          >
+            <strong>-</strong>
+          </button>
+          <button type="button" className="btn btn-secondary" disabled>
+            <strong>{props.productQuantity}</strong>
+          </button>
+          <button
+            type="button"
+            onClick={() => increseQuantity(itemId, props.productQuantity)}
+            disabled={props.productQuantity === props.productAvailableQuantity}
+            className="btn btn-secondary"
+          >
+            <strong>+</strong>
+          </button>
+        </div>
       </td>
       <td className="align-middle">
         <a onClick={() => removeCartItem(itemId)} className="text-dark">

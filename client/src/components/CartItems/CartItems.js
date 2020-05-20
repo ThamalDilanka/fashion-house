@@ -13,13 +13,15 @@ function CartItems() {
         return(
         <CartItem
           key={cartItem._id}
-          productId={cartItem._id}
+          cartItemId={cartItem._id}
           productName={cartItem.productName}
           productPrice={cartItem.productPrice}
           productQuantity={cartItem.quantity}
           productSize={cartItem.size}
           productColor={cartItem.color}
           productAvailableQuantity={cartItem.productAvailableQuantity}
+          isSelected={cartItem.isSelected}
+          productImage={cartItem.productImage}
         />
         )
       })}

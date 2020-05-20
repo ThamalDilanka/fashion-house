@@ -12,9 +12,9 @@ const ProductCard = (props) => {
             <div className="card shadow no-padding">
                 <div className="d-flex bd-highlight">
 
-                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt="product-discount" /> : null}
+                    {moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) && props.discount.percentage ? <img className="product-discount-tag" src={discountPic} alt="product-discount" /> : null}
 
-                    {moment().isSameOrBefore(props.discount.until) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
+                    {moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) && props.discount.percentage ? <p className="product-discount-value">Discount {props.discount.percentage}%</p> : null}
 
 
                     <div className="product-card-image-container">
@@ -38,6 +38,19 @@ const ProductCard = (props) => {
                     <Link to={{
                         pathname: '/product-view',
                         hash: props.id,
+
+                        state: {
+                            discount: props.discount,
+                            image: props.image,
+                            sizes: props.sizes,
+                            colors: props.colors,
+                            avgRating: props.avgRating,
+                            name: props.name,
+                            categoryId: props.categoryId,
+                            availableQuantity: props.availableQuantity,
+                            price: props.price,
+                            description: props.description
+                        }
                     }}>
                         <button className="product-view-btn">View</button>
                     </Link>

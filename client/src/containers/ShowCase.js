@@ -11,8 +11,6 @@ const ShowCase = (props) => {
 	const categoryIdHash = props.location.hash; 
 	const categoryId = categoryIdHash.substring(1); 
 
-
-
 	useEffect(() => {
 		axios.get(`http://localhost:8000/api/v1/products?category=${categoryId}`)
 			.then(res => setProducts(res.data.data.products))
