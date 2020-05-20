@@ -2,6 +2,7 @@ const express = require('express');
 const productController = require('./../controllers/productController');
 const fileHandler = require('../util/fileHandler');
 const authController = require('../controllers/authController');
+const googleCloud = require('../util/googleCloud')
 
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router
 	.post(
 		authController.protect,
 		fileHandler.uploadImages,
-		fileHandler.resizeImages
+		fileHandler.resizeImages,
+		googleCloud.uploadToBucket
 	);
 
 router
