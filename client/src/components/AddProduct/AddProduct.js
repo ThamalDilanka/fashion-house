@@ -1,338 +1,401 @@
 import React, { useState, useContext } from 'react';
 import { store } from 'react-notifications-component';
 import { Link, Redirect } from 'react-router-dom';
+import Session from '../../util/Session';
 import axios from 'axios';
 
 // Assets
 import './AddProduct.css';
 
 const AddProduct = (props) => {
+	const [file, setFile] = useState('');
+	const [fileName, setFileName] = useState(
+		'Upload an eye catching image of your product'
+	);
+	const [filePath, setFilePath] = useState('');
+	const [uploadedFile, setUploadedFile] = useState({});
+
+	const onImageChange = (e) => {
+		setFile(e.target.files[0]);
+		setFileName(e.target.files[0].name);
+	};
+
+	const onImageUpload = async (e) => {
+		e.preventDefault();
+		const formData = new FormData();
+		formData.append('images', file);
+		formData.append('reqtype', 'product');
+
+		try {
+			const res = await axios.post(
+				'http://localhost:8000/api/v1/products/images',
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${Session.getToken()}`,
+					},
+				}
+			);
+
+			const { fileName, filePath } = res.data.data;
+			setUploadedFile({ fileName, filePath });
+		} catch (err) {
+			console.log(err.response);
+		}
+	};
+
+	const onProductFormSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	return (
 		<React.Fragment>
 			<div className='container'>
 				<h3>Add New Product</h3>
 				<hr />
-				<form>
-					<div class='form-row'>
-						<div class='col-md mb-3'>
-							<label>Product Title</label>
+				<div
+					className='product-add-image-container'
+					onChange={onImageUpload}
+				>
+					<img
+						className='product-add-uploaded-image hide-element'
+						src=''
+						alt=''
+					/>
+					<form className='product-add-image-upload-form'>
+						<i
+							className='product-image-icon fa fa-file-image-o'
+							aria-hidden='true'
+						></i>
+						<p className='product-image-uploading-message'>
+							Click on the bellow bar to choose a photo from you
+							device
+						</p>
+						<div className='product-add-file-input custom-file'>
+							<input
+								type='file'
+								className='custom-file-input'
+								onChange={onImageChange}
+							/>
+							<label
+								className='custom-file-label'
+								htmlFor='customFile'
+							>
+								{fileName}
+							</label>
+						</div>
+						<button className='product-image-uploading-button'>
+							Upload
+						</button>
+					</form>
+				</div>
+				<br />
+				<form onSubmit={onProductFormSubmit}>
+					<div className='form-row'>
+						<div className='col-md mb-3'>
+							<label>Product Name</label>
 							<input
 								type='text'
-								class='form-control is-valid'
+								className='form-control'
 								required
 							/>
-							<div class='valid-feedback'>Looks good!</div>
+							<div className='valid-feedback'>Looks good!</div>
 						</div>
 					</div>
-					<div class='form-row'>
-						<div class='col-md mb-3'>
+					<div className='form-row'>
+						<div className='col-md mb-3'>
 							<label>Product Description</label>
 							<textarea
-								class='form-control is-valid'
+								className='form-control is-valid'
 								placeholder='Required example textarea'
 								required
 							></textarea>
-							<div class='valid-feedback'>
+							<div className='valid-feedback'>
 								Please enter a message in the textarea.
 							</div>
 						</div>
 					</div>
 
-					<div class='form-row'>
-						<div class='col-md-4 mb-3'>
+					<div className='form-row'>
+						<div className='col-md-4 mb-3'>
 							<label>Price</label>
-							<div class='input-group'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Rs</span>
+							<div className='input-group'>
+								<div className='input-group-prepend'>
+									<span className='input-group-text'>Rs</span>
 								</div>
 								<input
 									type='number'
-									class='form-control is-valid'
+									className='form-control is-valid'
 									required
 								/>
-								<div class='valid-feedback'>
+								<div className='valid-feedback'>
 									Please choose a username.
 								</div>
 							</div>
 						</div>
-						<div class='col-md-4 mb-3'>
+						<div className='col-md-4 mb-3'>
 							<label>Quantity</label>
 							<input
 								type='number'
-								class='form-control is-valid'
+								className='form-control is-valid'
 								required
 							/>
-							<div class='valid-feedback'>Looks good!</div>
+							<div className='valid-feedback'>Looks good!</div>
 						</div>
-						<div class='col-md-4 mb-3'>
+						<div className='col-md-4 mb-3'>
 							<label>Category</label>
-							<select class='custom-select is-valid' required>
-								<option selected disabled value=''>
-									Choose...
-								</option>
+							<select className='custom-select is-valid' required>
 								<option>...</option>
 								<option>...</option>
 								<option>...</option>
 							</select>
-							<div class='invalid-feedback'>
+							<div className='invalid-feedback'>
 								Please select a valid state.
 							</div>
 						</div>
 					</div>
 
-					<div class='form-row'>
-						<div class='col-md-4 mb-3'>
-							<label for='validationServer01'>
+					<div className='form-row'>
+						<div className='col-md-4 mb-3'>
+							<label htmlFor='validationServer01'>
 								Discount (Optional)
 							</label>
 							<input
 								type='number'
-								class='form-control is-valid'
+								className='form-control is-valid'
 							/>
-							<div class='valid-feedback'>Looks good!</div>
+							<div className='valid-feedback'>Looks good!</div>
 						</div>
-						<div class='col-md-4 mb-3'>
-							<label for='validationServer02'>From</label>
+						<div className='col-md-4 mb-3'>
+							<label htmlFor='validationServer02'>From</label>
 							<input
 								type='date'
-								class='form-control is-valid'
+								className='form-control is-valid'
 								id='validationServer02'
 							/>
-							<div class='valid-feedback'>Looks good!</div>
+							<div className='valid-feedback'>Looks good!</div>
 						</div>
-						<div class='col-md-4 mb-3'>
-							<label for='validationServer02'>Until</label>
+						<div className='col-md-4 mb-3'>
+							<label htmlFor='validationServer02'>Until</label>
 							<input
 								type='date'
-								class='form-control is-valid'
+								className='form-control is-valid'
 								id='validationServer02'
 							/>
-							<div class='valid-feedback'>Looks good!</div>
+							<div className='valid-feedback'>Looks good!</div>
 						</div>
 					</div>
-					<div class='form-row'>
-						<div class='col-md-6 mb-3'>
-							<label for='validationServer02'>
+					<div className='form-row'>
+						<div className='col-md-6 mb-3'>
+							<label htmlFor='validationServer02'>
 								Available Sizes
 							</label>
 							<br />
 
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck1'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck1'
+									className='custom-control-label'
+									htmlFor='customCheck1'
 								>
 									XXS
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck2'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck2'
+									className='custom-control-label'
+									htmlFor='customCheck2'
 								>
 									XS
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck3'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck3'
+									className='custom-control-label'
+									htmlFor='customCheck3'
 								>
 									S
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck4'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck4'
+									className='custom-control-label'
+									htmlFor='customCheck4'
 								>
 									M
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck6'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck6'
+									className='custom-control-label'
+									htmlFor='customCheck6'
 								>
 									L
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck7'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck7'
+									className='custom-control-label'
+									htmlFor='customCheck7'
 								>
 									XL
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck8'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck8'
+									className='custom-control-label'
+									htmlFor='customCheck8'
 								>
 									XXL
 								</label>
 							</div>
 						</div>
-						<div class='col-md-6 mb-3'>
-							<label for='validationServer02'>
+						<div className='col-md-6 mb-3'>
+							<label htmlFor='validationServer02'>
 								Available Sizes
 							</label>
 							<br />
 
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck1'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck1'
+									className='custom-control-label'
+									htmlFor='customCheck1'
 								>
 									XXS
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck2'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck2'
+									className='custom-control-label'
+									htmlFor='customCheck2'
 								>
 									XS
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck3'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck3'
+									className='custom-control-label'
+									htmlFor='customCheck3'
 								>
 									S
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck4'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck4'
+									className='custom-control-label'
+									htmlFor='customCheck4'
 								>
 									M
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck6'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck6'
+									className='custom-control-label'
+									htmlFor='customCheck6'
 								>
 									L
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck7'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck7'
+									className='custom-control-label'
+									htmlFor='customCheck7'
 								>
 									XL
 								</label>
 							</div>
-							<div class='custom-control custom-checkbox custom-control-inline'>
+							<div className='custom-control custom-checkbox custom-control-inline'>
 								<input
 									type='checkbox'
-									class='custom-control-input'
+									className='custom-control-input'
 									id='customCheck8'
 								/>
 								<label
-									class='custom-control-label'
-									for='customCheck8'
+									className='custom-control-label'
+									htmlFor='customCheck8'
 								>
 									XXL
 								</label>
 							</div>
 						</div>
 					</div>
-					<div class='form-row'>
-						<div class='col-md-12 mb-3'>
-							<label for='validationServer01'>
-								Select an image
-							</label>
-							<div class='custom-file'>
-								<input
-									type='file'
-									class='custom-file-input'
-									id='customFile'
-								/>
-								<label
-									class='custom-file-label'
-									for='customFile'
-								>
-									Choose file
-								</label>
-							</div>
-							<div class='valid-feedback'>Looks good!</div>
-						</div>
-					</div><br/>
-					<button class='btn btn-primary float-right' type='submit'>
+
+					<button
+						className='btn btn-primary float-right'
+						type='submit'
+					>
 						Add Product
-					</button><br/><br/>
-				</form><br/><br/>
+					</button>
+					<br />
+					<br />
+				</form>
+				<br />
+				<br />
 			</div>
 		</React.Fragment>
 	);
