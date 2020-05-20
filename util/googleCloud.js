@@ -1,6 +1,5 @@
 const { Storage } = require('@google-cloud/storage');
 const path = require('path');
-const fs = require("fs");
 
 const googleCloud = new Storage({
 	keyFilename: path.join(
@@ -21,11 +20,10 @@ exports.uploadToBucket = (req, res, next) => {
 			gzip: true,
 		})
 		.then(() => {
-
 			res.status(201).json({
 				status: 'success',
 				data: {
-                    message: 'Image uploaded successfully to the cloud',
+					message: 'Image uploaded successfully to the cloud',
 					fileName: req.fileName,
 					url: `https://storage.googleapis.com/fashion_house/${req.fileName}`,
 				},
