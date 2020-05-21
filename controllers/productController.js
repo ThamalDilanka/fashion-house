@@ -33,6 +33,7 @@ exports.getAllProducts = async (req, res) => {
 			.sort()
 			.limitFields()
 			.paginate();
+
 		const products = await features.query;
 
 		// Send response
