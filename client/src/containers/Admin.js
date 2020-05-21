@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import Session from '../util/Session';
 import { AuthContext } from '../contexts/AuthContext';
 import { store } from 'react-notifications-component';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, Switch, Route } from 'react-router-dom';
 import AddProduct from '../components/AddProduct/AddProduct';
+import StoreManagers from '../components/StoreManagers/StoreManagerItems';
 
 const Admin = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
@@ -54,25 +55,37 @@ const Admin = (props) => {
 					</header>
 					<ul>
 						<li>
-							<a href='#'>
-								<i className='fa fa-qrcode'></i>Dashboard
-							</a>
+							<Link to='/admin'>
+								<i className='fa fa-bar-chart'></i>Dashboard
+							</Link>
 						</li>
 						<li>
-							<a href='#'>
-								<i className='fa fa-link'></i>Staff
-							</a>
+							<Link to='/admin/store-managers'>
+								<i className='fa fa-user'></i>Staff
+							</Link>
 						</li>
 						<li>
-							<a href='#'>
+							<Link to='/admin/categories'>
 								<i className='fa fa-stream'></i>Categories
-							</a>
+							</Link>
+						</li>
+
+						<li>
+							<Link to='/admin/products'>
+								<i className='fa fa-shopping-bag'></i>Products
+							</Link>
 						</li>
 					</ul>
 				</div>
 
 				<section className='admin-panel-content-container'>
-					<AddProduct></AddProduct>
+					<Switch>
+						<Route path='/admin/products' component={AddProduct} />
+						<Route
+							path='/admin/store-managers'
+							component={StoreManagers}
+						/>
+					</Switch>
 				</section>
 			</div>
 		</React.Fragment>
