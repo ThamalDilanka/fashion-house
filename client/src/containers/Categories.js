@@ -45,7 +45,7 @@ const Categories = () => {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <h5 className="modal-title text-center" id="staticBackdropLabel">Add a New Category To The Store</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -68,7 +68,7 @@ const Categories = () => {
                                         onChange={e => setDescription(e.target.value)}/>
                                     </div>
                                     <div className="form-group">
-                                        <label>Add image</label>
+                                        <label>Choose an image</label>
                                         <input type="file" className="form-control" id="exampleInputPic"
                                         onChange={e => setImage( e.target.files)} />
                                     </div>
