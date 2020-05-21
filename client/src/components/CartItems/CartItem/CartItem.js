@@ -95,6 +95,10 @@ function CartItem(props) {
               name="check"
             />{" "}
             <span className="label-text"></span>
+          {/* <div className="custom-control custom-checkbox">
+            <input type="checkbox" className="custom-control-input"/>
+            <label className="custom-control-label"></label>
+          </div> */}
           </label>
           <img
             src={`./images/products/${props.productImage}`}

@@ -18,6 +18,7 @@ const LoginModule = (props) => {
 	const [email, setEmail] = useState('thamaldilanke@email.com');
 	const [password, setPassword] = useState('pass@123');
 	const [error, setError] = useState(undefined);
+	const [role, setRole] = useState('customer');
 
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
 
@@ -50,7 +51,7 @@ const LoginModule = (props) => {
 					title: `${timeGreeting()} ${
 						Session.getName().split(' ')[0]
 					}!`,
-					message: 'You have successfully logged in',
+					message: 'You have successfully logged in as the Admin',
 					type: 'success',
 					insert: 'top-right',
 					container: 'top-right',
@@ -61,9 +62,6 @@ const LoginModule = (props) => {
 						showIcon: true,
 					},
 				});
-
-				// Redirecting to the home
-				props.history.push('/');
 			})
 			.catch((err) => {
 				// Remove the token from the local storage
@@ -77,7 +75,9 @@ const LoginModule = (props) => {
 
 	return (
 		<React.Fragment>
-			{Session.isLoggedIn() ? <Redirect to='/' /> : null}
+			{Session.getRole() === 'customer' ? <Redirect to='/' /> : null}
+			{Session.getRole() === 'store-manager' ? <Redirect to='/store-manager' /> : null}
+			{Session.getRole() === 'admin' ? <Redirect to='/admin' /> : null}
 
 			<div className='container signup-container card'>
 				<div className='row'>

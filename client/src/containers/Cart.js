@@ -68,7 +68,7 @@ const Cart = (props) => {
         <div className="col-md-9">
           {/* Table Starts */}
           <div className="row">
-            <div className="col-sm-12 p-5 bg-white rounded shadow-sm mb-5">
+            <div className="col-sm-12 bg-white rounded shadow-sm mb-5">
               <div className="table-responsive">
                 <table className="table">
                   <thead>
