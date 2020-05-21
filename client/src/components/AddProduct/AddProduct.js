@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { store } from 'react-notifications-component';
 import { Link, Redirect } from 'react-router-dom';
 import Session from '../../util/Session';
@@ -14,6 +14,22 @@ const AddProduct = (props) => {
 	const [imageURL, setImageURL] = useState(null);
 	const [error, setError] = useState('');
 	const [progress, setProgress] = useState(0);
+
+	const [categories, setCategories] = useState([]);
+
+	useEffect(() => {
+
+		// Getting the categories from the API
+		axios
+			.get('http://localhost:8000/api/v1/categories')
+			.then((res) => {
+				console.log(res.data);
+				setCategories([...res.data.data.categories]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	const onImageChange = (e) => {
 		// Check for only image files
@@ -145,7 +161,7 @@ const AddProduct = (props) => {
 								className='form-control'
 								required
 							/>
-							<div className='valid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 					</div>
 					<div className='form-row'>
@@ -156,7 +172,7 @@ const AddProduct = (props) => {
 								placeholder='Required example textarea'
 								required
 							></textarea>
-							<div className='valid-feedback'>
+							<div className='invalid-feedback'>
 								Please enter a message in the textarea.
 							</div>
 						</div>
@@ -174,7 +190,7 @@ const AddProduct = (props) => {
 									className='form-control is-valid'
 									required
 								/>
-								<div className='valid-feedback'>
+								<div className='invalid-feedback'>
 									Please choose a username.
 								</div>
 							</div>
@@ -186,14 +202,14 @@ const AddProduct = (props) => {
 								className='form-control is-valid'
 								required
 							/>
-							<div className='valid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 						<div className='col-md-4 mb-3'>
 							<label>Category</label>
 							<select className='custom-select is-valid' required>
-								<option>...</option>
-								<option>...</option>
-								<option>...</option>
+								{
+									categories.map(category => <option>{category.title}</option>)
+								}
 							</select>
 							<div className='invalid-feedback'>
 								Please select a valid state.
@@ -210,7 +226,7 @@ const AddProduct = (props) => {
 								type='number'
 								className='form-control is-valid'
 							/>
-							<div className='valid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 						<div className='col-md-4 mb-3'>
 							<label htmlFor='validationServer02'>From</label>
@@ -219,7 +235,7 @@ const AddProduct = (props) => {
 								className='form-control is-valid'
 								id='validationServer02'
 							/>
-							<div className='valid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 						<div className='col-md-4 mb-3'>
 							<label htmlFor='validationServer02'>Until</label>
@@ -228,7 +244,7 @@ const AddProduct = (props) => {
 								className='form-control is-valid'
 								id='validationServer02'
 							/>
-							<div className='valid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 					</div>
 					<div className='form-row'>
