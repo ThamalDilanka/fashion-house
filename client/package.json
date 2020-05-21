@@ -12,6 +12,7 @@
 		"jwt-decode": "^2.2.0",
 		"moment": "^2.25.3",
 		"react": "^16.13.1",
+		"react-collapsible": "^2.8.0",
 		"react-dom": "^16.13.1",
 		"react-notifications-component": "^2.4.0",
 		"react-router": "^5.2.0",
