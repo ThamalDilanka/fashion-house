@@ -1,0 +1,18 @@
+.admin-panel-store-manager-image {
+	width: 30px;
+}
+
+.admin-panel-store-manager-action {
+	padding: 3px 10px;
+	border: none;
+	background: none;
+	color: rgb(202, 0, 0);
+}
+
+.admin-panel-store-manager-action:focus {
+	outline: none;
+}
+
+.admin-panel-store-manager-action:hover {
+	color: rgb(226, 0, 0);
+}

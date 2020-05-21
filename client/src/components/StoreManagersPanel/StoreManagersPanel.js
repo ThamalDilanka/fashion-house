@@ -6,15 +6,33 @@ import { storage } from '../../firebase/config';
 import axios from 'axios';
 import Collapsible from 'react-collapsible';
 import randomString from 'randomstring';
+import StoreManagerItems from '../StoreManagers/StoreManagerItems';
 
 // Assets
 import './StoreManagersPanel.css';
 
 const StoreManagersPanel = (props) => {
-	const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+	const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
+
+	const [storeManagers, setStoreManagers] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:8000/api/v1/users?role=store-manager', {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				setStoreManagers([...res.data.data.users]);
+			})
+			.catch((err) => {
+				console.log(err.response);
+			});
+	}, []);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
@@ -41,11 +59,15 @@ const StoreManagersPanel = (props) => {
 		};
 
 		axios
-			.post('http://localhost:8000/api/v1/users/signup', newStoreManager, {
-				headers: {
-					Authorization: `Bearer ${Session.getToken()}`,
-				},
-			})
+			.post(
+				'http://localhost:8000/api/v1/users/signup',
+				newStoreManager,
+				{
+					headers: {
+						Authorization: `Bearer ${Session.getToken()}`,
+					},
+				}
+			)
 			.then((res) => {
 				console.log(res.data);
 				// Show a notification
@@ -90,7 +112,7 @@ const StoreManagersPanel = (props) => {
 				</div>
 				<hr />
 				<Collapsible open={isRegistrationOpen}>
-					<form onSubmit={onRegistrationSubmit}>
+					<div>
 						<div className='form-row'>
 							<div className='col-md-6 mb-3'>
 								<label>First name</label>
@@ -138,7 +160,7 @@ const StoreManagersPanel = (props) => {
 
 						<button
 							className='btn btn-primary float-right'
-							type='submit'
+							onClick={onRegistrationSubmit}
 						>
 							Register
 						</button>
@@ -150,40 +172,12 @@ const StoreManagersPanel = (props) => {
 						>
 							Cancel
 						</button>
-					</form>
+					</div>
 				</Collapsible>
 
 				<br />
-				<table className='table table-striped'>
-					<thead className='thead-dark'>
-						<tr>
-							<th scope='col'>#</th>
-							<th scope='col'>First</th>
-							<th scope='col'>Last</th>
-							<th scope='col'>Handle</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope='row'>1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope='row'>2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope='row'>3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
-				</table>
+				<h5>Registered Store Manages</h5>
+				<StoreManagerItems storeManagers={storeManagers}></StoreManagerItems>
 			</div>
 		</React.Fragment>
 	);
