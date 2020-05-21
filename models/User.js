@@ -48,12 +48,17 @@ const userSchema = new mongoose.Schema({
 	},
 	image: {
 		type: String,
-		trim: true,
-		default: 'defaultAvatar.jpg', //need attention
+		trim: true, 
 	},
-	passwordChangedAt: Date,
-	passwordResetToken: String,
-	passwordResetExpires: Date,
+	passwordChangedAt: {
+		type: Date,
+	},
+	passwordResetToken: {
+		type: String,
+	},
+	passwordResetExpires: {
+		type: Date,
+	},
 });
 
 // Encryption of the password
