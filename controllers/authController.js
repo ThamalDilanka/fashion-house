@@ -11,7 +11,7 @@ const signToken = (user) => {
 			name: user.name,
 			email: user.email,
 			role: user.role,
-			image: user.image
+			image: user.image,
 		},
 		process.env.JWT_SECRET,
 		{
@@ -23,12 +23,66 @@ const signToken = (user) => {
 // Register a new user
 exports.signup = async (req, res, next) => {
 	try {
+		// Authorize the request
+		if (req.body.role === 'store-manager' || req.body.role === 'admin') {
+			let token;
+
+			// Check the token is exists in the header
+			if (
+				req.headers.authorization &&
+				req.headers.authorization.startsWith('Bearer')
+			) {
+				token = req.headers.authorization.split(' ')[1];
+			}
+
+			if (!token) {
+				throw new Error('You are not logged in. Please Logged in');
+			}
+
+			// verity the token
+			try {
+				// Decode the token and if it is invalid, twt will throw an error
+				const decoded = await promisify(jwt.verify)(
+					token,
+					process.env.JWT_SECRET
+				);
+
+				if (decoded.role !== 'admin') {
+					throw new Error(
+						'Nice try! But you are not allowed to perform this task'
+					);
+				}
+
+				// Check the user still exists
+				const currentUser = await User.findById(decoded._id);
+
+				// Check whether the request sends by admin
+				if (!currentUser) {
+					throw new Error('User no longer exists');
+				}
+
+				// Check if user changed password after the token issued
+				if (currentUser.changedPasswordAfter(decoded.iat)) {
+					throw new Element(
+						'User has changed password. Please login again.'
+					);
+				}
+			} catch (err) {
+				return res.status(400).json({
+					status: 'failed',
+					message:
+						'Nice try! But you are not allowed to perform this task',
+				});
+			}
+		}
+
 		const newUser = await User.create({
 			name: req.body.name,
 			email: req.body.email,
 			password: req.body.password,
 			passwordConfirm: req.body.passwordConfirm,
 			role: req.body.role,
+			isTemporary: req.body.isTemporary,
 			image: `https://ui-avatars.com/api/?name=${req.body.name.replace(
 				/ /g,
 				'+'
@@ -36,18 +90,40 @@ exports.signup = async (req, res, next) => {
 		});
 
 		// Creating a token
-		const token = signToken(newUser);
-
-		// Remove password from the response
-        newUser.password = undefined;
-
-		res.status(201).json({
-			status: 'success',
-			token,
-			data: {
-				user: newUser,
-			},
-		});
+		let token = signToken(newUser);
+		let isEmailSent = undefined;
+		newUser.password = undefined;
+		if (newUser.role === 'store-manager') {
+			email
+				.sendEmail(
+					newUser.email,
+					'Welcome to the Fashion House!, Your Account Has Been Created',
+					`<p>Your Temporary Password is ${req.body.password}</p>`
+				)
+				.then(() => {
+					res.status(201).json({
+						status: 'success',
+						isEmailSent: true,
+						data: {
+							user: newUser,
+						},
+					});
+				})
+				.catch((err) => {
+					return res.status(400).json({
+						status: 'failed',
+						message: 'Email sending failed',
+					});
+				});
+		} else {
+			res.status(201).json({
+				status: 'success',
+				token,
+				data: {
+					user: newUser,
+				},
+			});
+		}
 	} catch (err) {
 		res.status(400).json({
 			status: 'failed',
@@ -211,9 +287,9 @@ exports.forgotPassword = async (req, res, next) => {
 	} catch (err) {
 		user.passwordResetToken = undefined;
 		user.passwordResetExpires = undefined;
-        await user.save({ validateBeforeSave: false });
-        
-        res.status(500).json({
+		await user.save({ validateBeforeSave: false });
+
+		res.status(500).json({
 			status: 'failed',
 			message: 'There was an error sending the email. Try again later!',
 		});
