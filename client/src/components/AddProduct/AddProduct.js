@@ -16,9 +16,11 @@ const AddProduct = (props) => {
 	const [progress, setProgress] = useState(0);
 
 	const [categories, setCategories] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState(undefined);
+
+	const [availableSizes, setAvailableSizes] = useState([]);
 
 	useEffect(() => {
-
 		// Getting the categories from the API
 		axios
 			.get('http://localhost:8000/api/v1/categories')
@@ -75,6 +77,12 @@ const AddProduct = (props) => {
 		setImage(null);
 		setImageName('select an image');
 		setImageURL(null);
+	};
+
+	// Handle the category change event
+	const onCategoryChange = (e) => {
+		const tempCategory = (categories.find(el => el.title === e.target.value))
+		setSelectedCategory(tempCategory._id);
 	};
 
 	const onProductFormSubmit = (e) => {};
@@ -148,7 +156,7 @@ const AddProduct = (props) => {
 						}
 						onClick={onCloseUploadedImage}
 					>
-						<i class='fa fa-times' aria-hidden='true'></i>
+						<i className='fa fa-times' aria-hidden='true'></i>
 					</button>
 				</div>
 				<br />
@@ -205,11 +213,16 @@ const AddProduct = (props) => {
 							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 						<div className='col-md-4 mb-3'>
-							<label>Category</label>
-							<select className='custom-select is-valid' required>
-								{
-									categories.map(category => <option>{category.title}</option>)
-								}
+							<label>Category - {selectedCategory}</label>
+							<select
+								className='custom-select is-valid'
+								onChange={onCategoryChange}
+							>
+								{categories.map((category) => (
+									<option key={category._id}>
+										{category.title}
+									</option>
+								))}
 							</select>
 							<div className='invalid-feedback'>
 								Please select a valid state.
@@ -258,11 +271,11 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck1'
+									id='size-xxs'
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck1'
+									htmlFor='size-xxs'
 								>
 									XXS
 								</label>

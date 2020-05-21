@@ -47,6 +47,10 @@
 	background-color: rgb(255, 137, 1);
 }
 
+.product-image-uploading-button:disabled {
+	background-color: rgb(148, 148, 148);
+}
+
 .product-add-uploaded-image {
 	display: block;
 	margin-left: auto;
