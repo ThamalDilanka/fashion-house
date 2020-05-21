@@ -3,7 +3,6 @@ import { store } from 'react-notifications-component';
 import { Link, Redirect } from 'react-router-dom';
 import Session from '../../util/Session';
 import { storage } from '../../firebase/config';
-import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 // Assets
