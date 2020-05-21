@@ -188,6 +188,20 @@ const AddProduct = (props) => {
 			})
 			.then((res) => {
 				console.log(res.data);
+				// Show a notification
+				store.addNotification({
+					title: `${res.data.data.product.name} Successfully added`,
+					message: 'Inserted product is now available in the store',
+					type: 'success',
+					insert: 'top-right',
+					container: 'top-right',
+					animationIn: ['animated', 'fadeIn'],
+					animationOut: ['animated', 'fadeOut'],
+					dismiss: {
+						duration: 3000,
+						showIcon: true,
+					},
+				});
 			})
 			.catch((err) => {
 				console.log(err.response);
