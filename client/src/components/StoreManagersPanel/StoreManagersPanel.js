@@ -5,6 +5,7 @@ import Session from '../../util/Session';
 import { storage } from '../../firebase/config';
 import axios from 'axios';
 import Collapsible from 'react-collapsible';
+import randomString from 'randomstring';
 
 // Assets
 import './StoreManagersPanel.css';
@@ -29,6 +30,42 @@ const StoreManagersPanel = (props) => {
 
 	const onRegistrationSubmit = (e) => {
 		e.preventDefault();
+		const randomPassword = randomString.generate(10);
+		const newStoreManager = {
+			name: `${firstName} ${lastName}`,
+			email: email,
+			password: randomPassword,
+			passwordConfirm: randomPassword,
+			role: 'store-manager',
+			isTemporary: true,
+		};
+
+		axios
+			.post('http://localhost:8000/api/v1/users/signup', newStoreManager, {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+				// Show a notification
+				store.addNotification({
+					title: `${res.data.data.user.name} successfully registered as a Store Manager`,
+					message: 'Email has been sent with login credentials',
+					type: 'success',
+					insert: 'top-right',
+					container: 'top-right',
+					animationIn: ['animated', 'fadeIn'],
+					animationOut: ['animated', 'fadeOut'],
+					dismiss: {
+						duration: 5000,
+						showIcon: true,
+					},
+				});
+			})
+			.catch((err) => {
+				console.log(err.response);
+			});
 
 		setIsRegistrationOpen(false);
 	};
