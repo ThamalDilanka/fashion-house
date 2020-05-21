@@ -16,6 +16,7 @@ export function CartProvider(props) {
   // productPrice: 3200
   // isSelected : false
   // quantity: 1
+  // productDiscount: res.data.data.product.discount,
   // size: "L"
   // user: "5ec0c6e219ef340928857ffe"
   // __v: 0

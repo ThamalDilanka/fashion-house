@@ -17,6 +17,7 @@ function CartBillItems() {
             productSize={cartItem.size}
             productColor={cartItem.color}
             isSelected={cartItem.isSelected}
+            productDiscount={cartItem.productDiscount}
           />
         ) : null
       )}
