@@ -27,6 +27,7 @@ const AddProduct = (props) => {
 	};
 
 	const onImageUpload = () => {
+		setProgress(5);
 		const uploadTask = storage.ref(`images/${image.name}`).put(image);
 
 		uploadTask.on(
@@ -39,16 +40,25 @@ const AddProduct = (props) => {
 				);
 			},
 			(err) => {
-				console.log(err);
+				setError(err.message);
 			},
 			() => {
 				storage
 					.ref('images')
 					.child(image.name)
 					.getDownloadURL()
-					.then((url) => setImageURL(url));
+					.then((url) => {
+						setImageURL(url);
+						setProgress(0);
+					});
 			}
 		);
+	};
+
+	const onCloseUploadedImage = () => {
+		setImage(null);
+		setImageName('select an image');
+		setImageURL(null);
 	};
 
 	const onProductFormSubmit = (e) => {};
@@ -86,6 +96,7 @@ const AddProduct = (props) => {
 						<div className='product-add-file-input custom-file'>
 							<input
 								type='file'
+								accept='image/*'
 								className='custom-file-input'
 								onChange={onImageChange}
 							/>
@@ -113,6 +124,16 @@ const AddProduct = (props) => {
 							></progress>
 						)}
 					</div>
+					<button
+						className={
+							imageURL
+								? 'product-add-select-another-image-btn'
+								: 'product-add-select-another-image-btn hide-element'
+						}
+						onClick={onCloseUploadedImage}
+					>
+						<i class='fa fa-times' aria-hidden='true'></i>
+					</button>
 				</div>
 				<br />
 				<form onSubmit={onProductFormSubmit}>
