@@ -5,17 +5,18 @@ import { CartContext } from '../contexts/CartContext';
 import Session from '../util/Session';
 import axios from 'axios';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 
 const Cart = (props) => {
 	let arrtemp = [];
+	const orderItemsArray = [];
 
 	let total = 0;
 	const customerId = Session.getId();
 	const customerToken = localStorage.getItem('token');
 
-  const [cartItems, setCartItems] = useContext(CartContext);
-  
+	const [cartItems, setCartItems] = useContext(CartContext);
+
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -65,22 +66,31 @@ const Cart = (props) => {
 			.catch((err) => console.log(err));
 	}, [total]);
 
-	useMemo(
-		() =>
-			cartItems.forEach((item) => {
-				if (item.isSelected === true && item.productDiscount &&
-          moment().isSameOrBefore(item.productDiscount.until) &&
-          moment().isSameOrAfter(item.productDiscount.from) &&
-          item.productDiscount.percentage) {
-					total += ((item.productPrice - (item.productPrice * ((item.productDiscount.percentage) / 100))).toFixed(2) * item.quantity);
-        }
-        else if(item.isSelected === true){
-          total += item.productPrice * item.quantity;
-        }
-			}),
-		[cartItems]
-  );
-  
+	useMemo(() => {
+		cartItems.forEach((item) => {
+			if (
+				item.isSelected === true &&
+				item.productDiscount &&
+				moment().isSameOrBefore(item.productDiscount.until) &&
+				moment().isSameOrAfter(item.productDiscount.from) &&
+				item.productDiscount.percentage
+			) {
+				total +=
+					(
+						item.productPrice -
+						item.productPrice * (item.productDiscount.percentage / 100)
+					).toFixed(2) * item.quantity;
+			} else if (item.isSelected === true) {
+				total += item.productPrice * item.quantity;
+			}
+		});
+
+		cartItems.forEach((item) => {
+			if (item.isSelected) {
+				orderItemsArray.push(item);
+			}
+		});
+	}, [cartItems]);
 
 	return (
 		<div className="container-fuild p-5">
@@ -97,7 +107,7 @@ const Cart = (props) => {
 												<label>
 													<input
 														onChange={(e) => handleChange(e)}
-                            type="checkbox"
+														type="checkbox"
 													/>
 													<span className="label-text"></span>
 												</label>
@@ -129,7 +139,7 @@ const Cart = (props) => {
 						<h4 className="d-flex justify-content-between align-items-center mb-3">
 							<span className="text-muted">Your Bill</span>
 							<span className="badge badge-secondary badge-pill">
-								{cartItems.filter((item) => item.isSelected).length} Products
+								{cartItems.filter((item) => item.isSelected).length} Items
 							</span>
 						</h4>
 						<ul className="list-group mb-3">
@@ -143,13 +153,21 @@ const Cart = (props) => {
 								</h4>
 							</li>
 							<li className="list-group-item d-flex justify-content-between">
-								<hr className="mb-4" />
-								<button
-									className="btn btn-secondary btn-lg btn-block"
-									type="submit"
+								<Link
+									to={{
+										pathname: '/payment',
+										state: {
+											orderItems: orderItemsArray,
+										},
+									}}
 								>
-									Continue to checkout
-								</button>
+									<button
+										className="btn btn-secondary btn-lg btn-block"
+										type="submit"
+									>
+										Continue to checkout
+									</button>
+								</Link>
 							</li>
 						</ul>
 					</div>
