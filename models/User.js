@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
 	},
 	image: {
 		type: String,
-		trim: true, 
+		trim: true,
 	},
 	passwordChangedAt: {
 		type: Date,
@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema({
 	},
 	passwordResetExpires: {
 		type: Date,
+	},
+	isTemporary: {
+		type: Boolean,
+		default: false
 	},
 });
 
