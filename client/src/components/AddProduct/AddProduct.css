@@ -79,3 +79,22 @@
 .product-add-select-another-image-btn:hover {
 	color: rgb(201, 0, 0);
 }
+
+.discount-collapse-header {
+	height: 40px;
+	background: rgb(235, 235, 235);
+	margin: 10px 0;
+	padding: 8px;
+	position: relative;
+}
+
+.discount-collapse-header p{
+	width: fit-content;
+	float: left;
+}
+
+.discount-collapse-header i{
+	float: right;
+	margin: 5px;
+	color: gray;
+}

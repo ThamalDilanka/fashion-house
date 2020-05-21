@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Session from '../../util/Session';
 import { storage } from '../../firebase/config';
 import axios from 'axios';
+import Collapsible from 'react-collapsible';
 
 // Assets
 import './AddProduct.css';
@@ -16,9 +17,25 @@ const AddProduct = (props) => {
 	const [progress, setProgress] = useState(0);
 
 	const [categories, setCategories] = useState([]);
+
+	const [productName, setProductName] = useState(
+		'Add a descriptive name for your product'
+	);
+	const [productDescription, setProductDescription] = useState(
+		'Add a brief description about your product'
+	);
+
+	const [price, setPrice] = useState(0);
+	const [quantity, setQuantity] = useState(0);
 	const [selectedCategory, setSelectedCategory] = useState(undefined);
 
-	const [availableSizes, setAvailableSizes] = useState([]);
+	const [isXXSChecked, setIsXXSChecked] = useState(false);
+	const [isXSChecked, setIsXSChecked] = useState(false);
+	const [isSChecked, setIsSChecked] = useState(false);
+	const [isMChecked, setIsMChecked] = useState(false);
+	const [isLChecked, setIsLChecked] = useState(false);
+	const [isXLChecked, setIsXLChecked] = useState(false);
+	const [isXXLChecked, setIsXXLChecked] = useState(false);
 
 	useEffect(() => {
 		// Getting the categories from the API
@@ -27,11 +44,34 @@ const AddProduct = (props) => {
 			.then((res) => {
 				console.log(res.data);
 				setCategories([...res.data.data.categories]);
+				setSelectedCategory(categories[0]._id);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}, []);
+
+	const onXXSChange = (e) => {
+		setIsXXSChecked(e.target.checked);
+	};
+	const onXSChange = (e) => {
+		setIsXSChecked(e.target.checked);
+	};
+	const onSChange = (e) => {
+		setIsSChecked(e.target.checked);
+	};
+	const onMChange = (e) => {
+		setIsMChecked(e.target.checked);
+	};
+	const onLChange = (e) => {
+		setIsLChecked(e.target.checked);
+	};
+	const onXLChange = (e) => {
+		setIsXLChecked(e.target.checked);
+	};
+	const onXXLChange = (e) => {
+		setIsXXLChecked(e.target.checked);
+	};
 
 	const onImageChange = (e) => {
 		// Check for only image files
@@ -73,6 +113,7 @@ const AddProduct = (props) => {
 		);
 	};
 
+	// Handle image close event
 	const onCloseUploadedImage = () => {
 		setImage(null);
 		setImageName('select an image');
@@ -81,11 +122,77 @@ const AddProduct = (props) => {
 
 	// Handle the category change event
 	const onCategoryChange = (e) => {
-		const tempCategory = (categories.find(el => el.title === e.target.value))
+		const tempCategory = categories.find(
+			(el) => el.title === e.target.value
+		);
 		setSelectedCategory(tempCategory._id);
 	};
 
-	const onProductFormSubmit = (e) => {};
+	// Handle the product name change
+	const onProductNameChange = (e) => {
+		setProductName(e.target.value);
+	};
+
+	// Handle the product description change
+	const onProductDescriptionChange = (e) => {
+		setProductDescription(e.target.value);
+	};
+
+	// Handle the product price change
+	const onPriceChange = (e) => {
+		if (e.target.value >= 0) {
+			setPrice(e.target.value);
+		}
+	};
+
+	// Handle the product quantity change
+	const onQuantityChange = (e) => {
+		if (e.target.value >= 0) {
+			setQuantity(e.target.value);
+		}
+	};
+
+	const onProductFormSubmit = async (e) => {
+		e.preventDefault();
+
+		const availableSizes = [];
+		if (isXXSChecked) availableSizes.push('XXS');
+		if (isXSChecked) availableSizes.push('XS');
+		if (isSChecked) availableSizes.push('S');
+		if (isMChecked) availableSizes.push('M');
+		if (isLChecked) availableSizes.push('L');
+		if (isXLChecked) availableSizes.push('XL');
+		if (isXXLChecked) availableSizes.push('XXL');
+
+		const newProduct = {
+			name: productName,
+			price: price,
+			description: productDescription,
+			quantity: quantity,
+			category: selectedCategory,
+			images: imageURL,
+			sizes: availableSizes,
+			colors: [
+				{ name: 'CRIMSON', code: 'DC143C' },
+				{ name: 'MEDIUMVIOLETRED', code: 'C71585' },
+				{ name: 'TOMATO', code: 'FF6347' },
+				{ name: 'SPRINGGREEN', code: '00FF7F' },
+			],
+		};
+
+		axios
+			.post('http://localhost:8000/api/v1/products/', newProduct, {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err.response);
+			});
+	};
 
 	return (
 		<React.Fragment>
@@ -121,7 +228,7 @@ const AddProduct = (props) => {
 							<input
 								type='file'
 								accept='image/*'
-								className='custom-file-input'
+								className='file-input-add-product custom-file-input'
 								onChange={onImageChange}
 							/>
 							<label
@@ -167,18 +274,21 @@ const AddProduct = (props) => {
 							<input
 								type='text'
 								className='form-control'
-								required
+								placeholder={productName}
+								onChange={onProductNameChange}
 							/>
-							<div className='invalid-feedback'>Looks good!</div>
+							<div className='invalid-feedback'>
+								Please enter the product title
+							</div>
 						</div>
 					</div>
 					<div className='form-row'>
 						<div className='col-md mb-3'>
 							<label>Product Description</label>
 							<textarea
-								className='form-control is-valid'
-								placeholder='Required example textarea'
-								required
+								className='form-control'
+								placeholder={productDescription}
+								onChange={onProductDescriptionChange}
 							></textarea>
 							<div className='invalid-feedback'>
 								Please enter a message in the textarea.
@@ -195,8 +305,9 @@ const AddProduct = (props) => {
 								</div>
 								<input
 									type='number'
-									className='form-control is-valid'
-									required
+									className='form-control'
+									value={price}
+									onChange={onPriceChange}
 								/>
 								<div className='invalid-feedback'>
 									Please choose a username.
@@ -207,17 +318,19 @@ const AddProduct = (props) => {
 							<label>Quantity</label>
 							<input
 								type='number'
-								className='form-control is-valid'
-								required
+								className='form-control'
+								value={quantity}
+								onChange={onQuantityChange}
 							/>
 							<div className='invalid-feedback'>Looks good!</div>
 						</div>
 						<div className='col-md-4 mb-3'>
-							<label>Category - {selectedCategory}</label>
+							<label>Category</label>
 							<select
-								className='custom-select is-valid'
+								className='custom-select'
 								onChange={onCategoryChange}
 							>
+								<option>Select the category</option>
 								{categories.map((category) => (
 									<option key={category._id}>
 										{category.title}
@@ -231,37 +344,7 @@ const AddProduct = (props) => {
 					</div>
 
 					<div className='form-row'>
-						<div className='col-md-4 mb-3'>
-							<label htmlFor='validationServer01'>
-								Discount (Optional)
-							</label>
-							<input
-								type='number'
-								className='form-control is-valid'
-							/>
-							<div className='invalid-feedback'>Looks good!</div>
-						</div>
-						<div className='col-md-4 mb-3'>
-							<label htmlFor='validationServer02'>From</label>
-							<input
-								type='date'
-								className='form-control is-valid'
-								id='validationServer02'
-							/>
-							<div className='invalid-feedback'>Looks good!</div>
-						</div>
-						<div className='col-md-4 mb-3'>
-							<label htmlFor='validationServer02'>Until</label>
-							<input
-								type='date'
-								className='form-control is-valid'
-								id='validationServer02'
-							/>
-							<div className='invalid-feedback'>Looks good!</div>
-						</div>
-					</div>
-					<div className='form-row'>
-						<div className='col-md-6 mb-3'>
+						<div className='col-md-12 mb-3'>
 							<label htmlFor='validationServer02'>
 								Available Sizes
 							</label>
@@ -272,6 +355,8 @@ const AddProduct = (props) => {
 									type='checkbox'
 									className='custom-control-input'
 									id='size-xxs'
+									checked={isXXSChecked}
+									onChange={onXXSChange}
 								/>
 								<label
 									className='custom-control-label'
@@ -284,11 +369,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck2'
+									id='size-xs'
+									checked={isXSChecked}
+									onChange={onXSChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck2'
+									htmlFor='size-xs'
 								>
 									XS
 								</label>
@@ -297,11 +384,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck3'
+									id='size-s'
+									checked={isSChecked}
+									onChange={onSChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck3'
+									htmlFor='size-s'
 								>
 									S
 								</label>
@@ -310,11 +399,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck4'
+									id='size-m'
+									checked={isMChecked}
+									onChange={onMChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck4'
+									htmlFor='size-m'
 								>
 									M
 								</label>
@@ -323,11 +414,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck6'
+									id='size-l'
+									checked={isLChecked}
+									onChange={onLChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck6'
+									htmlFor='size-l'
 								>
 									L
 								</label>
@@ -336,11 +429,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck7'
+									id='size-xl'
+									checked={isXLChecked}
+									onChange={onXLChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck7'
+									htmlFor='size-xl'
 								>
 									XL
 								</label>
@@ -349,109 +444,13 @@ const AddProduct = (props) => {
 								<input
 									type='checkbox'
 									className='custom-control-input'
-									id='customCheck8'
+									id='size-xxl'
+									checked={isXXLChecked}
+									onChange={onXXLChange}
 								/>
 								<label
 									className='custom-control-label'
-									htmlFor='customCheck8'
-								>
-									XXL
-								</label>
-							</div>
-						</div>
-						<div className='col-md-6 mb-3'>
-							<label htmlFor='validationServer02'>
-								Available Sizes
-							</label>
-							<br />
-
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck1'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck1'
-								>
-									XXS
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck2'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck2'
-								>
-									XS
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck3'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck3'
-								>
-									S
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck4'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck4'
-								>
-									M
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck6'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck6'
-								>
-									L
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck7'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck7'
-								>
-									XL
-								</label>
-							</div>
-							<div className='custom-control custom-checkbox custom-control-inline'>
-								<input
-									type='checkbox'
-									className='custom-control-input'
-									id='customCheck8'
-								/>
-								<label
-									className='custom-control-label'
-									htmlFor='customCheck8'
+									htmlFor='size-xxl'
 								>
 									XXL
 								</label>
@@ -459,6 +458,55 @@ const AddProduct = (props) => {
 						</div>
 					</div>
 
+					<Collapsible
+						trigger={
+							<div className='discount-collapse-header'>
+								<p>Discount (Optional)</p>
+								<i className='fa fa-angle-double-down'></i>
+							</div>
+						}
+					>
+						<div className='form-row'>
+							<div className='col-md-4 mb-3'>
+								<label htmlFor='validationServer01'>
+									Discount
+								</label>
+								<input
+									type='number'
+									className='form-control is-valid'
+								/>
+								<div className='invalid-feedback'>
+									Looks good!
+								</div>
+							</div>
+							<div className='col-md-4 mb-3'>
+								<label htmlFor='validationServer02'>From</label>
+								<input
+									type='date'
+									className='form-control is-valid'
+									id='validationServer02'
+								/>
+								<div className='invalid-feedback'>
+									Looks good!
+								</div>
+							</div>
+							<div className='col-md-4 mb-3'>
+								<label htmlFor='validationServer02'>
+									Until
+								</label>
+								<input
+									type='date'
+									className='form-control is-valid'
+									id='validationServer02'
+								/>
+								<div className='invalid-feedback'>
+									Looks good!
+								</div>
+							</div>
+						</div>
+					</Collapsible>
+
+					<br />
 					<button
 						className='btn btn-primary float-right'
 						type='submit'
