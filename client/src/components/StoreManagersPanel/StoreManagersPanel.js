@@ -35,7 +35,7 @@ const StoreManagersPanel = (props) => {
 
 	return (
 		<React.Fragment>
-			<div className='container'>
+			<div className='backend container'>
 				<div className='d-flex bd-highlight'>
 					<div className='flex-fill bd-highlight'>
 						<h3 className='no-margin'>Store Managers</h3>

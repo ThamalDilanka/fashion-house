@@ -41,6 +41,11 @@ body {
 	font-size: small;
 }
 
+.backend input:focus {
+	box-shadow: none;
+	border-color: #0187ca !important;
+}
+
 /************** side bar *************/
 .admin-panel-main-container {
 	overflow: auto;
