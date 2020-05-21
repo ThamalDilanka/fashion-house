@@ -1,16 +1,65 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect, useState } from "react";
 import CartItems from "../components/CartItems/CartItems";
 import CartBillItems from "../components/CartBillItems/CartBillItems";
 import { CartContext } from "../contexts/CartContext";
+import Session from "../util/Session";
+import axios from "axios";
 
 const Cart = (props) => {
-  const [cartItems] = useContext(CartContext);
+  let arrtemp = [];
+
   let total = 0;
+  const customerId = Session.getId();
+  const customerToken = localStorage.getItem("token");
+
+  const [cartItems, setCartItems] = useContext(CartContext);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + customerToken,
+    },
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/v1/carts?user=${customerId}`, config)
+      .then((res) => {
+        arrtemp = res.data.data.carts;
+
+        arrtemp.forEach((item) => {
+          axios
+            .get(`http://localhost:8000/api/v1/products/${item.product}`)
+            .then((res) => {
+              arrtemp = arrtemp.map((arrItem) => {
+                return arrItem.product === item.product
+                  ? {
+                      ...arrItem,
+                      productName: res.data.data.product.name,
+                      productImage: res.data.data.product.images[0],
+                      productPrice: res.data.data.product.price,
+                      productAvailableQuantity: res.data.data.product.quantity,
+                      isSelected: false,
+                    }
+                  : arrItem;
+              });
+              return arrtemp;
+            })
+            .then((res) => setCartItems(res))
+            .catch((err) => console.log(err));
+        });
+      })
+      .catch((err) => console.log(err));
+  }, [total]);
 
   useMemo(
-    () => cartItems.forEach((item) => {
-      total += item.productPrice * item.productQuantity;
-    }), [cartItems]
+    () =>
+      cartItems.forEach((item) => {
+        if (item.isSelected === true) {
+          total += item.productPrice * item.quantity;
+        }
+      }),
+    [cartItems]
   );
 
   return (
@@ -46,38 +95,39 @@ const Cart = (props) => {
             </div>
           </div>
         </div>
-
-        {/* cart summary starts */}
-        <div className="col-md-3">
-          <h4 className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-muted">Your Bill</span>
-            <span className="badge badge-secondary badge-pill">
-              {cartItems.length} Products
-            </span>
-          </h4>
-          <ul className="list-group mb-3">
-            <CartBillItems />
-            <li className="list-group-item d-flex justify-content-between bg-light">
-              <span>
-                <h5>Total Amount</h5>
+        {/* cart bill starts */}
+        {cartItems.filter((item) => item.isSelected).length > 0 ? (
+          <div className="col-md-3">
+            <h4 className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-muted">Your Bill</span>
+              <span className="badge badge-secondary badge-pill">
+                {cartItems.filter((item) => item.isSelected).length} Products
               </span>
-              <h4>
-                <strong>Rs.{total}</strong>
-              </h4>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-              <hr className="mb-4" />
-              <button
-                className="btn btn-secondary btn-lg btn-block"
-                type="submit"
-              >
-                Continue to checkout
-              </button>
-            </li>
-          </ul>
-        </div>
+            </h4>
+            <ul className="list-group mb-3">
+              <CartBillItems />
+              <li className="list-group-item d-flex justify-content-between bg-light">
+                <span>
+                  <h5>Total Amount</h5>
+                </span>
+                <h4>
+                  <strong>Rs.{total}</strong>
+                </h4>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <hr className="mb-4" />
+                <button
+                  className="btn btn-secondary btn-lg btn-block"
+                  type="submit"
+                >
+                  Continue to checkout
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : null}
       </div>
     </div>
   );
-}
+};
 export default Cart;

@@ -1,0 +1,23 @@
+input[type="checkbox"], input[type="radio"]{
+    position: absolute;
+    right: 9000px;
+  }
+
+  input[type="checkbox"] + .label-text:before{
+    content: "\f096";
+    font-family: "FontAwesome";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    width: 1em;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  input[type="checkbox"]:checked + .label-text:before{
+    content: "\f14a";
+    color: #2980b9;
+    animation: effect 250ms ease-in;
+  }

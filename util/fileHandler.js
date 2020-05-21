@@ -1,6 +1,7 @@
 const multer = require('multer');
 const sharp = require('sharp');
 const uuid = require('uuid');
+const googleCloud = require('../util/googleCloud');
 
 const multerStorage = multer.memoryStorage();
 
@@ -21,7 +22,7 @@ const upload = multer({
 	fileFilter: multerFilter,
 });
 
-exports.uploadImages = upload.fields([{ name: 'images', maxCount: 5 }]);
+exports.uploadImages = upload.fields([{ name: 'images', maxCount: 1 }]);
 
 exports.resizeImages = async (req, res, next) => {
 	// Check for the image and reqtype in the request
@@ -46,21 +47,18 @@ exports.resizeImages = async (req, res, next) => {
 
 	// Resizing and Rename the image
 	try {
-		let directory, width, height, quality;
+		let width, height, quality;
 
 		// Setting values according to the reqtype
 		if (req.body.reqtype === 'product') {
-			directory = 'products';
 			width = parseInt(process.env.PRODUCT_IMAGE_WIDTH);
 			height = parseInt(process.env.PRODUCT_IMAGE_HEIGHT);
 			quality = parseInt(process.env.PRODUCT_IMAGE_QUALITY);
 		} else if (req.body.reqtype === 'category') {
-			directory = 'categories';
 			width = parseInt(process.env.CATEGORY_IMAGE_WIDTH);
 			height = parseInt(process.env.CATEGORY_IMAGE_HEIGHT);
 			quality = parseInt(process.env.CATEGORY_IMAGE_QUALITY);
 		} else if (req.body.reqtype === 'user') {
-			directory = 'users';
 			width = parseInt(process.env.USER_IMAGE_WIDTH);
 			height = parseInt(process.env.USER_IMAGE_HEIGHT);
 			quality = parseInt(process.env.USER_IMAGE_QUALITY);
@@ -70,20 +68,17 @@ exports.resizeImages = async (req, res, next) => {
 		await Promise.all(
 			req.files.images.map(async (file, i) => {
 				const filename = `${uuid.v4()}-${Date.now()}.jpeg`;
-
-				console.log(
-					`${__dirname}${process.env.IMAGE_DESTINATION}${directory}/${filename}`
-				);
+				const filePath = `${__dirname}${process.env.IMAGE_DESTINATION}${filename}`;
 
 				await sharp(file.buffer)
 					.resize(width, height)
 					.toFormat('jpeg')
 					.jpeg({ quality: quality })
-					.toFile(
-						`${__dirname}${process.env.IMAGE_DESTINATION}${directory}/${filename}`
-					);
+					.toFile(filePath);
 
-				req.body.images.push(filename);
+				// inject the file name to the request
+				req.fileName = filename;
+				next();
 			})
 		);
 	} catch (err) {
@@ -92,5 +87,4 @@ exports.resizeImages = async (req, res, next) => {
 			message: err.message,
 		});
 	}
-	next();
 };

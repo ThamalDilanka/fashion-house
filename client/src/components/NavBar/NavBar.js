@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import Session from '../../util/Session'
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Session from '../../util/Session';
 import { store } from 'react-notifications-component';
 import './NavBar.css';
 
@@ -18,22 +18,25 @@ const NavBar = (props) => {
 
 		// Show a notification
 		store.addNotification({
-			title: "Good Bye!",
-			message: "You have logged out successfully. See you soon.",
-			type: "success",
-			insert: "top-right",
-			container: "top-right",
-			animationIn: ["animated", "fadeIn"],
-			animationOut: ["animated", "fadeOut"],
+			title: 'Good Bye!',
+			message: 'You have logged out successfully. See you soon.',
+			type: 'success',
+			insert: 'top-right',
+			container: 'top-right',
+			animationIn: ['animated', 'fadeIn'],
+			animationOut: ['animated', 'fadeOut'],
 			dismiss: {
-			  duration: 2000,
-			  showIcon: true
-			}
-		  });
+				duration: 2000,
+				showIcon: true,
+			},
+		});
 	};
 
 	return (
-		<nav className='navbar navbar-expand-md navbar-dark bg-dark'>
+		<nav
+			className='navbar navbar-expand-md navbar-dark bg-dark'
+			style={{ display: Session.getRole() === 'admin' ? 'none' : null }}
+		>
 			<Link className='navbar-brand' to='/'>
 				Fashion House
 			</Link>
@@ -53,7 +56,7 @@ const NavBar = (props) => {
 						Wish List{' '}
 						<span className='badge badge-secondary'>1</span>
 					</Link>
-					<Link to='/cart' className='nav-item nav-link'>
+					<Link to={Session.isLoggedIn() ? '/cart' : '/authenticator/login'} className='nav-item nav-link'>
 						Cart{' '}
 						<span className='badge badge-secondary'>
 							{cartItems.length}
@@ -69,14 +72,11 @@ const NavBar = (props) => {
 							>
 								Logout
 							</Link>
-							<Link
-								to='/profile'
-								className='nav-item nav-link'
-							>
+							<Link to='/profile' className='nav-item nav-link'>
 								<img
 									className='nav-bar-profile-image rounded-circle'
 									src={Session.getImage()}
-									alt="profile"
+									alt='profile'
 								/>
 							</Link>
 						</React.Fragment>

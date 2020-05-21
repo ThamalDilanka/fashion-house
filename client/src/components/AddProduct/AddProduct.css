@@ -1,0 +1,100 @@
+.product-add-image-container {
+	height: 500px;
+	background-color: rgb(248, 248, 248);
+	position: relative;
+}
+
+.product-add-image-upload-form {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding: 50px;
+}
+
+.product-add-file-input {
+	width: 100% !important;
+}
+
+.product-image-icon {
+	font-size: 150px;
+	color: rgb(214, 214, 214);
+	padding: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.product-image-uploading-message {
+	font-size: small;
+	color: gray;
+}
+
+.product-image-uploading-button {
+	border: none;
+	color: #fff;
+	background-color: rgb(253, 152, 36);
+	padding: 8px 25px !important;
+	margin: 30px;
+	border-radius: 20px;
+}
+
+.product-image-uploading-button:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+.product-image-uploading-button:hover {
+	background-color: rgb(255, 137, 1);
+}
+
+.product-image-uploading-button:disabled {
+	background-color: rgb(148, 148, 148);
+}
+
+.product-add-uploaded-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-height: 500px;
+	object-fit: cover;
+}
+
+.hide-element {
+	display: none;
+}
+
+.product-add-select-another-image-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	border: none;
+	background: none;
+	color: gray;
+}
+
+.product-add-select-another-image-btn:focus {
+	outline: none;
+}
+
+.product-add-select-another-image-btn:hover {
+	color: rgb(201, 0, 0);
+}
+
+.discount-collapse-header {
+	height: 40px;
+	background: rgb(235, 235, 235);
+	margin: 10px 0;
+	padding: 8px;
+	position: relative;
+}
+
+.discount-collapse-header p{
+	width: fit-content;
+	float: left;
+}
+
+.discount-collapse-header i{
+	float: right;
+	margin: 5px;
+	color: gray;
+}
