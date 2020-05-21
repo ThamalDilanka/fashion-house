@@ -4,7 +4,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { store } from 'react-notifications-component';
 import { Link, Redirect, Switch, Route } from 'react-router-dom';
 import AddProduct from '../components/AddProduct/AddProduct';
-import StoreManagers from '../components/StoreManagers/StoreManagerItems';
+import StoreManagersPanel from '../components/StoreManagersPanel/StoreManagersPanel'
 
 const Admin = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
@@ -83,7 +83,7 @@ const Admin = (props) => {
 						<Route path='/admin/products' component={AddProduct} />
 						<Route
 							path='/admin/store-managers'
-							component={StoreManagers}
+							component={StoreManagersPanel}
 						/>
 					</Switch>
 				</section>

@@ -37,6 +37,10 @@ body {
 	box-shadow: none !important;
 }
 
+.font-small {
+	font-size: small;
+}
+
 /************** side bar *************/
 .admin-panel-main-container {
 	overflow: auto;
