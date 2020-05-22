@@ -1,23 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import Session from '../util/Session';
 
 const Categories = () => {
 
     const [getCategories, setGetCategories] = useState([]);
-    const [title,setTitle] = useState('');
-    const [description,setDescription] = useState('');
-    const [image,setImage] = useState(null);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
+    const [imageName, setImageName] = useState('select an image');
+	const [imageURL, setImageURL] = useState(null);
 
     useEffect(() => { //retrieve categories on pg load
         const fetchData = async () => {
             const resp = await axios.get('http://localhost:8000/api/v1/categories');
             setGetCategories([...resp.data.data.categories]);//ufjhv
             console.log("gfdjhd");
-             console.log("resp: ",resp.data.data.categories);
+            console.log("resp: ", resp.data.data.categories);
         }
         fetchData();
     }, []);
     { console.log("test: ", getCategories) }
+
+    
+	const onImageChange = (e) => {
+		// Check for only image files
+		if (e.target.files[0].type.startsWith('image/')) {
+			setImage(e.target.files[0]);
+			setImageName(e.target.files[0].name);
+		} else {
+			setImage(null);
+		}
+	};
 
     const addNewCategory = (e) => {
         e.preventDefault();
@@ -26,15 +40,15 @@ const Categories = () => {
             method: 'post',
             url: `http://localhost:8000/api/v1/products`,
             data: {
-                title: title ,
+                title: title,
                 description: description,
-                image:image
+                image: image
             },
             headers: {
-                Authorization: 'Bearer ' + token
+                Authorization: `Bearer ${Session.getToken()}`,
             }
         });
-     window.location.reload()
+        window.location.reload()
     }
 
 
@@ -54,32 +68,34 @@ const Categories = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                            <form>
+                                <form>
                                     <div className="form-group">
                                         <label>Add Title</label>
                                         <input type="text" className="form-control" id="exampleInputTitle"
-                                        autoComplete="off"
-                                        value={title}
-                                        onChange={e => setTitle(e.target.value)}/>
+                                            autoComplete="off"
+                                            value={title}
+                                            onChange={e => setTitle(e.target.value)} />
                                         <small id="emailHelp" className="form-text text-muted">Give a name to new Category</small>
                                     </div>
                                     <div className="form-group">
                                         <label>Description</label>
-                                        <input type="text" className="form-control" id="exampleInputDescription" 
-                                        autoComplete="off"
-                                        value={description}
-                                        onChange={e => setDescription(e.target.value)}/>
+                                        <input type="text" className="form-control" id="exampleInputDescription"
+                                            autoComplete="off"
+                                            value={description}
+                                            onChange={e => setDescription(e.target.value)} />
                                     </div>
                                     <div className="form-group">
                                         <label>Choose an image</label>
-                                        <input type="file" className="form-control" id="exampleInputPic" 
-                                         onChange={e => setImage( e.target.files)}/>
+                                        <input type='file'
+                                            accept='image/*'
+                                            className='form-control'
+                                            onChange={onImageChange} />
                                     </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" onClick={(e) => {addNewCategory(e)}}>Add</button>
+                                <button type="button" className="btn btn-primary" onClick={(e) => { addNewCategory(e) }}>Add</button>
                             </div>
                         </div>
                     </div>
@@ -89,7 +105,7 @@ const Categories = () => {
                 <table className="table  table-striped">
                     <thead className="thead-dark">
                         <tr>
-                            <th scope="col"><button  data-toggle="modal" data-target="#staticBackdrop"  type="button" className="btn btn-primary">Add Category</button></th>
+                            <th scope="col"><button data-toggle="modal" data-target="#staticBackdrop" type="button" className="btn btn-primary">Add Category</button></th>
                             <th scope="col">Image url</th>
                             <th scope="col">Title</th>
                             <th scope="col">Description</th>

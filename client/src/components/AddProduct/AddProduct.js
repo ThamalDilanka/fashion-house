@@ -235,7 +235,7 @@ const AddProduct = (props) => {
 							aria-hidden='true'
 						></i>
 						<p className='product-image-uploading-message'>
-							Click on the bellow bar to choose a photo from you
+							Click on the below bar to choose a photo from you
 							device
 						</p>
 						<div className='product-add-file-input custom-file'>
