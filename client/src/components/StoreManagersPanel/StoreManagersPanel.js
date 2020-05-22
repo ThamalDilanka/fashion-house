@@ -120,7 +120,7 @@ const StoreManagersPanel = (props) => {
 
 				// Show a notification
 				store.addNotification({
-					title: `Successfully registered`,
+					title: `${res.data.data.user.name} Successfully registered as a Store Manager`,
 					message: 'Email has been sent with login credentials',
 					type: 'success',
 					insert: 'top-right',
@@ -133,13 +133,12 @@ const StoreManagersPanel = (props) => {
 					},
 				});
 
-				
+				setIsRegistrationOpen(false);
+				onRegistrationCancel();
 			})
 			.catch((err) => {
 				return;
 			});
-
-		setIsRegistrationOpen(false);
 	};
 
 	return (
@@ -174,6 +173,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='First Name'
+									value={firstName}
 									onChange={onFirstNameChange}
 									onBlur={onLeaveFirstName}
 								/>
@@ -191,6 +191,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='Last Name'
+									value={lastName}
 									onChange={onLastNameChange}
 									onBlur={onLeaveLastName}
 								/>
@@ -210,6 +211,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='Email Address'
+									value={email}
 									onChange={onEmailChange}
 									onBlur={onLeaveEmail}
 								/>
