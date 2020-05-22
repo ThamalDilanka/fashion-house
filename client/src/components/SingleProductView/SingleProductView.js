@@ -100,7 +100,7 @@ const ColorSelector = (props) => {
 				<div className="col-md-4">
 					<img
 						className="product-view-image"
-						src={`./images/products/${props.image}`}
+						src={props.image}
 						alt="product"
 					/>
 				</div>

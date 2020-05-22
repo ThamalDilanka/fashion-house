@@ -9,20 +9,13 @@ const ProductView = (props) => {
 	return (
 		<div>
 			<SingleProductView
-				colors={[
-					{ name: "Pinkish Red", code: "e76f51" },
-					{ name: "Light Yellow", code: "f4a261" },
-					{ name: "Yellow", code: "e9c46a" },
-					{ name: "Water Blue", code: "2a9d8f" },
-					{ name: "Dark Gray", code: "264653" },
-				]}
-				sizes={["XXS", "XS", "S", "M", "L", "XL", "XXL"]}
+		
 
 				productId = {productId}
 				discount = {props.location.state.discount}
 				image = {props.location.state.image}
-				// sizes = {props.location.statesizes}
-				// colors = {props.location.statecolors}
+				sizes = {props.location.state.sizes}
+				colors = {props.location.state.colors}
 				avgRating = {props.location.state.avgRating}
 				name = {props.location.state.name}
 				categoryId = {props.location.state.categoryId}

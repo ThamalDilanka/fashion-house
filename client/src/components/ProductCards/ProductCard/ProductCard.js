@@ -29,7 +29,7 @@ const ProductCard = (props) => {
 					) : null}
 
 					<div className="product-card-image-container">
-						<img src={`./images/products/${props.image}`} alt={props.name} />
+						<img src={props.image} alt={props.name} />
 					</div>
 					<div className="product-card-detail-container">
 						<p className="product-card-title no-padding no-margin">

@@ -93,7 +93,7 @@ const Cart = (props) => {
 	}, [cartItems]);
 
 	return (
-		<div className="container-fuild p-5">
+		<div className="container mt-5">
 			<div className="row">
 				<div className="col-md-9">
 					{/* Table Starts */}

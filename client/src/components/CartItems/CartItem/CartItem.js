@@ -99,7 +99,7 @@ function CartItem(props) {
           </div> */}
 					</label>
 					<img
-						src={`./images/products/${props.productImage}`}
+						src={props.productImage}
 						alt=""
 						width="70"
 						className="img-fluid rounded shadow-sm"
