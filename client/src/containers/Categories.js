@@ -8,7 +8,7 @@ const Categories = () => {
     const [description,setDescription] = useState('');
     const [image,setImage] = useState(null);
 
-    useEffect(() => { //retrieve categories on pg load
+    useEffect(() => { //retrieve categories on page load
         const fetchData = async () => {
             const resp = await axios.get('http://localhost:8000/api/v1/categories');
             setGetCategories([...resp.data.data.categories]);
