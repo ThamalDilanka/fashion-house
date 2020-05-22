@@ -16,6 +16,7 @@ import StoreManager from './containers/StoreManger';
 import Authenticator from './containers/Authenticator';
 import Admin from './containers/Admin'
 import Payment from './containers/Payment'
+import Categories from './containers/Categories';
 
 // Contexts
 import { CartProvider } from './contexts/CartContext';
@@ -39,6 +40,7 @@ function App() {
 							path='/authenticator'
 							component={Authenticator}
 						/>
+						<Route path='/add-categories'component={Categories} />
 						<Route path='/cart' component={Cart} />
 						<Route path='/wish-list' component={WishList} />
 						<Route path='/product-view' component={ProductView} />

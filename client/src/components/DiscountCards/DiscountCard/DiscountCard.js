@@ -320,7 +320,7 @@ const DiscountCard = (data) => {
                             data.data && data.data.map((data,index) =>
 
                                 <tr key={data._id}>
-                                    <td><img src={`./../../../../public/images/products/${data.images[0]}`} width="60" height="60" alt="products" /></td>
+                                    <td><img src={data.images[0]} width="60" height="60" alt="products" /></td>
                                     <td>{data.name}</td>
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
