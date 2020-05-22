@@ -9,12 +9,14 @@ function CartItems() {
 
   return (
     <tbody>
-      {cartItems.map((cartItem, index) => {
+      {cartItems.map((cartItem) => {
         return(
         <CartItem
           key={cartItem._id}
           cartItemId={cartItem._id}
           productName={cartItem.productName}
+          product={cartItem.product}
+          isSelected={cartItem.isSelected}
           productPrice={cartItem.productPrice}
           productQuantity={cartItem.quantity}
           productSize={cartItem.size}
@@ -22,6 +24,7 @@ function CartItems() {
           productAvailableQuantity={cartItem.productAvailableQuantity}
           isSelected={cartItem.isSelected}
           productImage={cartItem.productImage}
+          productDiscount={cartItem.productDiscount}
         />
         )
       })}

@@ -40,6 +40,14 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		trim: true,
 	},
+	district: {
+		type: String,
+		trim: true,
+	},
+	zip: {
+		type: Number,
+		maxlength: [5, 'Zip code can be maximum of 5 length']
+	},
 	role: {
 		type: String,
 		trim: true,
