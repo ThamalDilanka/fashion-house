@@ -1,21 +1,26 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { store } from 'react-notifications-component';
-import { Link, Redirect } from 'react-router-dom';
 import Session from '../../util/Session';
-import { storage } from '../../firebase/config';
 import axios from 'axios';
 import Collapsible from 'react-collapsible';
 import randomString from 'randomstring';
 import StoreManagerItems from '../StoreManagers/StoreManagerItems';
+import validator from 'validator';
 
 // Assets
 import './StoreManagersPanel.css';
 
 const StoreManagersPanel = (props) => {
-	const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+	const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
+
+	const [isFirstNameValid, setIsFirstNameValid] = useState(true);
+	const [isLastNameValid, setIsLastNameValid] = useState(true);
+	const [isEmailValid, setIsEmailValid] = useState(true);
+
+	const [isModified, setIsModified] = useState(false);
 
 	const [storeManagers, setStoreManagers] = useState([]);
 
@@ -36,18 +41,54 @@ const StoreManagersPanel = (props) => {
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
+		setIsModified(true);
+	};
+
+	const onLeaveFirstName = (e) => {
+		setIsFirstNameValid(!validator.isEmpty(e.target.value));
 	};
 
 	const onLastNameChange = (e) => {
 		setLastName(e.target.value);
+		setIsModified(true);
+	};
+
+	const onLeaveLastName = (e) => {
+		setIsLastNameValid(!validator.isEmpty(e.target.value));
 	};
 
 	const onEmailChange = (e) => {
 		setEmail(e.target.value);
+		setIsModified(true);
+	};
+
+	const onLeaveEmail = (e) => {
+		setIsEmailValid(validator.isEmail(e.target.value));
+	};
+
+	const onRegistrationCancel = () => {
+		setIsRegistrationOpen(false);
+		setIsFirstNameValid(true);
+		setIsLastNameValid(true);
+		setIsEmailValid(true);
+		setIsModified(false);
+		setFirstName('');
+		setLastName('');
+		setEmail('');
 	};
 
 	const onRegistrationSubmit = (e) => {
 		e.preventDefault();
+
+		if (!(isFirstNameValid && isLastNameValid && isEmailValid)) {
+			return;
+		} else if (!isModified) {
+			setIsFirstNameValid(false);
+			setIsLastNameValid(false);
+			setIsEmailValid(false);
+			return;
+		}
+
 		const randomPassword = randomString.generate(10);
 		const newStoreManager = {
 			name: `${firstName} ${lastName}`,
@@ -110,7 +151,7 @@ const StoreManagersPanel = (props) => {
 						</button>
 					</div>
 				</div>
-				<hr />
+				{isRegistrationOpen ? <hr /> : null}
 				<Collapsible open={isRegistrationOpen}>
 					<div>
 						<div className='form-row'>
@@ -118,24 +159,34 @@ const StoreManagersPanel = (props) => {
 								<label>First name</label>
 								<input
 									type='text'
-									className='form-control'
+									className={
+										isFirstNameValid
+											? 'form-control'
+											: 'form-control is-invalid'
+									}
 									placeholder='First Name'
 									onChange={onFirstNameChange}
+									onBlur={onLeaveFirstName}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the first name
 								</div>
 							</div>
 							<div className='col-md-6 mb-3'>
 								<label>Last name</label>
 								<input
 									type='text'
-									className='form-control '
+									className={
+										isLastNameValid
+											? 'form-control'
+											: 'form-control is-invalid'
+									}
 									placeholder='Last Name'
 									onChange={onLastNameChange}
+									onBlur={onLeaveLastName}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the last name
 								</div>
 							</div>
 						</div>
@@ -144,12 +195,17 @@ const StoreManagersPanel = (props) => {
 								<label>Email Address</label>
 								<input
 									type='text'
-									className='form-control'
+									className={
+										isEmailValid
+											? 'form-control'
+											: 'form-control is-invalid'
+									}
 									placeholder='Email Address'
 									onChange={onEmailChange}
+									onBlur={onLeaveEmail}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter a valid email
 								</div>
 							</div>
 						</div>
@@ -166,9 +222,7 @@ const StoreManagersPanel = (props) => {
 						</button>
 						<button
 							className='sm-cancel-btn btn btn-secondary float-right'
-							onClick={() => {
-								setIsRegistrationOpen(false);
-							}}
+							onClick={onRegistrationCancel}
 						>
 							Cancel
 						</button>
@@ -176,8 +230,10 @@ const StoreManagersPanel = (props) => {
 				</Collapsible>
 
 				<br />
-				<h5>Registered Store Manages</h5>
-				<StoreManagerItems storeManagers={storeManagers}></StoreManagerItems>
+				{isRegistrationOpen ? <h5>Registered Store Manages</h5> : null}
+				<StoreManagerItems
+					storeManagers={storeManagers}
+				></StoreManagerItems>
 			</div>
 		</React.Fragment>
 	);

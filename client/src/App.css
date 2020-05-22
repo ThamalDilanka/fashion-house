@@ -42,8 +42,7 @@ body {
 }
 
 .backend input:focus {
-	box-shadow: none;
-	border-color: #0187ca !important;
+	box-shadow: none !important;
 }
 
 /************** side bar *************/
