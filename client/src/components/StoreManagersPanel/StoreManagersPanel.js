@@ -24,11 +24,11 @@ const StoreManagersPanel = (props) => {
 
 	const [storeManagers, setStoreManagers] = useState([]);
 
-	let [modified, setModified] = useState(1);
+	const [updated, setUpdated] = useState(0);
 
 	const updateComponent = () => {
-		setModified(modified++);
-	}
+		setUpdated(updated + 1);
+	};
 
 	useEffect(() => {
 		axios
@@ -43,7 +43,7 @@ const StoreManagersPanel = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 			});
-	}, [modified]);
+	}, [updated]);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
@@ -116,10 +116,11 @@ const StoreManagersPanel = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log(res.data);
+				updateComponent();
+
 				// Show a notification
 				store.addNotification({
-					title: `${res.data.data.user.name} successfully registered as a Store Manager`,
+					title: `Successfully registered`,
 					message: 'Email has been sent with login credentials',
 					type: 'success',
 					insert: 'top-right',
@@ -131,9 +132,11 @@ const StoreManagersPanel = (props) => {
 						showIcon: true,
 					},
 				});
+
+				
 			})
 			.catch((err) => {
-				console.log(err.response);
+				return;
 			});
 
 		setIsRegistrationOpen(false);
