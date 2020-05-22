@@ -1,0 +1,22 @@
+.add-new-btn {
+	border: none;
+	border: 1px solid #063146;
+	border-radius: 5px;
+	padding: 5px;
+	background: none;
+	color: gray;
+}
+
+.add-new-btn:focus {
+	outline: none;
+}
+
+.add-new-btn:hover {
+	background: #063146;
+	color: #fff;
+}
+
+.sm-cancel-btn {
+	margin-right: 5px;
+}
+

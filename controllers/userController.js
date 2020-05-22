@@ -1,13 +1,18 @@
 const User = require('../models/User');
 const email = require('../util/email');
+const APIFeatures = require('../util/apiFeatures');
 
 // Read all the document in user collection
 exports.getAllUsers = async (req, res, next) => {
 	try {
-		const query = User.find(req.query);
-
 		// Execute the query
-		const users = await query;
+		const features = new APIFeatures(User.find(), req.query)
+			.filter()
+			.sort()
+			.limitFields()
+			.paginate();
+
+		const users = await features.query;
 
 		// Send response
 		res.status(200).json({
