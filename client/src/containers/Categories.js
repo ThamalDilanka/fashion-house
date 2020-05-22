@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Session from '../util/Session';
+import { storage } from '../firebase/config';
 
 const Categories = () => {
 
@@ -8,47 +9,72 @@ const Categories = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
-
+    const [imageURL, setImageURL] = useState(null);
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => { //retrieve categories on pg load
         const fetchData = async () => {
             const resp = await axios.get('http://localhost:8000/api/v1/categories');
             setGetCategories([...resp.data.data.categories]);//ufjhv
-            console.log("gfdjhd");
-            console.log("resp: ", resp.data.data.categories);
         }
         fetchData();
     }, []);
-    { console.log("test: ", getCategories) }
-
     
 	const onImageChange = (e) => {
-		// Check for only image files
+		// Check for only image files 
 		if (e.target.files[0].type.startsWith('image/')) {
 			setImage(e.target.files[0]);
 		} else {
 			setImage(null);
 		}
+    };
+    const onImageUpload = () => {
+        console.log("fn called")
+        setProgress(5);
+		const uploadTask = storage.ref(`images/${image}`).put(image);
+
+		uploadTask.on(
+			'state_changed',
+			(snapshot) => {
+				setProgress(
+					Math.round(
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+					)
+				);
+			},
+			(err) => {
+				console.error(err);
+			},
+			() => {
+				storage
+					.ref('images')
+					.child(image.name)
+					.getDownloadURL()
+					.then((url) => {
+						setImageURL(url);
+                        setProgress(0);
+					});
+			}
+		);
 	};
 
     const addNewCategory = (e) => {
         e.preventDefault();
-        const token = localStorage.getItem('token') //temp - change  token
+        onImageUpload();
         axios({
             method: 'post',
             url: `http://localhost:8000/api/v1/products`,
             data: {
                 title: title,
                 description: description,
-                image: image
+                image: imageURL
             },
             headers: {
                 Authorization: `Bearer ${Session.getToken()}`,
             }
         });
-        window.location.reload()
+       // window.location.reload()
     }
-
 
 
     return (
@@ -87,7 +113,8 @@ const Categories = () => {
                                         <input type='file'
                                             accept='image/*'
                                             className='form-control'
-                                            onChange={onImageChange} />
+                                            onChange={onImageChange} 
+                                            />
                                     </div>
                                 </form>
                             </div>
