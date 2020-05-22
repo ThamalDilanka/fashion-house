@@ -8,8 +8,7 @@ const Categories = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
-    const [imageName, setImageName] = useState('select an image');
-	const [imageURL, setImageURL] = useState(null);
+
 
     useEffect(() => { //retrieve categories on pg load
         const fetchData = async () => {
@@ -27,7 +26,6 @@ const Categories = () => {
 		// Check for only image files
 		if (e.target.files[0].type.startsWith('image/')) {
 			setImage(e.target.files[0]);
-			setImageName(e.target.files[0].name);
 		} else {
 			setImage(null);
 		}

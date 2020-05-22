@@ -40,7 +40,10 @@ function App() {
 							path='/authenticator'
 							component={Authenticator}
 						/>
-						<Route path='/add-categories'component={Categories} />
+						<Route 
+							path='/add-categories'
+							component={Categories} 
+						/>
 						<Route path='/cart' component={Cart} />
 						<Route path='/wish-list' component={WishList} />
 						<Route path='/product-view' component={ProductView} />
