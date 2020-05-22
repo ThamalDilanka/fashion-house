@@ -24,6 +24,12 @@ const StoreManagersPanel = (props) => {
 
 	const [storeManagers, setStoreManagers] = useState([]);
 
+	let [modified, setModified] = useState(1);
+
+	const updateComponent = () => {
+		setModified(modified++);
+	}
+
 	useEffect(() => {
 		axios
 			.get('http://localhost:8000/api/v1/users?role=store-manager', {
@@ -37,7 +43,7 @@ const StoreManagersPanel = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 			});
-	}, []);
+	}, [modified]);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
@@ -233,6 +239,7 @@ const StoreManagersPanel = (props) => {
 				{isRegistrationOpen ? <h5>Registered Store Manages</h5> : null}
 				<StoreManagerItems
 					storeManagers={storeManagers}
+					updateComponent={updateComponent}
 				></StoreManagerItems>
 			</div>
 		</React.Fragment>
