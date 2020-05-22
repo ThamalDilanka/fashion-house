@@ -11,7 +11,7 @@ import validator from 'validator';
 import './StoreManagersPanel.css';
 
 const StoreManagersPanel = (props) => {
-	const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+	const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');

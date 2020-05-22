@@ -43,8 +43,8 @@ function App() {
 						<Route path='/wish-list' component={WishList} />
 						<Route path='/product-view' component={ProductView} />
 						<Route path='/show-case' component={ShowCase} />
-						<Route path='/admin' exact component={Admin} />
-						<Route path='/payment' exact component={Payment} />
+						<Route path='/admin' component={Admin} />
+						<Route path='/payment' component={Payment} />
 					</BrowserRouter>
 				</div>
 			</CartProvider>
