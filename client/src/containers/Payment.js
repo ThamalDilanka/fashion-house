@@ -53,131 +53,159 @@ const Payment = (props) => {
   };
 
   const confirmCardPayment = () => {
-    const orderItemsToSave = [];
+    if (customerName === '') {
+      Swal.fire('Customer Name is Required');
+    } else if (customerAddress === '') {
+      Swal.fire('Customer Address is Required');
+    } else if (customerDistrict === '') {
+      Swal.fire('District is Required');
+    } else if (customerZip === '') {
+      Swal.fire('Zip is Required');
+    } else if (name === '') {
+      Swal.fire('Name on card is Required');
+    } else if (number === '') {
+      Swal.fire('Card Number is Required');
+    } else if (expiry === '') {
+      Swal.fire('Expiry date is Required');
+    } else if (cvc === '') {
+      Swal.fire('CVV is Required');
+    } else {
+      const orderItemsToSave = [];
 
-    orderItems.forEach((item) => {
-      const product = {
-        productId: item.product,
-        color: item.color,
-        size: item.size,
-        quantity: item.quantity,
-      };
+      orderItems.forEach((item) => {
+        const product = {
+          productId: item.product,
+          color: item.color,
+          size: item.size,
+          quantity: item.quantity,
+        };
 
-      orderItemsToSave.push(product);
-    });
+        orderItemsToSave.push(product);
+      });
 
-    if (isCheckedforFuturePurpose) {
+      if (isCheckedforFuturePurpose) {
+        axios
+          .patch(
+            `http://localhost:8000/api/v1/users/${Session.getId()}`,
+            {
+              address: customerAddress,
+              district: customerDistrict,
+              zip: customerZip,
+            },
+            config
+          )
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
+      }
+
       axios
-        .patch(
-          `http://localhost:8000/api/v1/users/${Session.getId()}`,
+        .post(
+          'http://localhost:8000/api/v1/orders',
           {
-            address: customerAddress,
-            district: customerDistrict,
-            zip: customerZip,
+            user: Session.getId(),
+            products: orderItemsToSave,
+            totalAmount: total,
+            discountAmount: discount,
+            paymentMethod: 'card-payment',
           },
           config
         )
-        .then((res) => console.log(res.data))
+        .then((res) => {
+          orderItems.forEach((orderItem) => {
+            axios
+              .delete(
+                `http://localhost:8000/api/v1/carts/${orderItem._id}`,
+                config
+              )
+              .then()
+              .catch((err) => console.log(err));
+          });
+          setcartItems([]);
+          Swal.fire(
+            'Order Confirmed!',
+            'Your order has been confirmed.',
+            'success'
+          ).then(props.history.push('/cart'));
+        })
         .catch((err) => console.log(err));
+
+      setorderItems([]);
+      setTotal(0);
     }
-
-    axios
-      .post(
-        'http://localhost:8000/api/v1/orders',
-        {
-          user: Session.getId(),
-          products: orderItemsToSave,
-          totalAmount: total,
-          discountAmount: discount,
-          paymentMethod: 'card-payment',
-        },
-        config
-      )
-      .then((res) => {
-        orderItems.forEach((orderItem) => {
-          axios
-            .delete(
-              `http://localhost:8000/api/v1/carts/${orderItem._id}`,
-              config
-            )
-            .then()
-            .catch((err) => console.log(err));
-        });
-        setcartItems([]);
-        Swal.fire(
-          'Order Confirmed!',
-          'Your order has been confirmed.',
-          'success'
-        ).then(props.history.push('/cart'));
-      })
-      .catch((err) => console.log(err));
-
-    setorderItems([]);
-    setTotal(0);
   };
 
   const confirmCashOnDeliveryPayment = () => {
-    const orderItemsToSave = [];
+    if (customerName === '') {
+      Swal.fire('Customer Name is Required');
+    } else if (customerAddress === '') {
+      Swal.fire('Customer Address is Required');
+    } else if (customerDistrict === '') {
+      Swal.fire('District is Required');
+    } else if (customerZip === '') {
+      Swal.fire('Zip is Required');
+    } else {
+      const orderItemsToSave = [];
 
-    orderItems.forEach((item) => {
-      const product = {
-        productId: item.product,
-        color: item.color,
-        size: item.size,
-        quantity: item.quantity,
-      };
+      orderItems.forEach((item) => {
+        const product = {
+          productId: item.product,
+          color: item.color,
+          size: item.size,
+          quantity: item.quantity,
+        };
 
-      orderItemsToSave.push(product);
-    });
+        orderItemsToSave.push(product);
+      });
 
-    if (isCheckedforFuturePurpose) {
+      if (isCheckedforFuturePurpose) {
+        axios
+          .patch(
+            `http://localhost:8000/api/v1/users/${Session.getId()}`,
+            {
+              address: customerAddress,
+              district: customerDistrict,
+              zip: customerZip,
+            },
+            config
+          )
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
+      }
+
       axios
-        .patch(
-          `http://localhost:8000/api/v1/users/${Session.getId()}`,
+        .post(
+          'http://localhost:8000/api/v1/orders',
           {
-            address: customerAddress,
-            district: customerDistrict,
-            zip: customerZip,
+            user: Session.getId(),
+            products: orderItemsToSave,
+            totalAmount: total,
+            discountAmount: discount,
+            paymentMethod: 'cash-on-delivery-payment',
           },
           config
         )
-        .then((res) => console.log(res.data))
+        .then((res) => {
+          orderItems.forEach((orderItem) => {
+            axios
+              .delete(
+                `http://localhost:8000/api/v1/carts/${orderItem._id}`,
+                config
+              )
+              .then()
+              .catch((err) => console.log(err));
+          });
+          setcartItems([]);
+          Swal.fire(
+            'Order Confirmed!',
+            'Your order has been confirmed.',
+            'success'
+          ).then(props.history.push('/cart'));
+        })
         .catch((err) => console.log(err));
+
+      setorderItems([]);
+      setTotal(0);
     }
-
-    axios
-      .post(
-        'http://localhost:8000/api/v1/orders',
-        {
-          user: Session.getId(),
-          products: orderItemsToSave,
-          totalAmount: total,
-          discountAmount: discount,
-          paymentMethod: 'cash-on-delivery-payment',
-        },
-        config
-      )
-      .then((res) => {
-        orderItems.forEach((orderItem) => {
-          axios
-            .delete(
-              `http://localhost:8000/api/v1/carts/${orderItem._id}`,
-              config
-            )
-            .then()
-            .catch((err) => console.log(err));
-        });
-        setcartItems([]);
-        Swal.fire(
-          'Order Confirmed!',
-          'Your order has been confirmed.',
-          'success'
-        ).then(props.history.push('/cart'));
-      })
-      .catch((err) => console.log(err));
-
-    setorderItems([]);
-    setTotal(0);
   };
 
   useEffect(() => {
@@ -243,7 +271,7 @@ const Payment = (props) => {
         <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Billing Details</span>
-            <span className="badge badge-secondary badge-pill">
+            <span className="badge badge-primary badge-pill">
               {orderItems.length} Items
             </span>
           </h4>
@@ -448,7 +476,7 @@ const Payment = (props) => {
               </div>
               <button
                 onClick={confirmCardPayment}
-                className="btn btn-secondary btn-lg btn-block mt-3"
+                className="btn btn-primary btn-lg btn-block mt-3"
               >
                 Checkout
               </button>
@@ -459,14 +487,23 @@ const Payment = (props) => {
               id="nav-cash-on-delivery"
             >
               {total > 0 ? (
-                <h4>
-                  Pay the total amount of {total} at the delivery to your
-                  doorstep.
-                </h4>
+                <div className="d-flex justify-content-center">
+                  <div class="row">
+                    <div class="col-sm">
+                      <h4>
+                        Pay the total amount of {total} at the delivery to your
+                        doorstep.
+                      </h4>{' '}
+                    </div>
+                    <div class="col-sm">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTPdSqZ2dkWZ74Cccb4FI9XbqoOwYhLvfMtCzDS-nhek8NfVxKp&usqp=CAU" />
+                    </div>
+                  </div>
+                </div>
               ) : null}
               <button
                 onClick={confirmCashOnDeliveryPayment}
-                className="btn btn-secondary btn-lg btn-block mt-3"
+                className="btn btn-primary btn-lg btn-block mt-3"
               >
                 Checkout
               </button>
