@@ -44,6 +44,7 @@ function App() {
 						<Route path='/product-view' component={ProductView} />
 						<Route path='/show-case' component={ShowCase} />
 						<Route path='/admin' component={Admin} />
+						<Route path='/store-manager' component={StoreManager}/>
 						<Route path='/payment' component={Payment} />
 					</BrowserRouter>
 				</div>

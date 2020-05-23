@@ -63,7 +63,6 @@ const AddProduct = (props) => {
 			.get('http://localhost:8000/api/v1/categories')
 			.then((res) => {
 				setCategories([...res.data.data.categories]);
-				setSelectedCategory(categories[0]._id);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -388,7 +387,7 @@ const AddProduct = (props) => {
 								<input
 									type='number'
 									className='form-control'
-									value={price === 0 ? null : price}
+									value={price}
 									onChange={onPriceChange}
 								/>
 								<div className='invalid-feedback'>
@@ -401,7 +400,7 @@ const AddProduct = (props) => {
 							<input
 								type='number'
 								className='form-control'
-								value={quantity === 0 ? null : quantity}
+								value={quantity}
 								onChange={onQuantityChange}
 							/>
 							<div className='invalid-feedback'>Looks good!</div>
