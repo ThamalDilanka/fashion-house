@@ -10,7 +10,6 @@ const ProductView = (props) => {
 		<div>
 			<SingleProductView
 		
-
 				productId = {productId}
 				discount = {props.location.state.discount}
 				image = {props.location.state.image}

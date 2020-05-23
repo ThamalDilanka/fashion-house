@@ -142,7 +142,7 @@ const ColorSelector = (props) => {
           <div className="d-flex">
             <p className="single-product-view-price">Rs. {props.price}.00</p>
 
-            {moment().isSameOrBefore(props.discount.until) &&
+            {props.discount && moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) &&
             props.discount.percentage ? (
               <p className="single-product-view-discount">
                 <span className="badge badge-success">
@@ -153,7 +153,7 @@ const ColorSelector = (props) => {
             ) : null}
           </div>
 
-          {moment().isSameOrBefore(props.discount.until) &&
+          {props.discount && moment().isSameOrBefore(props.discount.until) && moment().isSameOrAfter(props.discount.from) &&
           props.discount.percentage ? (
             <p className="single-product-view-discount-period">
               {`Discount valid until : ${moment(props.discount.until).format(
@@ -175,7 +175,7 @@ const ColorSelector = (props) => {
                 <label className="product-view-selected-color">
                   {selectedColor}
                 </label>
-                {props.colors.map((color) => (
+                {props.colors ? props.colors.map((color) => (
                   <button
                     className="product-view-color-selector"
                     key={uuid()}
@@ -187,7 +187,7 @@ const ColorSelector = (props) => {
                       setSelectedColorCode(`${color.code}`);
                     }}
                   ></button>
-                ))}
+                )) : null}
               </div>
             </div>
             <div className="single-product-view-size-container bd-highlight">
@@ -200,7 +200,7 @@ const ColorSelector = (props) => {
                 <label className="product-view-selected-color">
                   {selectedSize}
                 </label>
-                {props.sizes.map((size) => (
+                {props.sizes ? props.sizes.map((size) => (
                   <button
                     className="product-view-size-selector"
                     key={uuid()}
@@ -210,7 +210,7 @@ const ColorSelector = (props) => {
                   >
                     {size}
                   </button>
-                ))}
+                )) : null}
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ const ColorSelector = (props) => {
           </div>
 
           <div className="product-view-btn-container">
-            <button type="button" className="favourite-btn btn btn-danger">
+            <button type="button" className="favourite-btn-false btn btn-secondary">
               <i className="fa fa-heart"></i>
             </button>
             <button

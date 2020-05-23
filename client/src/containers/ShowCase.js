@@ -18,12 +18,9 @@ const ShowCase = (props) => {
 	}, [])
 	
 	return (
-		<div>
-			<h3>ShowCase Page</h3>
-			<div className="container">
+			<div className="my-5 container">
 				<ProductCards products={products}/>
 			</div>
-		</div>
 	);
 };
 
