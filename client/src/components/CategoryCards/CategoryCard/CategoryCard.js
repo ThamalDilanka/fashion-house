@@ -8,7 +8,7 @@ const CategoryCard = (props) => {
 		 <div className="category-card card shadow">
 		 	<div className="row">
 				<div className="col-4">
-				 	<img src={`./images/categories/${props.category.images[0]}`} alt="category"/>
+				 	<img src={props.category.images[0]} alt="category"/>
 			 	</div>
 			 	<div className="col-8">
 					<br/>

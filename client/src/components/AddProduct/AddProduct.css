@@ -98,3 +98,39 @@
 	margin: 5px;
 	color: gray;
 }
+
+.add-product-color-circle {
+	height: 15px;
+	width: 15px;
+	margin: 8px;
+}
+
+.color-remove-button {
+	background: none;
+	border: none;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	margin: 4px;
+	font-size: small;
+	position: absolute;
+	right: 1px;
+	top: 0px
+}
+.color-remove-button:focus {
+	outline: none;
+}
+.color-remove-button:hover {
+	color: rgb(206, 0, 0);
+}
+
+.add-product-color-row {
+	background: rgb(241, 241, 241);
+	position: relative;
+	margin-bottom: 5px;
+}
+
+.add-product-color-row p{
+	font-size: small;
+	margin: 4px 0px 0px 0px;
+}

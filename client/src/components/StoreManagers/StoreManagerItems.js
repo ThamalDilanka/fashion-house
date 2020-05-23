@@ -1,5 +1,6 @@
 import React from 'react';
 import StoreManagerItem from './StoreManagerItems/StoreManagerItem';
+const Swal = require('sweetalert2');
 
 const StoreManagerItems = (props) => {
 	return (
@@ -16,11 +17,14 @@ const StoreManagerItems = (props) => {
 				{props.storeManagers.map((storeManager) => (
 					<StoreManagerItem
                         storeManager={storeManager}
-                        key={storeManager._id}
+						key={storeManager._id}
+						updateComponent={props.updateComponent}
 					></StoreManagerItem>
 				))}
 			</tbody>
 		</table>
+
+
 	);
 };
 

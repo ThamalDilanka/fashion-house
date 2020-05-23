@@ -24,6 +24,12 @@ const StoreManagersPanel = (props) => {
 
 	const [storeManagers, setStoreManagers] = useState([]);
 
+	const [updated, setUpdated] = useState(0);
+
+	const updateComponent = () => {
+		setUpdated(updated + 1);
+	};
+
 	useEffect(() => {
 		axios
 			.get('http://localhost:8000/api/v1/users?role=store-manager', {
@@ -37,7 +43,7 @@ const StoreManagersPanel = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 			});
-	}, []);
+	}, [updated]);
 
 	const onFirstNameChange = (e) => {
 		setFirstName(e.target.value);
@@ -110,10 +116,11 @@ const StoreManagersPanel = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log(res.data);
+				updateComponent();
+
 				// Show a notification
 				store.addNotification({
-					title: `${res.data.data.user.name} successfully registered as a Store Manager`,
+					title: `${res.data.data.user.name} Successfully registered as a Store Manager`,
 					message: 'Email has been sent with login credentials',
 					type: 'success',
 					insert: 'top-right',
@@ -125,12 +132,13 @@ const StoreManagersPanel = (props) => {
 						showIcon: true,
 					},
 				});
+
+				setIsRegistrationOpen(false);
+				onRegistrationCancel();
 			})
 			.catch((err) => {
-				console.log(err.response);
+				return;
 			});
-
-		setIsRegistrationOpen(false);
 	};
 
 	return (
@@ -165,6 +173,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='First Name'
+									value={firstName}
 									onChange={onFirstNameChange}
 									onBlur={onLeaveFirstName}
 								/>
@@ -182,6 +191,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='Last Name'
+									value={lastName}
 									onChange={onLastNameChange}
 									onBlur={onLeaveLastName}
 								/>
@@ -201,6 +211,7 @@ const StoreManagersPanel = (props) => {
 											: 'form-control is-invalid'
 									}
 									placeholder='Email Address'
+									value={email}
 									onChange={onEmailChange}
 									onBlur={onLeaveEmail}
 								/>
@@ -233,6 +244,7 @@ const StoreManagersPanel = (props) => {
 				{isRegistrationOpen ? <h5>Registered Store Manages</h5> : null}
 				<StoreManagerItems
 					storeManagers={storeManagers}
+					updateComponent={updateComponent}
 				></StoreManagerItems>
 			</div>
 		</React.Fragment>
