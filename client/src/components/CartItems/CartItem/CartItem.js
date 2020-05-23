@@ -95,50 +95,46 @@ function CartItem(props) {
 
   return (
     <tr>
-      <th scope="row">
-        <div className="p-2">
-          <label>
-            <input
-              onChange={(e) => handleOnChange(e, itemId)}
-              type="checkbox"
-              name="check"
-              checked={props.isSelected || false}
-            />{' '}
-            <span className="label-text"></span>
-            {/* <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input"/>
-            <label className="custom-control-label"></label>
-          </div> */}
-          </label>
-          <img
-            src={props.productImage}
-            alt=""
-            width="70"
-            className="img-fluid rounded shadow-sm"
-          />
-          <div className="ml-3 d-inline-block align-middle">
-            <h5 className="mb-0 text-dark">{props.productName}</h5>
-            <span className="text-muted font-weight-normal">
-              <small className="text-muted">Size : {props.productSize}</small>
-              <br />
-              <small className="text-muted">Color : {props.productColor}</small>
-              <br />{' '}
-              {props.productDiscount &&
-              moment().isSameOrBefore(props.productDiscount.until) &&
-              moment().isSameOrAfter(props.productDiscount.from) &&
-              props.productDiscount.percentage ? (
-                <small className="text-muted">
-                  <p className="single-product-view-discount-period">
-                    {`Discount valid until : ${moment(
-                      props.productDiscount.until
-                    ).format('LL')}`}
-                  </p>
-                </small>
-              ) : null}
-            </span>
-          </div>
+      <td className="align-middle">
+        <label>
+          <input
+            onChange={(e) => handleOnChange(e, itemId)}
+            type="checkbox"
+            name="check"
+            checked={props.isSelected || false}
+          />{' '}
+          <span className="label-text"></span>
+        </label>
+      </td>
+      <td className="align-middle">
+        <img
+          src={props.productImage}
+          alt=""
+          width="70"
+          className="img-fluid rounded shadow-sm"
+        />
+        <div className="ml-3 d-inline-block align-middle">
+          <h5 className="mb-0 text-dark">{props.productName}</h5>
+          <span className="text-muted font-weight-normal">
+            <small className="text-muted">Size : {props.productSize}</small>
+            <br />
+            <small className="text-muted">Color : {props.productColor}</small>
+            <br />{' '}
+            {props.productDiscount &&
+            moment().isSameOrBefore(props.productDiscount.until) &&
+            moment().isSameOrAfter(props.productDiscount.from) &&
+            props.productDiscount.percentage ? (
+              <small className="text-muted">
+                <p className="single-product-view-discount-period">
+                  {`Discount valid until : ${moment(
+                    props.productDiscount.until
+                  ).format('LL')}`}
+                </p>
+              </small>
+            ) : null}
+          </span>
         </div>
-      </th>
+      </td>
 
       <td className="align-middle">
         {props.productDiscount &&
@@ -162,7 +158,7 @@ function CartItem(props) {
             type="button"
             onClick={() => decreaseQuantity(itemId, props.productQuantity)}
             disabled={props.productQuantity === 1}
-            className="btn btn-dark"
+            className="btn btn-primary"
           >
             <strong>-</strong>
           </button>
@@ -173,15 +169,15 @@ function CartItem(props) {
             type="button"
             onClick={() => increseQuantity(itemId, props.productQuantity)}
             disabled={props.productQuantity === props.productAvailableQuantity}
-            className="btn btn-dark"
+            className="btn btn-primary"
           >
             <strong>+</strong>
           </button>
         </div>
       </td>
       <td className="align-middle">
-        <a onClick={() => removeCartItem(itemId)} className="text-dark">
-          <i className="fa fa-2x fa-trash"></i>
+        <a onClick={() => removeCartItem(itemId)}>
+          <i className="text-danger fa fa-2x fa-trash"></i>
         </a>
       </td>
     </tr>

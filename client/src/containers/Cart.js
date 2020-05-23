@@ -112,7 +112,8 @@ const Cart = (props) => {
                             />
                             <span className="label-text"></span>
                           </label>
-
+                        </th>
+                        <th scope="col" className="border-0 bg-light">
                           <div className="p-2 px-3 text-uppercase">Product</div>
                         </th>
                         <th scope="col" className="border-0 bg-light">
@@ -135,21 +136,22 @@ const Cart = (props) => {
             </div>
           ) : (
             <div>
-              <h2>No items in cart</h2>
+              <h2>No items in the Cart</h2>
 
               <Link to="/">
                 {' '}
-                <h3>See our products</h3>{' '}
+                <h3>See latest items</h3>{' '}
               </Link>
             </div>
           )}
         </div>
+
         {/* cart bill starts */}
         {cartItems.filter((item) => item.isSelected).length > 0 ? (
           <div className="col-md-3">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-muted">Your Bill</span>
-              <span className="badge badge-secondary badge-pill">
+              <span className="badge badge-primary badge-pill">
                 {cartItems.filter((item) => item.isSelected).length} Items
               </span>
             </h4>
@@ -157,13 +159,13 @@ const Cart = (props) => {
               <CartBillItems />
               <li className="list-group-item d-flex justify-content-between bg-light">
                 <span>
-                  <h5>Total Amount</h5>
+                  <h6>Total Amount</h6>
                 </span>
-                <h4>
+                <h5>
                   <strong>Rs.{total}</strong>
-                </h4>
+                </h5>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
+              <li className="list-group-item d-flex justify-content-center">
                 <Link
                   to={{
                     pathname: '/payment',
@@ -172,11 +174,8 @@ const Cart = (props) => {
                     },
                   }}
                 >
-                  <button
-                    className="btn btn-secondary btn-lg btn-block"
-                    type="submit"
-                  >
-                    Continue to checkout
+                  <button className="btn btn-primary btn-block" type="submit">
+                    Continue to Checkout
                   </button>
                 </Link>
               </li>
