@@ -7,6 +7,8 @@ import axios from 'axios';
 import Collapsible from 'react-collapsible';
 import { SwatchesPicker } from 'react-color';
 import validator from 'validator';
+import { v4 as uuid } from 'uuid';
+import moment from 'moment';
 
 // Assets
 import './AddProduct.css';
@@ -39,14 +41,28 @@ const AddProduct = (props) => {
 
 	const [availableColors, setAvailableColors] = useState([]);
 
+	const [discount, setDiscount] = useState(0);
+	const [discountFrom, setDiscountFrom] = useState('');
+	const [discountUntil, setDiscountUntil] = useState('');
+
+	const onDiscountChange = (e) => {
+		setDiscount(e.target.value);
+	};
+
+	const onDiscountFromChange = (e) => {
+		setDiscountFrom(e.target.value);
+	};
+
+	const onDiscountUntilChange = (e) => {
+		setDiscountUntil(e.target.value);
+	};
+
 	useEffect(() => {
 		// Getting the categories from the API
 		axios
 			.get('http://localhost:8000/api/v1/categories')
 			.then((res) => {
-				console.log(res.data);
 				setCategories([...res.data.data.categories]);
-				setSelectedCategory(categories[0]._id);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -184,6 +200,23 @@ const AddProduct = (props) => {
 		if (isXLChecked) availableSizes.push('XL');
 		if (isXXLChecked) availableSizes.push('XXL');
 
+		let productDiscount = undefined;
+
+		if (
+			!(
+				validator.isEmpty(`${discount}`) &&
+				validator.isEmpty(discountFrom) &&
+				validator.isEmpty(discountUntil)
+			) &&
+			discount != 0
+		) {
+			productDiscount = {
+				percentage: parseInt(discount),
+				from: moment(discountFrom).toDate(),
+				until: moment(discountUntil).toDate(),
+			};
+		}
+
 		const newProduct = {
 			name: productName,
 			price: price,
@@ -193,6 +226,7 @@ const AddProduct = (props) => {
 			images: imageURL,
 			sizes: availableSizes,
 			colors: [...availableColors],
+			discount: productDiscount,
 		};
 
 		axios
@@ -241,7 +275,7 @@ const AddProduct = (props) => {
 
 	return (
 		<React.Fragment>
-			<div className='container'>
+			<div className='backend container'>
 				<h3>Add New Product</h3>
 				<hr />
 				<div className='product-add-image-container'>
@@ -438,7 +472,7 @@ const AddProduct = (props) => {
 							<label>Available Colors</label>
 							{availableColors.map((el) => (
 								<div
-									key={el.name}
+									key={uuid()}
 									className='add-product-color-row d-flex'
 								>
 									<div
@@ -591,30 +625,36 @@ const AddProduct = (props) => {
 								<label>Discount</label>
 								<input
 									type='number'
-									className='form-control is-valid'
+									className='form-control'
+									value={discount}
+									onChange={onDiscountChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the discount percentage
 								</div>
 							</div>
 							<div className='col-md-4 mb-3'>
 								<label>From</label>
 								<input
 									type='date'
-									className='form-control is-valid'
+									className='form-control'
+									value={discountFrom}
+									onChange={onDiscountFromChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the starting date
 								</div>
 							</div>
 							<div className='col-md-4 mb-3'>
 								<label>Until</label>
 								<input
 									type='date'
-									className='form-control is-valid'
+									className='form-control'
+									value={discountUntil}
+									onChange={onDiscountUntilChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the end date
 								</div>
 							</div>
 						</div>
