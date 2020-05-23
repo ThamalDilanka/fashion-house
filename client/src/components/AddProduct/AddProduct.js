@@ -45,6 +45,16 @@ const AddProduct = (props) => {
 	const [discountFrom, setDiscountFrom] = useState('');
 	const [discountUntil, setDiscountUntil] = useState('');
 
+	const [isProductNameValid, setIsProductNameValid] = useState(undefined);
+	const [isProductDescriptionValid, setIsProductDescriptionValid] = useState(undefined);
+	const [isProductPriceValid, setIsProductPriceValid] = useState(undefined);
+	const [isProductQuantityValid, setIsProductQuantityValid] = useState(undefined);
+	const [isProductCategoryValid, setIsProductCategoryValid] = useState(undefined);
+	const [isProductColorsValid, setIsProductColorsValid] = useState(undefined);
+	const [isProductImageValid, setIsProductImageValid] = useState(undefined);
+	const [isProductSizeValid, setIsProductSizeValid] = useState(undefined);
+	const [isProductDiscountValid, setIsProductDiscountValid] = useState(undefined);
+
 	const onDiscountChange = (e) => {
 		setDiscount(e.target.value);
 	};
