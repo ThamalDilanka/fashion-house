@@ -25,6 +25,7 @@ const SMProductPanel = (props) => {
 		<React.Fragment>
 			<div className='backend container'>
 				<h3>All The Product Items</h3>
+                <p className='m-0'>Double click to see the customer view</p>
 				<br />
 				<SMProductItems products={products}></SMProductItems>
 			</div>

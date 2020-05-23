@@ -4,13 +4,26 @@ import Swal from 'sweetalert2';
 import Session from '../../../util/Session';
 import { store } from 'react-notifications-component';
 import axios from 'axios';
+import { confirmAlert } from 'react-confirm-alert';
+import SMSingleProductView from '../../SMSingleProductView/SMSingleProductView';
 
 const SMProductItem = (props) => {
-	const displayDetails = (e) => {};
+	const displayDetails = (e) => {
+		confirmAlert({
+			customUI: ({ onClose }) => {
+				return (
+					<SMSingleProductView
+                        product={props.product}
+                        onClose={onClose}
+					></SMSingleProductView>
+				);
+			},
+		});
+	};
 
 	return (
 		<React.Fragment>
-			<tr className='sm-product-list-row' onDoubleClick={displayDetails}>
+			<tr className='sm-product-list-row' onDoubleClick={displayDetails} onSelect={()=> {return false}}>
 				<td>
 					<img src={props.product.images[0]} alt='' />
 				</td>

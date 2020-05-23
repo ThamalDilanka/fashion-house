@@ -1,15 +1,18 @@
-.sm-product-list-row p{
-    overflow: hidden;
+.sm-product-list-row {
+	user-select: none;
+}
+.sm-product-list-row p {
+	overflow: hidden;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    cursor: pointer;
+	-webkit-box-orient: vertical;
+	cursor: pointer;
 }
 
-.sm-product-list-row img{
-    width: 100px;
+.sm-product-list-row img {
+	width: 100px;
 }
 
-.sm-product-list-row:hover{
-  background: rgb(245, 245, 245);
+.sm-product-list-row:hover {
+	background: rgb(245, 245, 245);
 }
