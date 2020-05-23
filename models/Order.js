@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: {
     type: String,
     required: [true, "Please enter a payment method."],
-    enum: ["Visa", "Master", "Cash-On-Delivery"],
+    enum: ["card-payment", "cash-on-delivery-payment"],
     default: "customer",
   },
   date: {
