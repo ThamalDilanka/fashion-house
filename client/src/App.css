@@ -27,14 +27,8 @@ body {
 	margin-top: 0 !important;
 }
 
-.favourite-btn-false {
+.favourite-btn {
 	border-radius: 50% !important;
-	background: gray !important;
-}
-
-.favourite-btn-true {
-	border-radius: 50% !important;
-	background: red !important;
 }
 
 .favourite-btn:focus {

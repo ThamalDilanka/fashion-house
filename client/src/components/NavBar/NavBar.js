@@ -5,6 +5,7 @@ import { store } from 'react-notifications-component';
 import './NavBar.css';
 import axios from 'axios';
 
+
 // Components
 import { CartContext } from '../../contexts/CartContext';
 import { AuthContext } from '../../contexts/AuthContext';
