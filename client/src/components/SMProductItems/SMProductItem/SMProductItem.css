@@ -16,3 +16,33 @@
 .sm-product-list-row:hover {
 	background: rgb(245, 245, 245);
 }
+
+.btn-edit {
+	margin: 3px;
+	border: none;
+	background: none;
+	color: rgb(241, 157, 0);
+}
+
+.btn-delete {
+	margin: 3px;
+	border: none;
+	background: none;
+	color: rgb(201, 0, 0);
+}
+
+.btn-edit:focus {
+	outline: none;
+}
+
+.btn-delete:focus {
+	outline: none;
+}
+
+.btn-edit:hover {
+	transform: scale(1.1);
+}
+
+.btn-delete:hover {
+	transform: scale(1.1);
+}

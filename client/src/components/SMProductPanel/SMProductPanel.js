@@ -9,6 +9,11 @@ import './SMProductPanel.css';
 
 const SMProductPanel = (props) => {
 	const [products, setProducts] = useState([]);
+	const [modified, setModified] = useState(1);
+
+	const updateComponent = () => {
+        setModified(modified + 1);
+	};
 
 	useEffect(() => {
 		axios
@@ -19,15 +24,15 @@ const SMProductPanel = (props) => {
 			})
 			.then((res) => setProducts(res.data.data.products))
 			.catch((err) => console.log(err));
-	}, []);
+	}, [modified]);
 
 	return (
 		<React.Fragment>
 			<div className='backend container'>
 				<h3>All The Product Items</h3>
-                <p className='m-0'>Double click to see the customer view</p>
+				<p className='m-0'>Double click to see the customer view</p>
 				<br />
-				<SMProductItems products={products}></SMProductItems>
+				<SMProductItems products={products} updateComponent={updateComponent}></SMProductItems>
 			</div>
 		</React.Fragment>
 	);

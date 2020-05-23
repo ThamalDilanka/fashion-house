@@ -12,13 +12,15 @@ const SMProductItems = (props) => {
 					<th scope='col'>Price</th>
 					<th scope='col'>Discount</th>
 					<th scope='col'>Quantity</th>
+					<th scope='col'>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				{props.products.map((product) => (
 					<SMProductItem
 						product={product}
-						key={product._id}
+                        key={product._id}
+                        updateComponent={props.updateComponent}
 					></SMProductItem>
 				))}
 			</tbody>
