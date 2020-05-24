@@ -5,6 +5,8 @@ import { store } from 'react-notifications-component';
 import { Link, Redirect, Switch, Route } from 'react-router-dom';
 import AddProduct from '../components/AddProduct/AddProduct';
 import StoreManagersPanel from '../components/StoreManagersPanel/StoreManagersPanel'
+import AdminDashboard from '../components/AdminDashboard/AdminDashboard';
+import NotFound from '../components/NotFound/NotFound'
 
 const Admin = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
@@ -55,7 +57,7 @@ const Admin = (props) => {
 					</header>
 					<ul>
 						<li>
-							<Link to='/admin'>
+							<Link to='/admin/dashboard'>
 								<i className='fa fa-bar-chart'></i>Dashboard
 							</Link>
 						</li>
@@ -81,10 +83,10 @@ const Admin = (props) => {
 				<section className='admin-panel-content-container'>
 					<Switch>
 						<Route path='/admin/products' component={AddProduct} />
-						<Route
-							path='/admin/store-managers'
-							component={StoreManagersPanel}
-						/>
+						<Route path='/admin/dashboard' component={AdminDashboard} />
+						<Route path='/admin/store-managers' component={StoreManagersPanel}/>
+						<Route path='/admin/' exact component={AdminDashboard} />
+						<Route path='/admin' component={NotFound}/>
 					</Switch>
 				</section>
 			</div>
