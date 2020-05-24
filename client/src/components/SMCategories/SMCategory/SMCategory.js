@@ -6,6 +6,10 @@ import axios from 'axios';
 import './SMCategory.css';
 
 const SMCategory = (props) => {
+	const onUpdate = () => {
+		props.updateCategory(props.category);
+	};
+
 	const onDelete = () => {
 		Swal.fire({
 			title: 'Are you sure?',
@@ -63,7 +67,7 @@ const SMCategory = (props) => {
 				<td>{props.category.title}</td>
 				<td>{props.category.description}</td>
 				<td>
-					<button className='btn-edit'>
+					<button className='btn-edit' onClick={onUpdate}>
 						<i
 							className='fa  fa-pencil-square-o'
 							aria-hidden='true'

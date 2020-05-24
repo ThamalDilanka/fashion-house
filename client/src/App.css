@@ -44,6 +44,12 @@ body {
 	box-shadow: none !important;
 }
 
+.custom-invalid-feedback {
+	margin-top: 5px;
+	font-size: small;
+	color: red;
+}
+
 /************** side bar *************/
 .admin-panel-main-container {
 	overflow: auto;

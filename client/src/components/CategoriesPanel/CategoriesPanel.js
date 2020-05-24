@@ -17,6 +17,7 @@ const CategoriesPanel = (props) => {
 	const [imageName, setImageName] = useState('select an image');
 	const [imageURL, setImageURL] = useState('');
 	const [progress, setProgress] = useState(0);
+	const [isImageUploaded, setIsImageUploaded] = useState(true);
 
 	const [categoryTitle, setCategoryTitle] = useState('');
 	const [categoryDescription, setCategoryDescription] = useState('');
@@ -28,6 +29,18 @@ const CategoriesPanel = (props) => {
 	] = useState(true);
 
 	const [isModified, setIsModified] = useState(false);
+	const [isUpdating, setIsUpdating] = useState(false);
+	const [category, setCategory] = useState(undefined);
+
+	const updateCategory = (category) => {
+		setIsImageUploaded(true);
+		setIsAddingFormOpen(true);
+		setIsUpdating(true);
+		setImageURL(category.images[0]);
+		setCategoryTitle(category.title);
+		setCategoryDescription(category.description);
+		setCategory(category);
+	};
 
 	const onCategoryTitleChange = (e) => {
 		setCategoryTitle(e.target.value);
@@ -83,8 +96,9 @@ const CategoriesPanel = (props) => {
 					.getDownloadURL()
 					.then((url) => {
 						setImageURL(url);
-						console.log(url);
 						setProgress(0);
+						setIsImageUploaded(true);
+						setIsModified(true)
 					});
 			}
 		);
@@ -104,50 +118,134 @@ const CategoriesPanel = (props) => {
 
 	const addCategory = () => {
 		if (
-			!(categoryTitleIsValid && categoryDescriptionIsValid && isModified)
+			!(
+				categoryTitleIsValid &&
+				categoryDescriptionIsValid &&
+				isModified &&
+				imageURL !== ''
+			)
 		) {
+			if (imageURL === '') setIsImageUploaded(false);
+			if (categoryTitle === '') setCategoryTitleIsValid(false);
+			if (categoryDescription === '')
+				setCategoryDescriptionIsValid(false);
 			return;
 		}
-		axios
-			.post(
-				'http://localhost:8000/api/v1/categories',
-				{
-					title: categoryTitle,
-					description: categoryDescription,
-					images: imageURL,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${Session.getToken()}`,
+
+		if (isUpdating) {
+			axios
+				.patch(
+					`http://localhost:8000/api/v1/categories/${category._id}`,
+					{
+						title: categoryTitle,
+						description: categoryDescription,
+						images: imageURL,
 					},
-				}
-			)
-			.then((res) => {
-				updateComponent();
-				// Show a notification
-				store.addNotification({
-					title: `${res.data.data.category.title} Successfully added`,
-					message: 'Inserted product is now available in the store',
-					type: 'success',
-					insert: 'top-right',
-					container: 'top-right',
-					animationIn: ['animated', 'fadeIn'],
-					animationOut: ['animated', 'fadeOut'],
-					dismiss: {
-						duration: 3000,
-						showIcon: true,
-					},
+					{
+						headers: {
+							Authorization: `Bearer ${Session.getToken()}`,
+						},
+					}
+				)
+				.then((res) => {
+					updateComponent();
+					// Show a notification
+					store.addNotification({
+						title: `${res.data.data.category.title} Successfully Uploaded`,
+						message: 'Updated version available now',
+						type: 'success',
+						insert: 'top-right',
+						container: 'top-right',
+						animationIn: ['animated', 'fadeIn'],
+						animationOut: ['animated', 'fadeOut'],
+						dismiss: {
+							duration: 3000,
+							showIcon: true,
+						},
+					});
+
+					setIsAddingFormOpen(false);
+
+					setImage(null);
+					setImageName('select an image');
+					setImageURL('');
+					setProgress(0);
+					setCategoryTitle('');
+					setCategoryDescription('');
+					setCategoryTitleIsValid(true);
+					setCategoryDescriptionIsValid(true);
+					setIsModified(false);
+					setIsImageUploaded(false);
+					setIsUpdating(false);
+				})
+				.catch((err) => {
+					console.log(err.response.data);
 				});
-			})
-			.catch((err) => {
-				console.log(err.response.data);
-			});
+		} else {
+			axios
+				.post(
+					'http://localhost:8000/api/v1/categories',
+					{
+						title: categoryTitle,
+						description: categoryDescription,
+						images: imageURL,
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${Session.getToken()}`,
+						},
+					}
+				)
+				.then((res) => {
+					updateComponent();
+					// Show a notification
+					store.addNotification({
+						title: `${res.data.data.category.title} Successfully added`,
+						message:
+							'Inserted product is now available in the store',
+						type: 'success',
+						insert: 'top-right',
+						container: 'top-right',
+						animationIn: ['animated', 'fadeIn'],
+						animationOut: ['animated', 'fadeOut'],
+						dismiss: {
+							duration: 3000,
+							showIcon: true,
+						},
+					});
+
+					setIsAddingFormOpen(false);
+
+					setImage(null);
+					setImageName('select an image');
+					setImageURL('');
+					setProgress(0);
+					setCategoryTitle('');
+					setCategoryDescription('');
+					setCategoryTitleIsValid(true);
+					setCategoryDescriptionIsValid(true);
+					setIsModified(false);
+					setIsImageUploaded(false);
+				})
+				.catch((err) => {
+					console.log(err.response.data);
+				});
+		}
 	};
 
 	const onCancel = () => {
 		setIsAddingFormOpen(false);
+		setImage(null);
+		setImageName('select an image');
+		setImageURL('');
+		setProgress(0);
 		setCategoryTitle('');
 		setCategoryDescription('');
+		setCategoryTitleIsValid(true);
+		setCategoryDescriptionIsValid(true);
+		setIsModified(false);
+		setIsImageUploaded(true);
+		setIsUpdating(false);
 	};
 
 	useEffect(() => {
@@ -191,6 +289,7 @@ const CategoriesPanel = (props) => {
 							src={imageURL}
 							alt='product'
 						/>
+
 						<div
 							className={
 								imageURL
@@ -248,6 +347,11 @@ const CategoriesPanel = (props) => {
 							<i className='fa fa-times' aria-hidden='true'></i>
 						</button>
 					</div>
+					{isImageUploaded ? null : (
+						<p className='custom-invalid-feedback'>
+							Please upload an image
+						</p>
+					)}
 
 					<br />
 					<div>
@@ -294,7 +398,7 @@ const CategoriesPanel = (props) => {
 							className='btn btn-primary float-right'
 							onClick={addCategory}
 						>
-							Add Category
+							{isUpdating ? 'Update' : 'Add Category'}
 						</button>
 						<button
 							className='sm-cancel-btn btn btn-secondary float-right'
@@ -310,6 +414,7 @@ const CategoriesPanel = (props) => {
 				<SMCategories
 					categories={categories}
 					updateComponent={updateComponent}
+					updateCategory={updateCategory}
 				></SMCategories>
 			</div>
 		</React.Fragment>

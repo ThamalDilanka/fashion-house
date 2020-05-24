@@ -19,6 +19,7 @@ const SMCategories = (props) => {
 						category={category}
 						key={category._id}
 						updateComponent={props.updateComponent}
+						updateCategory={props.updateCategory}
 					></SMCategory>
 				))}
 			</tbody>
