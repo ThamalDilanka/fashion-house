@@ -2,47 +2,47 @@ import React, { useState, useCallback } from 'react'
 import axios from 'axios';
 
 const DiscountCard = (data) => {
-    
+
     const [title, setTitle] = useState('');
     const [id, setId] = useState(null);
     const [addDiscount, setAddDiscount] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
-    const [updateInfoDiscount,setUpdateInfoDiscount] = useState('');
-    const [updateInfoFromDate,setUpdateInfoFromDate] = useState('');
-    const [updateInfoToDay,setUpdateInfoToDay] = useState('');
-    const [updateInfoId,setUpdateInfoId] = useState(null);
-    const [updateInfoTitle,setUpdateInfoTitle] = useState('');
-    const [deleteDiscount,setDeleteDiscount] = useState('');
-    const [deleteId,setDeleteId] = useState(null);
-    const [deleteFromDate,setDeleteFromDate] = useState('');
-    const [delteToDate,setDeleteToDate] = useState('');
-    const [deleteName,setDeleteName] = useState('');
-    const [updateNewDiscount,setUpdateNewDiscount] = useState('');
-    const [updateFromDate,setUpdateFronmDate] = useState('');
-    const [updateUntil,setUpdateUntil] = useState('');
+    const [updateInfoDiscount, setUpdateInfoDiscount] = useState('');
+    const [updateInfoFromDate, setUpdateInfoFromDate] = useState('');
+    const [updateInfoToDay, setUpdateInfoToDay] = useState('');
+    const [updateInfoId, setUpdateInfoId] = useState(null);
+    const [updateInfoTitle, setUpdateInfoTitle] = useState('');
+    const [deleteDiscount, setDeleteDiscount] = useState('');
+    const [deleteId, setDeleteId] = useState(null);
+    const [deleteFromDate, setDeleteFromDate] = useState('');
+    const [delteToDate, setDeleteToDate] = useState('');
+    const [deleteName, setDeleteName] = useState('');
+    const [updateNewDiscount, setUpdateNewDiscount] = useState('');
+    const [updateFromDate, setUpdateFronmDate] = useState('');
+    const [updateUntil, setUpdateUntil] = useState('');
 
     const storeInformation = useCallback((name, id) => {
         setTitle(name);
         setId(id);
     }, []);
-    
-    const updateInformation =  useCallback((id,discount,from,until,title) => {
-        console.log("update data info: ",discount,until);
+
+    const updateInformation = useCallback((id, discount, from, until, title) => {
+        console.log("update data info: ", discount, until);
         setUpdateInfoDiscount(discount);
         setUpdateInfoFromDate(from);
         setUpdateInfoToDay(until);
         setUpdateInfoId(id);
         setUpdateInfoTitle(title);
-    },[]);
+    }, []);
 
-    const deleteInformation = useCallback((id,discount,from,until,name) => {
+    const deleteInformation = useCallback((id, discount, from, until, name) => {
         setDeleteDiscount(discount);
         setDeleteId(id);
         setDeleteFromDate(from);
         setDeleteToDate(until);
         setDeleteName(name);
-    },[]);
+    }, []);
 
     const submitDiscountFormData = (e) => {
         e.preventDefault();
@@ -77,7 +77,7 @@ const DiscountCard = (data) => {
             data: {
                 discount: {
                     from: updateFromDate,
-                    percentage:updateNewDiscount,
+                    percentage: updateNewDiscount,
                     until: updateUntil
                 }
             },
@@ -87,13 +87,13 @@ const DiscountCard = (data) => {
         });
         window.location.reload();
 
-        
+
         setAddDiscount(" ");
         setFromDate(" ");
         setToDate(" ");
     }
 
-    const deleteItemDiscount = (e) =>{
+    const deleteItemDiscount = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token')
         axios({
@@ -101,8 +101,8 @@ const DiscountCard = (data) => {
             url: `http://localhost:8000/api/v1/products/${deleteId}`,
             data: {
                 discount: {
-                    from:  undefined,
-                    percentage:  undefined,
+                    from: undefined,
+                    percentage: undefined,
                     until: undefined
                 }
             },
@@ -186,13 +186,13 @@ const DiscountCard = (data) => {
                                     <input type="text" className="form-control" id="inputDiscountUpdate"
                                         aria-describedby="discountHelp"
                                         autoComplete="off"
-                                       placeholder={updateInfoDiscount}  
+                                        placeholder={updateInfoDiscount}
                                         //value={updateInfoDiscount}  
-                                        required                                 
+                                        required
                                         onChange={e => setUpdateNewDiscount(e.target.value)} />
                                     <small id="discountHelp" className="form-text text-muted">Enter discount value for the product.</small>
                                     <div className="invalid-feedback">
-                                     Please provide a value for discount.
+                                        Please provide a value for discount.
                                     </div>
                                 </div>
                                 <div className="row">
@@ -208,7 +208,7 @@ const DiscountCard = (data) => {
                                             required />
                                         <small id="fromHelp" className="form-text text-muted">Discount valid from</small>
                                         <div className="invalid-feedback">
-                                                 Please select a starting date.
+                                            Please select a starting date.
                                              </div>
                                     </div>
                                     <div className="col">
@@ -218,19 +218,19 @@ const DiscountCard = (data) => {
                                             placeholder={updateInfoToDay}
                                             onFocus={(e) => e.target.type = 'date'}
                                             onBlur={(e) => e.target.type = 'text'}
-                                            onChange={e => setUpdateUntil(e.target.value)} 
-                                            required/>
+                                            onChange={e => setUpdateUntil(e.target.value)}
+                                            required />
                                         <small id="untilHelp" className="form-text text-muted">To</small>
                                         <div className="invalid-feedback">
-                                                 Please select a end date.
+                                            Please select a end date.
                                              </div>
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" onClick={(e) =>  updateDiscountModalData(e)} className="btn btn-warning">Update</button>
-                        </div>
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" onClick={(e) => updateDiscountModalData(e)} className="btn btn-warning">Update</button>
+                                </div>
                             </form>
 
                         </div>
@@ -243,8 +243,8 @@ const DiscountCard = (data) => {
             </div>
             {/* update modal ends */}
 
-             {/* Modal-discount delete*/}
-             <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            {/* Modal-discount delete*/}
+            <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -304,8 +304,8 @@ const DiscountCard = (data) => {
             {/* Modal for delete ends*/}
 
             <div className="mt-5">
-                <table className="table table-striped">
-                    <thead className="thead-dark">
+                <table className="table">
+                    <thead>
                         <tr>
                             <th scope="col">Image</th>
                             <th scope="col">Title</th>
@@ -317,10 +317,10 @@ const DiscountCard = (data) => {
                     </thead>
                     <tbody>
                         {
-                            data.data && data.data.map((data,index) =>
+                            data.data && data.data.map((data, index) =>
 
                                 <tr key={data._id}>
-                                    <td><img src={`./../../../../public/images/products/${data.images[0]}`} width="60" height="60" alt="products" /></td>
+                                    <td><img src={data.images[0]} width="60" height="60" alt="products" /></td>
                                     <td>{data.name}</td>
                                     <td>{data.price}</td>
                                     <td>{data.description}</td>
@@ -328,11 +328,20 @@ const DiscountCard = (data) => {
                                     <td>{
                                         <div className="form-row">
 
-                                            <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" className="btn btn-outline-secondary">Add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm" onClick={() => { storeInformation(data.name, data._id) }} data-toggle="modal" data-target="#exampleModal" className="btn btn-outline-secondary"><i
+                                                className='fa  fa-pencil-square-o'
+                                                aria-hidden='true'
+                                            ></i></button>
 
-                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until,data.name)}} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1">Update</button>
+                                            <button type="button" size="sm" onClick={() => { updateInformation(data._id, data.discount.percentage, data.discount.from, data.discount.until, data.name) }} data-toggle="modal" data-target="#updateDiscountModal" className="btn btn-outline-warning mt-1"><i
+                                                className='fa fa-edit'
+                                                aria-hidden='true'
+                                            ></i></button>
 
-                                            <button type="button" size="sm"  onClick={() => { deleteInformation(data._id,data.discount.percentage,data.discount.from,data.discount.until,data.name)}} data-toggle="modal" data-target="#deleteModal"  className="btn btn-outline-danger mt-1">Delete&nbsp;&nbsp;</button>
+                                            <button type="button" size="sm" onClick={() => { deleteInformation(data._id, data.discount.percentage, data.discount.from, data.discount.until, data.name) }} data-toggle="modal" data-target="#deleteModal" className="btn btn-outline-danger mt-1"><i
+                                                className='fa fa-minus-circle'
+                                                aria-hidden='true'
+                                            ></i></button>
 
                                         </div>
                                     }</td>
