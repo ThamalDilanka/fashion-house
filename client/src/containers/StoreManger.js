@@ -84,12 +84,17 @@ const StoreManager = (props) => {
 				<section className='admin-panel-content-container'>
 					<Switch>
 						<Route
-							path='/store-manager/add-products'
-							component={AddProduct}
-						/>
-						<Route
 							path='/store-manager/all-products'
 							component={SMProductPanel}
+						/>
+						<Route
+							path='/store-manager/'
+							exact
+							component={SMProductPanel}
+						/>
+						<Route
+							path='/store-manager/add-products'
+							component={AddProduct}
 						/>
 						<Route
 							path='/store-manager/discounts'

@@ -97,7 +97,7 @@ exports.signup = async (req, res, next) => {
 			email
 				.sendEmail(
 					newUser.email,
-					'Welcome to the Fashion House!, Your Account Has Been Created',
+					'Welcome to the Fashion House!',
 					`<p>Your Temporary Password is ${req.body.password}</p>`
 				)
 				.then(() => {
@@ -135,7 +135,6 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
-		console.log(email + ' ' + password);
 
 		if (!email || !password) {
 			throw new Error('Please provide email and password');
