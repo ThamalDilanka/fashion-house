@@ -148,7 +148,12 @@ const NavBar = (props) => {
 		<nav
 			className='navbar navbar-expand-md navbar-dark bg-dark'
 			style={{
-				display: Session.getRole() === 'customer' ? null : 'none',
+				display:
+					Session.getRole() === 'admin'
+						? 'none'
+						: Session.getRole() === 'store-manager'
+						? 'none'
+						: null,
 			}}
 		>
 			<Link className='navbar-brand' to='/'>
