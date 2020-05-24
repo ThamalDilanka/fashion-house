@@ -113,7 +113,17 @@ const SingleProductView = (props) => {
         }
       }
     } else {
-      props.history.push('/authenticator/login');
+      Swal.fire({
+        title: 'Log in first!',
+        text: "You have to login first to do this.",
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.value) {
+          props.history.push('/authenticator/login');
+        }
+      })
     }
   };
 
@@ -159,7 +169,17 @@ const SingleProductView = (props) => {
         });
       }
     } else {
-      props.history.push('/authenticator/login');
+      Swal.fire({
+        title: 'Log in first!',
+        text: "You have to login first to do this.",
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.value) {
+          props.history.push('/authenticator/login');
+        }
+      })
     }
   };
 
