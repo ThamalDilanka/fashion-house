@@ -35,6 +35,10 @@ const Cart = (props) => {
 	};
 
 	useEffect(() => {
+		if (!Session.isLoggedIn()) {
+			return;
+		}
+
 		axios
 			.get(
 				`http://localhost:8000/api/v1/carts?user=${customerId}`,

@@ -29,6 +29,7 @@ const Home = (props) => {
 			) : null}
 			{Session.getRole() === 'admin' ? <Redirect to='/admin' /> : null}
 			<div className='container'>
+				<br/>
 				<CategoryCards categories={categories} />
 			</div>
 		</React.Fragment>
