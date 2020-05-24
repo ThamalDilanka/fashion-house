@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Session from '../util/Session';
+import { Link, Redirect, Switch, Route } from 'react-router-dom';
+
 import axios from 'axios';
 
 // Components
@@ -20,10 +23,15 @@ const Home = (props) => {
 	}, []);
 
 	return (
-		
-		<div className='container'>
-			<CategoryCards categories={categories} />
-		</div>
+		<React.Fragment>
+			{Session.getRole() === 'store-manager' ? (
+				<Redirect to='/store-manager' />
+			) : null}
+			{Session.getRole() === 'admin' ? <Redirect to='/admin' /> : null}
+			<div className='container'>
+				<CategoryCards categories={categories} />
+			</div>
+		</React.Fragment>
 	);
 };
 

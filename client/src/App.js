@@ -5,6 +5,7 @@ import './App.css';
 // Components
 import ReactNotification from 'react-notifications-component';
 import NavBar from './components/NavBar/NavBar';
+import NotFound from './components/NotFound/NotFound';
 
 // Containers
 import Home from './containers/Home';
@@ -23,31 +24,41 @@ import { AuthProvider } from './contexts/AuthContext';
 import { FavouritesProvider } from './contexts/FavouritesContext';
 
 function App() {
-  return (
-    <AuthProvider>
-      <FavouritesProvider>
-        <CartProvider>
-          <div className="App">
-            <BrowserRouter>
-              <NavBar />
-              <ReactNotification />
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <Route path="/authenticator" component={Authenticator} />
-                <Route path="/cart" component={Cart} />
-                <Route path="/wish-list" component={WishList} />
-                <Route path="/product-view" component={ProductView} />
-                <Route path="/show-case" component={ShowCase} />
-                <Route path="/admin" component={Admin} />
-                <Route path="/payment" component={Payment} />
-                <Route path="/store-manager" component={StoreManager} />
-              </Switch>
-            </BrowserRouter>
-          </div>
-        </CartProvider>
-      </FavouritesProvider>
-    </AuthProvider>
-  );
+	return (
+		<AuthProvider>
+			<FavouritesProvider>
+				<CartProvider>
+					<div className='App'>
+						<BrowserRouter>
+							<NavBar />
+							<ReactNotification />
+							<Switch>
+								<Route path='/' exact component={Home} />
+								<Route
+									path='/authenticator'
+									component={Authenticator}
+								/>
+								<Route path='/cart' component={Cart} />
+								<Route path='/wish-list' component={WishList} />
+								<Route
+									path='/product-view'
+									component={ProductView}
+								/>
+								<Route path='/show-case' component={ShowCase} />
+								<Route path='/admin' component={Admin} />
+								<Route path='/payment' component={Payment} />
+								<Route
+									path='/store-manager'
+									component={StoreManager}
+								/>
+								<Route path='/' component={NotFound} />
+							</Switch>
+						</BrowserRouter>
+					</div>
+				</CartProvider>
+			</FavouritesProvider>
+		</AuthProvider>
+	);
 }
 
 export default App;

@@ -36,6 +36,14 @@ const Admin = (props) => {
 	return (
 		<React.Fragment>
 			{Session.isLoggedIn() ? null : <Redirect to='/' />}
+			{Session.getRole() === 'customer' ? (
+				<Redirect to='/not-found' />
+			) : null}
+			{Session.getRole() === 'store-manager' ? (
+				<Redirect to='/store-manager' />
+			) : null}
+			{Session.getRole() === 'admin' ? <Redirect to='/admin' /> : null}
+
 			<div className='admin-panel-main-container d-flex bd-highlight'>
 				<div className='sidebar'>
 					<header>
@@ -86,14 +94,17 @@ const Admin = (props) => {
 					<Switch>
 						<Route
 							path='/admin/products'
+							exact
 							component={SMProductPanel}
 						/>
 						<Route
 							path='/admin/dashboard'
+							exact
 							component={AdminDashboard}
 						/>
 						<Route
 							path='/admin/store-managers'
+							exact
 							component={StoreManagersPanel}
 						/>
 						<Route
@@ -106,7 +117,8 @@ const Admin = (props) => {
 							exact
 							component={CategoryPanel}
 						/>
-						<Route path='/admin' component={NotFound} />
+
+						<Redirect to='/not-found' />
 					</Switch>
 				</section>
 			</div>

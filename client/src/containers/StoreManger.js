@@ -4,8 +4,8 @@ import { AuthContext } from '../contexts/AuthContext';
 import { store } from 'react-notifications-component';
 import { Link, Redirect, Switch, Route } from 'react-router-dom';
 import AddProduct from '../components/AddProduct/AddProduct';
-import SMProductPanel from '../components/SMProductPanel/SMProductPanel'
-import DiscountPanel from '../components/DiscountPanel/DiscountPanel'
+import SMProductPanel from '../components/SMProductPanel/SMProductPanel';
+import DiscountPanel from '../components/DiscountPanel/DiscountPanel';
 
 const StoreManager = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useContext(AuthContext);
@@ -33,6 +33,14 @@ const StoreManager = (props) => {
 	return (
 		<React.Fragment>
 			{Session.isLoggedIn() ? null : <Redirect to='/' />}
+			{Session.getRole() === 'customer' ? (
+				<Redirect to='/not-found' />
+			) : null}
+			{Session.getRole() === 'store-manager' ? (
+				<Redirect to='/store-manager' />
+			) : null}
+			{Session.getRole() === 'admin' ? <Redirect to='/admin' /> : null}
+
 			<div className='admin-panel-main-container d-flex bd-highlight'>
 				<div className='sidebar'>
 					<header>
@@ -57,14 +65,12 @@ const StoreManager = (props) => {
 					<ul>
 						<li>
 							<Link to='/store-manager/all-products'>
-								<i className='fa fa-cubes'></i>All
-								Products
+								<i className='fa fa-cubes'></i>All Products
 							</Link>
 						</li>
 						<li>
 							<Link to='/store-manager/add-products'>
-								<i className='fa fa-plus'></i>Add
-								Products
+								<i className='fa fa-plus'></i>Add Products
 							</Link>
 						</li>
 						<li>
