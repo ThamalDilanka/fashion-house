@@ -5,6 +5,10 @@ import Session from '../../util/Session';
 import { storage } from '../../firebase/config';
 import axios from 'axios';
 import Collapsible from 'react-collapsible';
+import { SwatchesPicker } from 'react-color';
+import validator from 'validator';
+import { v4 as uuid } from 'uuid';
+import moment from 'moment';
 
 // Assets
 import './AddProduct.css';
@@ -13,17 +17,12 @@ const AddProduct = (props) => {
 	const [image, setImage] = useState(null);
 	const [imageName, setImageName] = useState('select an image');
 	const [imageURL, setImageURL] = useState(null);
-	const [error, setError] = useState('');
 	const [progress, setProgress] = useState(0);
 
 	const [categories, setCategories] = useState([]);
 
-	const [productName, setProductName] = useState(
-		'Add a descriptive name for your product'
-	);
-	const [productDescription, setProductDescription] = useState(
-		'Add a brief description about your product'
-	);
+	const [productName, setProductName] = useState('');
+	const [productDescription, setProductDescription] = useState('');
 
 	const [price, setPrice] = useState(0);
 	const [quantity, setQuantity] = useState(0);
@@ -37,14 +36,43 @@ const AddProduct = (props) => {
 	const [isXLChecked, setIsXLChecked] = useState(false);
 	const [isXXLChecked, setIsXXLChecked] = useState(false);
 
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedColorName, setSelectedColorName] = useState('');
+
+	const [availableColors, setAvailableColors] = useState([]);
+
+	const [discount, setDiscount] = useState(0);
+	const [discountFrom, setDiscountFrom] = useState('');
+	const [discountUntil, setDiscountUntil] = useState('');
+
+	const [isProductNameValid, setIsProductNameValid] = useState(undefined);
+	const [isProductDescriptionValid, setIsProductDescriptionValid] = useState(undefined);
+	const [isProductPriceValid, setIsProductPriceValid] = useState(undefined);
+	const [isProductQuantityValid, setIsProductQuantityValid] = useState(undefined);
+	const [isProductCategoryValid, setIsProductCategoryValid] = useState(undefined);
+	const [isProductColorsValid, setIsProductColorsValid] = useState(undefined);
+	const [isProductImageValid, setIsProductImageValid] = useState(undefined);
+	const [isProductSizeValid, setIsProductSizeValid] = useState(undefined);
+	const [isProductDiscountValid, setIsProductDiscountValid] = useState(undefined);
+
+	const onDiscountChange = (e) => {
+		setDiscount(e.target.value);
+	};
+
+	const onDiscountFromChange = (e) => {
+		setDiscountFrom(e.target.value);
+	};
+
+	const onDiscountUntilChange = (e) => {
+		setDiscountUntil(e.target.value);
+	};
+
 	useEffect(() => {
 		// Getting the categories from the API
 		axios
 			.get('http://localhost:8000/api/v1/categories')
 			.then((res) => {
-				console.log(res.data);
 				setCategories([...res.data.data.categories]);
-				setSelectedCategory(categories[0]._id);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -79,7 +107,6 @@ const AddProduct = (props) => {
 			setImage(e.target.files[0]);
 			setImageName(e.target.files[0].name);
 		} else {
-			setError('Please upload a image file');
 			setImage(null);
 		}
 	};
@@ -98,7 +125,7 @@ const AddProduct = (props) => {
 				);
 			},
 			(err) => {
-				setError(err.message);
+				console.log(err);
 			},
 			() => {
 				storage
@@ -152,6 +179,25 @@ const AddProduct = (props) => {
 		}
 	};
 
+	const onSelectColor = (color, e) => {
+		setSelectedColor(color.hex.substring(1));
+	};
+
+	const onSelectedColorNameChange = (e) => {
+		setSelectedColorName(e.target.value);
+	};
+
+	const onColorAdd = () => {
+		if (!validator.isEmpty(selectedColorName)) {
+			setAvailableColors([
+				...availableColors,
+				{ name: selectedColorName, code: selectedColor },
+			]);
+			setSelectedColor(undefined);
+			setSelectedColorName('');
+		}
+	};
+
 	const onProductFormSubmit = async (e) => {
 		e.preventDefault();
 
@@ -164,6 +210,23 @@ const AddProduct = (props) => {
 		if (isXLChecked) availableSizes.push('XL');
 		if (isXXLChecked) availableSizes.push('XXL');
 
+		let productDiscount = undefined;
+
+		if (
+			!(
+				validator.isEmpty(`${discount}`) &&
+				validator.isEmpty(discountFrom) &&
+				validator.isEmpty(discountUntil)
+			) &&
+			discount != 0
+		) {
+			productDiscount = {
+				percentage: parseInt(discount),
+				from: moment(discountFrom).toDate(),
+				until: moment(discountUntil).toDate(),
+			};
+		}
+
 		const newProduct = {
 			name: productName,
 			price: price,
@@ -172,12 +235,8 @@ const AddProduct = (props) => {
 			category: selectedCategory,
 			images: imageURL,
 			sizes: availableSizes,
-			colors: [
-				{ name: 'CRIMSON', code: 'DC143C' },
-				{ name: 'MEDIUMVIOLETRED', code: 'C71585' },
-				{ name: 'TOMATO', code: 'FF6347' },
-				{ name: 'SPRINGGREEN', code: '00FF7F' },
-			],
+			colors: [...availableColors],
+			discount: productDiscount,
 		};
 
 		axios
@@ -187,7 +246,6 @@ const AddProduct = (props) => {
 				},
 			})
 			.then((res) => {
-				console.log(res.data);
 				// Show a notification
 				store.addNotification({
 					title: `${res.data.data.product.name} Successfully added`,
@@ -202,6 +260,23 @@ const AddProduct = (props) => {
 						showIcon: true,
 					},
 				});
+
+				setImage(null);
+				setImageName('select an image');
+				setImageURL(null);
+				setProgress(0);
+				setProductName('');
+				setProductDescription('');
+				setPrice(0);
+				setQuantity(0);
+				setSelectedCategory(undefined);
+				setIsXXSChecked(false);
+				setIsXSChecked(false);
+				setIsSChecked(false);
+				setIsMChecked(false);
+				setIsXLChecked(false);
+				setIsLChecked(false);
+				setIsXXLChecked(false);
 			})
 			.catch((err) => {
 				console.log(err.response);
@@ -210,7 +285,7 @@ const AddProduct = (props) => {
 
 	return (
 		<React.Fragment>
-			<div className='container'>
+			<div className='backend container'>
 				<h3>Add New Product</h3>
 				<hr />
 				<div className='product-add-image-container'>
@@ -281,14 +356,15 @@ const AddProduct = (props) => {
 					</button>
 				</div>
 				<br />
-				<form onSubmit={onProductFormSubmit}>
+				<div>
 					<div className='form-row'>
 						<div className='col-md mb-3'>
 							<label>Product Name</label>
 							<input
 								type='text'
 								className='form-control'
-								placeholder={productName}
+								value={productName}
+								placeholder='Add a descriptive name for your product'
 								onChange={onProductNameChange}
 							/>
 							<div className='invalid-feedback'>
@@ -301,7 +377,8 @@ const AddProduct = (props) => {
 							<label>Product Description</label>
 							<textarea
 								className='form-control'
-								placeholder={productDescription}
+								value={productDescription}
+								placeholder='Add a brief description about your product'
 								onChange={onProductDescriptionChange}
 							></textarea>
 							<div className='invalid-feedback'>
@@ -357,6 +434,80 @@ const AddProduct = (props) => {
 						</div>
 					</div>
 
+					<label htmlFor='validationServer02'>
+						Add available colors
+					</label>
+
+					<div className='form-row'>
+						<div className='col-lg mb-3'>
+							<SwatchesPicker onChangeComplete={onSelectColor} />
+						</div>
+						<div className='col-lg-4 mb-3'>
+							<label>Selected Color</label>
+							<div className='input-group'>
+								<div className='input-group-prepend'>
+									<span className='input-group-text'>
+										{selectedColor}
+									</span>
+								</div>
+								<input
+									disabled={true}
+									className='form-control'
+									style={{ background: `#${selectedColor}` }}
+								/>
+								<div className='invalid-feedback'>
+									Please choose a username.
+								</div>
+							</div>
+							<br />
+
+							<label>Color Name</label>
+							<input
+								type='text'
+								className='form-control'
+								value={selectedColorName}
+								onChange={onSelectedColorNameChange}
+								placeholder='Enter a name for selected color'
+							/>
+							<div className='invalid-feedback'>Looks good!</div>
+							<br />
+							<button
+								className='btn btn-primary float-right'
+								onClick={onColorAdd}
+							>
+								Add Color
+							</button>
+						</div>
+						<div className='col-lg-4 mb-3'>
+							<label>Available Colors</label>
+							{availableColors.map((el) => (
+								<div
+									key={uuid()}
+									className='add-product-color-row d-flex'
+								>
+									<div
+										className='add-product-color-circle'
+										style={{ background: `#${el.code}` }}
+									></div>
+
+									<p>{el.name}</p>
+
+									<button
+										className=' float-right color-remove-button'
+										onClick={() => {
+											const ac = availableColors.filter(
+												(e) => e.code != el.code
+											);
+
+											setAvailableColors([...ac]);
+										}}
+									>
+										<i className='fa fa-close'></i>
+									</button>
+								</div>
+							))}
+						</div>
+					</div>
 					<div className='form-row'>
 						<div className='col-md-12 mb-3'>
 							<label htmlFor='validationServer02'>
@@ -471,7 +622,6 @@ const AddProduct = (props) => {
 							</div>
 						</div>
 					</div>
-
 					<Collapsible
 						trigger={
 							<div className='discount-collapse-header'>
@@ -482,39 +632,39 @@ const AddProduct = (props) => {
 					>
 						<div className='form-row'>
 							<div className='col-md-4 mb-3'>
-								<label htmlFor='validationServer01'>
-									Discount
-								</label>
+								<label>Discount</label>
 								<input
 									type='number'
-									className='form-control is-valid'
+									className='form-control'
+									value={discount}
+									onChange={onDiscountChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the discount percentage
 								</div>
 							</div>
 							<div className='col-md-4 mb-3'>
-								<label htmlFor='validationServer02'>From</label>
+								<label>From</label>
 								<input
 									type='date'
-									className='form-control is-valid'
-									id='validationServer02'
+									className='form-control'
+									value={discountFrom}
+									onChange={onDiscountFromChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the starting date
 								</div>
 							</div>
 							<div className='col-md-4 mb-3'>
-								<label htmlFor='validationServer02'>
-									Until
-								</label>
+								<label>Until</label>
 								<input
 									type='date'
-									className='form-control is-valid'
-									id='validationServer02'
+									className='form-control'
+									value={discountUntil}
+									onChange={onDiscountUntilChange}
 								/>
 								<div className='invalid-feedback'>
-									Looks good!
+									please enter the end date
 								</div>
 							</div>
 						</div>
@@ -523,13 +673,13 @@ const AddProduct = (props) => {
 					<br />
 					<button
 						className='btn btn-primary float-right'
-						type='submit'
+						onClick={onProductFormSubmit}
 					>
 						Add Product
 					</button>
 					<br />
 					<br />
-				</form>
+				</div>
 				<br />
 				<br />
 			</div>

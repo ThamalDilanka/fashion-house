@@ -304,8 +304,8 @@ const DiscountCard = (data) => {
             {/* Modal for delete ends*/}
 
             <div className="mt-5">
-                <table className="table table-striped">
-                    <thead className="thead-dark">
+                <table className="table">
+                    <thead>
                         <tr>
                             <th scope="col">Image</th>
                             <th scope="col">Title</th>
