@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 // Components
@@ -31,15 +31,17 @@ function App() {
             <BrowserRouter>
               <NavBar />
               <ReactNotification />
-              <Route path="/store-manager" exact component={StoreManager} />
-              <Route path="/" exact component={Home} />
-              <Route path="/authenticator" component={Authenticator} />
-              <Route path="/cart" component={Cart} />
-              <Route path="/wish-list" component={WishList} />
-              <Route path="/product-view" component={ProductView} />
-              <Route path="/show-case" component={ShowCase} />
-              <Route path="/admin" component={Admin} />
-              <Route path="/payment" component={Payment} />
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/authenticator" component={Authenticator} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/wish-list" component={WishList} />
+                <Route path="/product-view" component={ProductView} />
+                <Route path="/show-case" component={ShowCase} />
+                <Route path="/admin" component={Admin} />
+                <Route path="/payment" component={Payment} />
+                <Route path="/store-manager" component={StoreManager} />
+              </Switch>
             </BrowserRouter>
           </div>
         </CartProvider>
