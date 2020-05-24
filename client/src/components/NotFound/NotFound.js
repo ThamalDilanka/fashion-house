@@ -4,7 +4,7 @@ import './NotFound.css';
 const NotFound = () => {
 	return (
 		<div id='notfound'>
-			<div class='notfound'>
+			<div className='notfound'>
 				<h1>404</h1>
 				<h2>Oops! Page Not Be Found</h2>
 				<p>

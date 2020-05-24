@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Session from './util/Session'
 import './App.css';
 
 // Components
@@ -34,23 +35,18 @@ function App() {
 							<ReactNotification />
 							<Switch>
 								<Route path='/' exact component={Home} />
-								<Route
-									path='/authenticator'
-									component={Authenticator}
-								/>
+								<Route path='/authenticator' component={Authenticator} />
+								
 								<Route path='/cart' component={Cart} />
 								<Route path='/wish-list' component={WishList} />
-								<Route
-									path='/product-view'
-									component={ProductView}
-								/>
-								<Route path='/show-case' component={ShowCase} />
-								<Route path='/admin' component={Admin} />
 								<Route path='/payment' component={Payment} />
-								<Route
-									path='/store-manager'
-									component={StoreManager}
-								/>
+								
+								<Route path='/product-view' component={ProductView} />
+								<Route path='/show-case' component={ShowCase} />
+
+								<Route path='/store-manager' component={StoreManager} />
+								<Route path='/admin' component={Admin} />
+
 								<Route path='/' component={NotFound} />
 							</Switch>
 						</BrowserRouter>
