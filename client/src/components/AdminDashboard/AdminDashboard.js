@@ -12,6 +12,51 @@ import moment from 'moment';
 import './AdminDashboard.css';
 
 const AdminDashboard = (props) => {
+	const [users, setUsers] = useState([]);
+	const [orders, setOrders] = useState([]);
+	const [products, setProducts] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:8000/api/v1/users', {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				setUsers([...res.data.data.users]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		axios
+			.get('http://localhost:8000/api/v1/products', {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				setProducts([...res.data.data.products]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		axios
+			.get('http://localhost:8000/api/v1/orders', {
+				headers: {
+					Authorization: `Bearer ${Session.getToken()}`,
+				},
+			})
+			.then((res) => {
+				setOrders([...res.data.data.orders]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+
 	return (
 		<React.Fragment>
 			<h3>Dashboard</h3>
@@ -21,15 +66,11 @@ const AdminDashboard = (props) => {
 				<div className='col-md-4'>
 					<div className='card bg-c-blue order-card'>
 						<div className='card-block'>
-							<h6 className='m-b-20'>Orders Received</h6>
+							<h6 className='m-b-20'>Users</h6>
 							<h2 className='text-right'>
-								<i className='fa fa-cart-plus f-left'></i>
-								<span>486</span>
+								<i className='fa fa-user f-left'></i>
+								<span>{users.length}</span>
 							</h2>
-							<p className='m-b-0'>
-								Completed Orders
-								<span className='f-right'>351</span>
-							</p>
 						</div>
 					</div>
 				</div>
@@ -37,15 +78,11 @@ const AdminDashboard = (props) => {
 				<div className='col-md-4'>
 					<div className='card bg-c-green order-card'>
 						<div className='card-block'>
-							<h6 className='m-b-20'>Orders Received</h6>
+							<h6 className='m-b-20'>Products</h6>
 							<h2 className='text-right'>
 								<i className='fa fa-rocket f-left'></i>
-								<span>486</span>
+								<span>{products.length}</span>
 							</h2>
-							<p className='m-b-0'>
-								Completed Orders
-								<span className='f-right'>351</span>
-							</p>
 						</div>
 					</div>
 				</div>
@@ -53,15 +90,11 @@ const AdminDashboard = (props) => {
 				<div className='col-md-4'>
 					<div className='card bg-c-yellow order-card'>
 						<div className='card-block'>
-							<h6 className='m-b-20'>Orders Received</h6>
+							<h6 className='m-b-20'>Orders</h6>
 							<h2 className='text-right'>
 								<i className='fa fa-refresh f-left'></i>
-								<span>486</span>
+								<span>{orders.length}</span>
 							</h2>
-							<p className='m-b-0'>
-								Completed Orders
-								<span className='f-right'>351</span>
-							</p>
 						</div>
 					</div>
 				</div>
