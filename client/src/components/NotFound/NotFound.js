@@ -1,6 +1,5 @@
 import React from 'react';
 import './NotFound.css';
-import emoji from '../../images/emoji.png';
 
 const NotFound = () => {
 	return (
