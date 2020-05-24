@@ -488,14 +488,14 @@ const Payment = (props) => {
             >
               {total > 0 ? (
                 <div className="d-flex justify-content-center">
-                  <div class="row">
-                    <div class="col-sm">
+                  <div className="row">
+                    <div className="col-sm">
                       <h4>
                         Pay the total amount of {total} at the delivery to your
                         doorstep.
                       </h4>{' '}
                     </div>
-                    <div class="col-sm">
+                    <div className="col-sm">
                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTPdSqZ2dkWZ74Cccb4FI9XbqoOwYhLvfMtCzDS-nhek8NfVxKp&usqp=CAU" />
                     </div>
                   </div>

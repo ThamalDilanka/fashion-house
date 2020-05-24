@@ -7,6 +7,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { FavouritesContext } from '../../../contexts/FavouritesContext';
 import Session from '../../../util/Session';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 const ProductCard = (props) => {
   const [favouritesItems, setFavouritesItems] = useContext(FavouritesContext);
@@ -70,7 +72,17 @@ const ProductCard = (props) => {
         });
       }
     } else {
-      props.history.push('/authenticator/login');
+      Swal.fire({
+        title: 'Log in first!',
+        text: "You have to login first to do this.",
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.value) {
+          props.history.push('/authenticator/login');
+        }
+      })
     }
   };
 
