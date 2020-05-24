@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import './StoreManagerItem.css';
 import Swal from 'sweetalert2';
 import Session from '../../../util/Session';
 import { store } from 'react-notifications-component';
 import axios from 'axios';
+import './SMCategory.css';
 
-const StoreManagerItem = (props) => {
-	const onDeleteStoreManager = () => {
+const SMCategory = (props) => {
+	const onDelete = () => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: `Do you really want to remove ${props.storeManager.name} from the system?`,
+			text: `Do you really want to remove ${props.category.name} from the system?`,
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#d92027',
@@ -19,7 +19,7 @@ const StoreManagerItem = (props) => {
 			if (result.isConfirmed) {
 				axios
 					.delete(
-						`http://localhost:8000/api/v1/users/${props.storeManager._id}`,
+						`http://localhost:8000/api/v1/categories/${props.category._id}`,
 						{
 							headers: {
 								Authorization: `Bearer ${Session.getToken()}`,
@@ -28,12 +28,10 @@ const StoreManagerItem = (props) => {
 					)
 					.then((res) => {
 						props.updateComponent();
-
 						// Show a notification
 						store.addNotification({
-							title: 'Store manager removed successfully',
-							message:
-								'He no longer have store manager privileges',
+							title: 'Category removed successfully',
+							message: 'Tha action cannot be recovered',
 							type: 'danger',
 							insert: 'top-right',
 							container: 'top-right',
@@ -57,19 +55,25 @@ const StoreManagerItem = (props) => {
 			<tr>
 				<th scope='row'>
 					<img
-						src={props.storeManager.image}
-						alt='store-manager'
-						className='admin-panel-store-manager-image rounded-circle'
+						src={props.category.images[0]}
+						alt='category'
+						className='admin-panel-category-image'
 					/>
 				</th>
-				<td>{props.storeManager.name}</td>
-				<td>{props.storeManager.email}</td>
+				<td>{props.category.title}</td>
+				<td>{props.category.description}</td>
 				<td>
-					<button
-						className='admin-panel-store-manager-action'
-						onClick={onDeleteStoreManager}
-					>
-						<i className='fa fa-user-times'></i>
+					<button className='btn-edit'>
+						<i
+							className='fa  fa-pencil-square-o'
+							aria-hidden='true'
+						></i>
+					</button>
+					<button className='btn-delete' onClick={onDelete}>
+						<i
+							className='fa fa-minus-circle'
+							aria-hidden='true'
+						></i>
 					</button>
 				</td>
 			</tr>
@@ -77,4 +81,4 @@ const StoreManagerItem = (props) => {
 	);
 };
 
-export default StoreManagerItem;
+export default SMCategory;
