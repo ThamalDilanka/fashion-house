@@ -109,21 +109,37 @@ const SingleProductView = (props) => {
               .then((res) => console.log(res.data.data))
               .catch((err) => console.log(err));
           }
-          Swal.fire('Added to your cart');
+
+          Swal.fire({
+            title: 'Added to cart',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#0085d6',
+            cancelButtonColor: '#022dd',
+            confirmButtonText: 'Go to cart',
+            cancelButtonText: 'Continue to shopping',
+            reverseButtons: true,
+          }).then((result) => {
+            if (result.value) {
+              props.history.push('/cart');
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              props.history.push(`/show-case#${props.categoryId}`);
+            }
+          });
         }
       }
     } else {
       Swal.fire({
         title: 'Log in first!',
-        text: "You have to login first to do this.",
+        text: 'You have to login first to do this.',
         icon: 'warning',
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       }).then((result) => {
         if (result.value) {
           props.history.push('/authenticator/login');
         }
-      })
+      });
     }
   };
 
@@ -171,15 +187,15 @@ const SingleProductView = (props) => {
     } else {
       Swal.fire({
         title: 'Log in first!',
-        text: "You have to login first to do this.",
+        text: 'You have to login first to do this.',
         icon: 'warning',
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       }).then((result) => {
         if (result.value) {
           props.history.push('/authenticator/login');
         }
-      })
+      });
     }
   };
 
