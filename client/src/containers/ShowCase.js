@@ -21,7 +21,7 @@ const ShowCase = (props) => {
 
 	return (
 		<React.Fragment>
-      {categoryId === '' ? <Redirect to='/not-found' /> : null}
+			{categoryId === '' ? <Redirect to='/not-found' /> : null}
 			<div className='my-5 container'>
 				<ProductCards products={products} />
 			</div>

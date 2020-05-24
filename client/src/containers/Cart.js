@@ -223,6 +223,7 @@ const Cart = (props) => {
 									<Link
 										to={{
 											pathname: '/payment',
+											hash: Session.getId(),
 											state: {
 												orderItems: orderItemsArray,
 											},
